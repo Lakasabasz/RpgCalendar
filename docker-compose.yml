@@ -1,0 +1,17 @@
+﻿networks:
+  internal:
+
+services:
+  api:
+    image: registry.jakubkrawczyk.com/rpg-calendar/api
+    networks:
+      - internal
+    hostname: api
+    restart: on-failure
+  nginx:
+    ports:
+      - 80:80
+    image: registry.jakubkrawczyk.com/rpg-calendar/nginx
+    networks:
+      - internal
+    restart: on-failure

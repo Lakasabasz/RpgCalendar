@@ -1,0 +1,6 @@
+@RpgCalendar.API_HostAddress = http://localhost:5186
+
+GET {{RpgCalendar.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
