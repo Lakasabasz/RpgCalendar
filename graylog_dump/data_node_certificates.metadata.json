@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"node_id":{"$numberInt":"1"}},"name":"node_id_1","unique":true}],"uuid":"d8073a27c30c4068971bde5776c1b034","collectionName":"data_node_certificates","type":"collection"}

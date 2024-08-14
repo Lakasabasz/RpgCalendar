@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"index_name":{"$numberInt":"1"}},"name":"index_name_1"},{"v":{"$numberInt":"2"},"key":{"begin":{"$numberInt":"1"},"end":{"$numberInt":"1"}},"name":"begin_1_end_1"}],"uuid":"12d6ffa1ebde4a5494e78e6b5c207d8a","collectionName":"index_ranges","type":"collection"}
