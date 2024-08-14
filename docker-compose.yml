@@ -9,6 +9,9 @@ services:
     networks:
       - internal
     restart: on-failure
+    depends_on:
+      api:
+        condition: service_started
   api:
     image: registry.jakubkrawczyk.com/rpg-calendar/api
     networks:
@@ -68,6 +71,8 @@ services:
     volumes:
       - mongodb_data:/data/db
     restart: "on-failure"
+    ports:
+      - 27017:27017
     networks:
       - internal
 
