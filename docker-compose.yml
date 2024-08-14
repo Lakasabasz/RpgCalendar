@@ -2,12 +2,6 @@
   internal:
 
 services:
-  api:
-    image: registry.jakubkrawczyk.com/rpg-calendar/api
-    networks:
-      - internal
-    hostname: api
-    restart: on-failure
   nginx:
     ports:
       - 80:80
@@ -15,3 +9,110 @@ services:
     networks:
       - internal
     restart: on-failure
+  api:
+    image: registry.jakubkrawczyk.com/rpg-calendar/api
+    networks:
+      - internal
+    hostname: api
+    restart: on-failure
+
+  postgres:
+    image: postgres:16.2
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - internal
+    restart: on-failure
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0.6
+    command: start
+    environment:
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8080
+      KC_HOSTNAME_STRICT_BACKCHANNEL: false
+      KC_HTTP_ENABLED: true
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HEALTH_ENABLED: true
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres/${POSTGRES_DB}
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - 8080:8080
+    restart: always
+    depends_on:
+      - postgres
+    networks:
+      - internal
+  
+  mongodb:
+    image: "mongo:6.0.14"
+    volumes:
+      - mongodb_data:/data/db
+    restart: "on-failure"
+    networks:
+      - internal
+
+  opensearch:
+    image: "opensearchproject/opensearch:2.12.0"
+    environment:
+      - "OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "bootstrap.memory_lock=true"
+      - "discovery.type=single-node"
+      - "action.auto_create_index=false"
+      - "plugins.security.ssl.http.enabled=false"
+      - "plugins.security.disabled=true"
+      # Can generate a password for `OPENSEARCH_INITIAL_ADMIN_PASSWORD` using a linux device via:
+      # tr -dc A-Z-a-z-0-9_@#%^-_=+ < /dev/urandom  | head -c${1:-32}
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_INITIAL_ADMIN_PASSWORD}
+    restart: "on-failure"
+    networks:
+      - internal
+
+  # Graylog: https://hub.docker.com/r/graylog/graylog/
+  graylog:
+    hostname: "server"
+    image: "graylog/graylog:6.0"
+    depends_on:
+      mongodb:
+        condition: service_started
+      opensearch:
+        condition: service_started
+    entrypoint: "/usr/bin/tini -- wait-for-it opensearch:9200 --  /docker-entrypoint.sh"
+    environment:
+      GRAYLOG_NODE_ID_FILE: /usr/share/graylog/data/config/node-id
+      GRAYLOG_HTTP_BIND_ADDRESS: 0.0.0.0:9000
+      GRAYLOG_ELASTICSEARCH_HOSTS: http://opensearch:9200
+      GRAYLOG_MONGODB_URI: mongodb://mongodb:27017/graylog
+      # To make reporting (headless_shell) work inside a Docker container
+      GRAYLOG_REPORT_DISABLE_SANDBOX: true
+      # CHANGE ME (must be at least 16 characters)!
+      GRAYLOG_PASSWORD_SECRET: ${GRAYLOG_PASSWORD_SECRET}
+      # Password: "admin"
+      GRAYLOG_ROOT_PASSWORD_SHA2: ${GRAYLOG_ROOT_PASSWORD_SHA2}
+      GRAYLOG_HTTP_EXTERNAL_URI: ${GRAYLOG_HTTP_EXTERNAL_URI}
+    ports:
+      # Graylog web interface and REST API
+      - "9000:9000/tcp"
+      # Serilog
+      - "12201:12201"
+    volumes:
+      - graylog_data:/usr/share/graylog/data/data
+      - graylog_journal:/usr/share/graylog/data/journal
+    restart: "on-failure"
+    networks:
+      - internal
+
+volumes:
+  postgres_data:
+    driver: local
+  graylog_data:
+  graylog_journal:
+  mongodb_data:
