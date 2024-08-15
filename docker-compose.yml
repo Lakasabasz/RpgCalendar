@@ -83,6 +83,10 @@ services:
     depends_on:
       graylog:
         condition: service_healthy
+    environment:
+      GRAYLOG_ROOT_PASSWORD: ${GRAYLOG_ROOT_PASSWORD}
+      GRAYLOG_ROOT_USERNAME: ${GRAYLOG_ROOT_USERNAME}
+      GRAYLOG_HTTP_EXTERNAL_URI: ${GRAYLOG_HTTP_EXTERNAL_URI}
 
   opensearch:
     image: "opensearchproject/opensearch:2.12.0"
