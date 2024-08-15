@@ -1,1 +1,0 @@
-{"options":{"capped":true,"size":{"$numberInt":"10240000"},"max":{"$numberInt":"10000"}},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"item_grn":{"$numberInt":"1"}},"name":"item_grn_1"}],"uuid":"5ff1b981925e4999871586c7c3311feb","collectionName":"recent_activity","type":"collection"}

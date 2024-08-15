@@ -1,1 +1,0 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"4caeac6674974765bd3d54a92a648102","collectionName":"scheduler_job_definitions","type":"collection"}

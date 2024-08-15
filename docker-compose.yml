@@ -23,6 +23,8 @@ services:
         condition: service_healthy
       graylog:
         condition: service_healthy
+      graylog_sedder:
+        condition: service_completed_successfully
 
   postgres:
     image: postgres:16.2
@@ -75,6 +77,12 @@ services:
       - 27017:27017
     networks:
       - internal
+
+  graylog_sedder:
+    image: registry.jakubkrawczyk.com/rpg-calendar/graylog_seeder
+    depends_on:
+      graylog:
+        condition: service_healthy
 
   opensearch:
     image: "opensearchproject/opensearch:2.12.0"

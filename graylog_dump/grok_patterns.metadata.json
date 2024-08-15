@@ -1,1 +1,0 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"name":{"$numberInt":"1"}},"name":"idx_name_asc_unique","unique":true}],"uuid":"bddd234447c749f3bac70864c8986f44","collectionName":"grok_patterns","type":"collection"}

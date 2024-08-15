@@ -1,1 +1,0 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"title":{"$numberInt":"1"}},"name":"title_1","unique":true}],"uuid":"26baf67fc690432b8bc2de479aba6b08","collectionName":"pipeline_processor_rules","type":"collection"}

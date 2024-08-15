@@ -1,1 +1,0 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"index_prefix":{"$numberInt":"1"}},"name":"index_prefix_1","unique":true},{"v":{"$numberInt":"2"},"key":{"creation_date":{"$numberInt":"-1"}},"name":"creation_date_-1"}],"uuid":"b011618e7b164091916f512ae71d4bf5","collectionName":"index_sets","type":"collection"}

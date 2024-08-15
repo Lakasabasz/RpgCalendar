@@ -1,1 +1,0 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"node_id":{"$numberInt":"1"}},"name":"node_id_1","unique":true}],"uuid":"f50572d06dbc4631ac40a276da716ffa","collectionName":"graylog_ca_certificates","type":"collection"}
