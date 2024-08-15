@@ -8,6 +8,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 		nginx/Dockerfile = nginx/Dockerfile
 		nginx/nginx.conf = nginx/nginx.conf
+		graylog_seeder/Dockerfile = graylog_seeder/Dockerfile
+		graylog_seeder/graylog_seeder.py = graylog_seeder/graylog_seeder.py
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgCalendar.API", "RpgCalendar.API\RpgCalendar.API.csproj", "{6D5ACD22-B950-4910-846B-9B7D38620F3D}"
