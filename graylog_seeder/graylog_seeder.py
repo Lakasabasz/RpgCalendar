@@ -2,7 +2,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 import json
 import os
-graylog_base_uri = os.environ['GRAYLOG_HTTP_EXTERNAL_URI']
+graylog_base_uri = os.environ['GRAYLOG_URL'] or "http://graylog:9000"
 graylog_inputs_uri = graylog_base_uri + "/api/system/inputs"
 username = os.environ['GRAYLOG_ROOT_USERNAME']
 password = os.environ['GRAYLOG_ROOT_PASSWORD']
