@@ -46,6 +46,7 @@ var app = builder.Build();
 
 var scope = app.Services.CreateScope();
 scope.ServiceProvider.GetRequiredService<RelationalDb>().Database.Migrate();
+app.Logger.Log(LogLevel.Information, "Database migrations done");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

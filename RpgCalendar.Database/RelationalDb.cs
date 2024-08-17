@@ -8,6 +8,7 @@ public class RelationalDb: DbContext
 {
     public DbSet<User> Users { get; set; }
 
+    public RelationalDb(){}
     public RelationalDb(DbContextOptions options): base(options){}
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
