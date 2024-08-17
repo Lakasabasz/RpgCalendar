@@ -22,10 +22,30 @@ services:
     depends_on:
       keycloak:
         condition: service_healthy
-      graylog:
-        condition: service_healthy
       graylog_seeder:
         condition: service_completed_successfully
+      mariadb:
+        condition: service_healthy
+        
+  mariadb:
+    image: mariadb:11.5
+    hostname: mariadb
+    ports:
+      - 3306:3306
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: rpgcalendar
+    networks:
+      - internal
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: on-failure
 
   postgres:
     image: postgres:16.2
@@ -146,3 +166,4 @@ volumes:
   graylog_data:
   graylog_journal:
   mongodb_data:
+  mariadb_data:
