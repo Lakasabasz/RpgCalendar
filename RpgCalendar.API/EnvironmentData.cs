@@ -1,4 +1,6 @@
-﻿namespace RpgCalendar.API;
+﻿using System.Buffers.Text;
+
+namespace RpgCalendar.API;
 
 static class EnvironmentData
 {
@@ -12,6 +14,7 @@ static class EnvironmentData
     public static string RelationalDbPasswd => Environment.GetEnvironmentVariable(RelationalDbPasswdEnv) ?? "root";
 
     private const string JwtSigningKeyEnv = "JWT_SECRET";
-    public static string JwtSigningKey =>
-        Environment.GetEnvironmentVariable(JwtSigningKeyEnv) ?? "my-super-secret-key-123456789";
+    private static string JwtSigningKey =>
+        Environment.GetEnvironmentVariable(JwtSigningKeyEnv) ?? "bXktc3VwZXItc2VjcmV0LWtleS0xMjM0NTY3ODk2NTQ2ODc2NDU=";
+    public static byte[] JwtSigningKeyBytes => Convert.FromBase64String(JwtSigningKey);
 }

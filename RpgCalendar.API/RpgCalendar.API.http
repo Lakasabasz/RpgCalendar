@@ -1,6 +1,10 @@
 @RpgCalendar.API_HostAddress = http://localhost:8000
 
-GET {{RpgCalendar.API_HostAddress}}/weatherforecast/
+GET {{RpgCalendar.API_HostAddress}}/users/me/
 Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI1ZGYwNjA4NC0yNGQzLTRmODYtOTJkZS1mZTljZmNmZjJjYWEiLCJleHAiOjE3MjM5MzExNTh9.S87kQpJtmPtgnznrZ1j29qgRHwQNbSpIp8qSXKHILLg
+#Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI1ZGYwNjA4NC0yNGQzLTRmODYtOTJkZS1mZTljZmNmZjJjYWEiLCJleHAiOjE3MjM5MzExNTh9.jhCGFu-Td9REDqFwa0mXW3ODSNv45DZoeWlkILFWFKs
 
 ###
+
+POST {{RpgCalendar.API_HostAddress}}/users/login

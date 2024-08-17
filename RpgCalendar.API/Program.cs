@@ -63,8 +63,13 @@ builder.Services.AddAuthentication(x =>
 {
     x.TokenValidationParameters = new TokenValidationParameters()
     {
-        ValidateIssuer = false,
+        IssuerSigningKey = new SymmetricSecurityKey(EnvironmentData.JwtSigningKeyBytes),
         RequireAudience = false,
+        ValidateAudience = false,
+        ValidateIssuer = false,
+        ValidateIssuerSigningKey = true,
+        ValidateActor = false,
+        ValidateLifetime = true,
     };
 });
 
