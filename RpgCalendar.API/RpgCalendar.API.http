@@ -8,3 +8,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI1ZGYwN
 ###
 
 POST {{RpgCalendar.API_HostAddress}}/users/login
+
+###
+
+GET {{RpgCalendar.API_HostAddress}}/WeatherForecast/GetWeatherForecast
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI1ZGYwNjA4NC0yNGQzLTRmODYtOTJkZS1mZTljZmNmZjJjYWEiLCJleHAiOjE3MjM5MzExNTh9.S87kQpJtmPtgnznrZ1j29qgRHwQNbSpIp8qSXKHILLg

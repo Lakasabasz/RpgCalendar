@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RpgCalendar.API;
+using RpgCalendar.API.Middlewares;
 using RpgCalendar.Database;
 using Serilog;
 using Serilog.Events;
@@ -93,6 +94,8 @@ app.UseHttpLogging();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseUserInjection();
 
 app.MapControllers();
 

@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgCalendar.Database", "Rpg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgCalendar.Commands", "RpgCalendar.Commands\RpgCalendar.Commands.csproj", "{09BAE8C2-6176-464D-8713-860AFC691473}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgCalendar.Tools", "RpgCalendar.Tools\RpgCalendar.Tools.csproj", "{596CDEDB-2191-4BBC-BB26-79E5A7C6579D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,5 +41,9 @@ Global
 		{09BAE8C2-6176-464D-8713-860AFC691473}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09BAE8C2-6176-464D-8713-860AFC691473}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09BAE8C2-6176-464D-8713-860AFC691473}.Release|Any CPU.Build.0 = Release|Any CPU
+		{596CDEDB-2191-4BBC-BB26-79E5A7C6579D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{596CDEDB-2191-4BBC-BB26-79E5A7C6579D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{596CDEDB-2191-4BBC-BB26-79E5A7C6579D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{596CDEDB-2191-4BBC-BB26-79E5A7C6579D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

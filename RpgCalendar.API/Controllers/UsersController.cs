@@ -1,9 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using RpgCalendar.Tools;
 
 namespace RpgCalendar.API.Controllers;
 
@@ -15,6 +15,7 @@ public class UsersController : Controller
     [HttpGet("me")]
     public IActionResult Me()
     {
+        
         return Ok();
     }
     
@@ -26,7 +27,7 @@ public class UsersController : Controller
         var tokeOptions = new JwtSecurityToken(
             claims: new List<Claim>()
             {
-                new Claim("userid", Guid.NewGuid().ToString()),
+                new Claim(Consts.JwtConsts.UserId, Guid.NewGuid().ToString()),
             },
             expires: DateTime.Now.AddHours(1),
             signingCredentials: signinCredentials
