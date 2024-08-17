@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 using RpgCalendar.API;
 using RpgCalendar.Database;
@@ -42,6 +43,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHttpLogging(x =>
+{
+    x.LoggingFields = HttpLoggingFields.All;
+    x.RequestBodyLogLimit = 4 * 1024;
+    x.ResponseBodyLogLimit = 4 * 1024;
+    x.CombineLogs = true;
+});
+
 var app = builder.Build();
 
 var scope = app.Services.CreateScope();
@@ -54,6 +63,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseHttpLogging();
 
 app.UseAuthorization();
 
