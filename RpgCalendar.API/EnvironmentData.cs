@@ -10,4 +10,8 @@ static class EnvironmentData
 
     private const string RelationalDbPasswdEnv = "MYSQL_ROOT_PASSWORD";
     public static string RelationalDbPasswd => Environment.GetEnvironmentVariable(RelationalDbPasswdEnv) ?? "root";
+
+    private const string JwtSigningKeyEnv = "JWT_SECRET";
+    public static string JwtSigningKey =>
+        Environment.GetEnvironmentVariable(JwtSigningKeyEnv) ?? "my-super-secret-key-123456789";
 }

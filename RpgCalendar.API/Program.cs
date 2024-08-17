@@ -1,7 +1,10 @@
+using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RpgCalendar.API;
 using RpgCalendar.Database;
 using Serilog;
@@ -51,6 +54,22 @@ builder.Services.AddHttpLogging(x =>
     x.CombineLogs = true;
 });
 
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = false,
+        RequireAudience = false,
+    };
+});
+
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 var scope = app.Services.CreateScope();
@@ -65,6 +84,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpLogging();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

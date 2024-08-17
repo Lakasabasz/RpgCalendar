@@ -26,6 +26,11 @@ services:
         condition: service_completed_successfully
       mariadb:
         condition: service_healthy
+    environment:
+      GRAYLOG_URL: graylog
+      API_RELATIONAL_DB_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
         
   mariadb:
     image: mariadb:11.5
