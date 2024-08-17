@@ -1,3 +1,4 @@
+using RpgCalendar.API;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Graylog;
@@ -13,7 +14,7 @@ builder.Services.AddSerilog(configuration => configuration
     .WriteTo.Console()
     .WriteTo.Graylog(new GraylogSinkOptions()
     {
-        HostnameOrAddress = "127.0.0.1",
+        HostnameOrAddress = EnvironmentData.GraylogUrl,
         MinimumLogEventLevel = LogEventLevel.Verbose,
         TransportType = TransportType.Tcp
     })
