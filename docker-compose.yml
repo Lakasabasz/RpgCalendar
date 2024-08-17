@@ -87,6 +87,8 @@ services:
     environment:
       GRAYLOG_ROOT_PASSWORD: ${GRAYLOG_ROOT_PASSWORD}
       GRAYLOG_ROOT_USERNAME: ${GRAYLOG_ROOT_USERNAME}
+    networks:
+      - internal
 
   opensearch:
     image: "opensearchproject/opensearch:2.12.0"
