@@ -20,8 +20,7 @@ class InjectUserMiddleware(RequestDelegate next, RelationalDb db)
 
 public static class InjectUserMiddlewareExtensions
 {
-    public static IApplicationBuilder UseUserInjection(
-        this IApplicationBuilder builder)
+    public static IApplicationBuilder UseUserInjection(this IApplicationBuilder builder)
     {
         return builder.UseMiddleware<InjectUserMiddleware>();
     }

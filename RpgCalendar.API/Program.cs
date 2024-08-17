@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 var connectionString =
-    $"Server={EnvironmentData.RelationalDbHost};Port=3306;Database=rpgcalendar;User ID=root;Password={EnvironmentData.RelationalDbPasswd};";
+    $"Server={EnvironmentData.RelationalDbHost};Port=3306;Database=rpgcalendar;Uid=root;Pwd={EnvironmentData.RelationalDbPasswd};";
 
 builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 {
@@ -28,6 +28,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
             new DbContextOptionsBuilder()
                 .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
                 .Options));
+    container.RegisterType<InjectUserMiddleware>();
 });
 
 builder.Logging.ClearProviders();

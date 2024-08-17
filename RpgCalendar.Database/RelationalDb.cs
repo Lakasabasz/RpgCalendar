@@ -13,9 +13,8 @@ public class RelationalDb: DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if(optionsBuilder.IsConfigured) return;
-
-        optionsBuilder.UseMySql(ServerVersion.Create(new Version(11, 5), ServerType.MariaDb));
         base.OnConfiguring(optionsBuilder);
+        if(!optionsBuilder.IsConfigured) 
+            optionsBuilder.UseMySql(ServerVersion.Create(new Version(11, 5), ServerType.MariaDb));
     }
 }

@@ -12,7 +12,7 @@ using RpgCalendar.Database;
 namespace RpgCalendar.Database.Migrations
 {
     [DbContext(typeof(RelationalDb))]
-    [Migration("20240817172603_Initial")]
+    [Migration("20240817220518_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

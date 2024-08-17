@@ -9,14 +9,13 @@ namespace RpgCalendar.API.Controllers;
 
 //[Authorize]
 [ApiController, Route("/users")]
-public class UsersController : Controller
+public class UsersController : CustomController
 {
     [Authorize]
     [HttpGet("me")]
     public IActionResult Me()
     {
-        
-        return Ok();
+        return Ok(new { InvokerId = Invoker?.Id.ToString() ?? "Not found" });
     }
     
     [HttpPost("login")]
