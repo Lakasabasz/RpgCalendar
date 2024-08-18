@@ -11,7 +11,7 @@ POST {{RpgCalendar.API_HostAddress}}/users/login
 
 ###
 
-POST {{RpgCalendar.API_HostAddress}}/users/
+POST {{RpgCalendar.API_HostAddress}}/users
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
