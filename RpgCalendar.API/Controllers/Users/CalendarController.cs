@@ -1,15 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RpgCalendar.Commands;
+using RpgCalendar.Tools;
 
 namespace RpgCalendar.API.Controllers.Users;
 
 [Authorize]
 [ApiController, Route("/users/{userId:guid}/calendar")]
-public class CalendarController : CustomController
+public class CalendarController(AccessTester tester) : CustomController
 {
     [HttpGet("absences")]
-    public IActionResult GetAbsences()
+    public IActionResult GetAbsences([FromRoute] Guid userId)
     {
+        if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
+        if (!tester.TestIf(Invoker).HasAccessTo.User(userId)) Forbid();
         return Ok();
     }
 
