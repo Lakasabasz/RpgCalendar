@@ -40,6 +40,9 @@ namespace RpgCalendar.Database.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PrivateCode")
+                        .IsUnique();
+
                     b.ToTable("Users");
                 });
 #pragma warning restore 612, 618

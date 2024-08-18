@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using RpgCalendar.Commands.Jobs;
 using RpgCalendar.Database.Models;
 using RpgCalendar.Tools;
@@ -7,7 +8,11 @@ namespace RpgCalendar.API;
 
 public class CustomController: Controller
 {
-    public User? Invoker => HttpContext.Items[Consts.AuthConsts.UserContextField] as User;
+    protected User? Invoker => HttpContext.Items[Consts.AuthConsts.UserContextField] as User;
+
+    protected Guid InvokerGuid => 
+        Guid.TryParse(User.FindFirstValue(Consts.JwtConsts.UserId), out var id) && id != Guid.Empty 
+            ? id : throw new InvalidCastException("Cannot cast token guid claim to Guid");
 
     protected IActionResult HandleJobResult(IJob job)
     {

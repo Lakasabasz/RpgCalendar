@@ -1,9 +1,9 @@
 @RpgCalendar.API_HostAddress = http://localhost:8000
+@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiJlY2RhZDdmMS1hZjNhLTQ1YjAtYmQ3OS03MjMxZThjNGVhMTEiLCJleHAiOjE3MjQwMTI2NDd9.Kjkpv1PcfdqUlqe2tkT8d5zvZPZaoEu4TqEcrptuZGM
 
 GET {{RpgCalendar.API_HostAddress}}/users/me/
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiJiNzMxYzIyMy1lNjBmLTRmZjMtYjAzOS1hM2RmYzExMTIwY2QiLCJleHAiOjE3MjM5OTM3OTF9.5YoMMeGPxT58V7usv8mLxQguUR4gQxlbl6TCuzc-vgU
-#Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI1ZGYwNjA4NC0yNGQzLTRmODYtOTJkZS1mZTljZmNmZjJjYWEiLCJleHAiOjE3MjM5MzExNTh9.jhCGFu-Td9REDqFwa0mXW3ODSNv45DZoeWlkILFWFKs
+Authorization: Bearer {{Token}}
 
 ###
 
@@ -11,5 +11,10 @@ POST {{RpgCalendar.API_HostAddress}}/users/login
 
 ###
 
-GET {{RpgCalendar.API_HostAddress}}/WeatherForecast/GetWeatherForecast
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI1ZGYwNjA4NC0yNGQzLTRmODYtOTJkZS1mZTljZmNmZjJjYWEiLCJleHAiOjE3MjM5MzExNTh9.S87kQpJtmPtgnznrZ1j29qgRHwQNbSpIp8qSXKHILLg
+POST {{RpgCalendar.API_HostAddress}}/users/
+Content-Type: application/json
+Authorization: Bearer {{Token}}
+
+{
+    "displayName": "testuser"
+}

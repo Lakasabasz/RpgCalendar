@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,19 +9,30 @@ using RpgCalendar.Tools;
 
 namespace RpgCalendar.API.Controllers;
 
+public record UserModel([MaxLength(64), MinLength(3)] string displayName);
+
 //[Authorize]
 [ApiController, Route("/users")]
-public class UsersController(GetUserDataJob getUserDataJob) : CustomController
+public class UsersController(Lazy<GetUserDataJob> getUserDataJob, Lazy<RegisterUserJob> registerUserJob) : CustomController
 {
     [Authorize]
     [HttpGet("me")]
     public IActionResult Me()
     {
         if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
-        getUserDataJob.Execute(Invoker);
-        return HandleJobResult(getUserDataJob);
+        getUserDataJob.Value.Execute(Invoker);
+        return HandleJobResult(getUserDataJob.Value);
     }
-    
+
+    [Authorize]
+    [HttpPost("")]
+    public IActionResult Register([FromBody] UserModel user)
+    {
+        if (Invoker is not null) return EarlyError(ErrorCode.UserAlreadyRegistered);
+        registerUserJob.Value.Execute(new RegisterUserJob.JobData(InvokerGuid, user.displayName));
+        return HandleJobResult(registerUserJob.Value);
+    }
+
     [HttpPost("login")]
     public IActionResult Login()
     {
