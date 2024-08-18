@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RpgCalendar.API;
 using RpgCalendar.API.Middlewares;
+using RpgCalendar.Commands.Jobs;
 using RpgCalendar.Database;
 using Serilog;
 using Serilog.Events;
@@ -29,6 +30,10 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
                 .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
                 .Options));
     container.RegisterType<InjectUserMiddleware>();
+    container.RegisterAssemblyTypes(typeof(IJob).Assembly)
+        .Where(x => x.GetInterface(nameof(IJob)) is not null)
+        .AsImplementedInterfaces()
+        .AsSelf();
 });
 
 builder.Logging.ClearProviders();
@@ -44,7 +49,6 @@ builder.Services.AddSerilog(configuration => configuration
 );
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

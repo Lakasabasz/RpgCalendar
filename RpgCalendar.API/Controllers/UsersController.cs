@@ -3,20 +3,22 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using RpgCalendar.Commands.Jobs.Users;
 using RpgCalendar.Tools;
 
 namespace RpgCalendar.API.Controllers;
 
 //[Authorize]
 [ApiController, Route("/users")]
-public class UsersController : CustomController
+public class UsersController(GetUserDataJob getUserDataJob) : CustomController
 {
     [Authorize]
     [HttpGet("me")]
     public IActionResult Me()
     {
         if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
-        return Ok(new { InvokerId = Invoker?.Id.ToString() ?? "Not found" });
+        getUserDataJob.Execute(Invoker);
+        return HandleJobResult(getUserDataJob);
     }
     
     [HttpPost("login")]
