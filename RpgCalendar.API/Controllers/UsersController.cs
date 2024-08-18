@@ -15,6 +15,7 @@ public class UsersController : CustomController
     [HttpGet("me")]
     public IActionResult Me()
     {
+        if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
         return Ok(new { InvokerId = Invoker?.Id.ToString() ?? "Not found" });
     }
     
