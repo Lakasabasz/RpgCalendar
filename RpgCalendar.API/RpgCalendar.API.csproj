@@ -29,6 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\RpgCalendar.Commands\RpgCalendar.Commands.csproj" />
       <ProjectReference Include="..\RpgCalendar.Database\RpgCalendar.Database.csproj" />
       <ProjectReference Include="..\RpgCalendar.Tools\RpgCalendar.Tools.csproj" />
     </ItemGroup>

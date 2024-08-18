@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\RpgCalendar.Database\RpgCalendar.Database.csproj" />
+      <ProjectReference Include="..\RpgCalendar.Tools\RpgCalendar.Tools.csproj" />
+    </ItemGroup>
+
 </Project>

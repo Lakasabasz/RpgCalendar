@@ -11,4 +11,15 @@ public static partial class Consts
     {
         public const string UserContextField = "UserContext";
     }
+
+    public static class Errors
+    {
+        public static readonly Dictionary<ErrorCode, ErrorApiModel> ErrorCodeMessages = new()
+        {
+            [ErrorCode.UserNotRegistered] = new ErrorApiModel(ErrorCode.UserNotRegistered, "The user is not registered."),
+        };
+
+        public static ErrorApiModel FallbackErrorMessage(ErrorCode errorCode)
+            => new (ErrorCode.SomethingWentWrong, $"Unhandled error code {errorCode}");
+    }
 }
