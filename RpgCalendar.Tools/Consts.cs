@@ -17,6 +17,7 @@ public static partial class Consts
         public static readonly Dictionary<ErrorCode, ErrorApiModel> ErrorCodeMessages = new()
         {
             [ErrorCode.UserNotRegistered] = new ErrorApiModel(ErrorCode.UserNotRegistered, "The user is not registered."),
+            [ErrorCode.UserAlreadyRegistered] = new ErrorApiModel(ErrorCode.UserAlreadyRegistered, "The user is already registered."),
         };
 
         public static ErrorApiModel FallbackErrorMessage(ErrorCode errorCode)
