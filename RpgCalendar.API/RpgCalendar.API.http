@@ -1,5 +1,5 @@
 @RpgCalendar.API_HostAddress = http://localhost:8000
-@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiJlY2RhZDdmMS1hZjNhLTQ1YjAtYmQ3OS03MjMxZThjNGVhMTEiLCJleHAiOjE3MjQwMTI2NDd9.Kjkpv1PcfdqUlqe2tkT8d5zvZPZaoEu4TqEcrptuZGM
+@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI0ZDFiNGEwZi0yMDgwLTQ5MDYtYjAyZi0wMDc5Y2M1ODA2NGYiLCJleHAiOjE3MjQwMTczMzZ9.tRY63UcnELM4rhVoICgGD8vwDmYbHQOh6wWklhW804M
 
 GET {{RpgCalendar.API_HostAddress}}/users/me/
 Accept: application/json
