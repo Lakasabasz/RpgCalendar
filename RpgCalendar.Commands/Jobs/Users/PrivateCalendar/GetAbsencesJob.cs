@@ -18,7 +18,7 @@ public class GetAbsencesJob(RelationalDb db): IJob
             .Where(x => x.OwnerId == data.userId)
             .Where(x => (pagination.Start <= x.Start && x.Start <= pagination.End)
                         || (pagination.Start <= x.End && x.End <= pagination.End))
-            .Select(x => AbsencePeriod.FromDateTime(x.Start, x.End));
+            .Select(x => AbsencePeriod.FromDateTime(x.EventId, x.Start, x.End));
         ApiResponse = new AbsencePeriods(periods);
     }
 }
