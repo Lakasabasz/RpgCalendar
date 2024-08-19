@@ -7,6 +7,7 @@ namespace RpgCalendar.Database;
 public class RelationalDb: DbContext
 {
     public DbSet<User> Users { get; set; }
+    public DbSet<PrivateEvent> PrivateEvents { get; set; }
 
     public RelationalDb(){}
     public RelationalDb(DbContextOptions options): base(options){}
