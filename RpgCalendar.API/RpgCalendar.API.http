@@ -1,5 +1,7 @@
 @RpgCalendar.API_HostAddress = http://localhost:8000
 @Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI0ZDFiNGEwZi0yMDgwLTQ5MDYtYjAyZi0wMDc5Y2M1ODA2NGYiLCJleHAiOjE3MjQwMTczMzZ9.tRY63UcnELM4rhVoICgGD8vwDmYbHQOh6wWklhW804M
+@userId = ""
+
 
 GET {{RpgCalendar.API_HostAddress}}/users/me/
 Accept: application/json
@@ -18,3 +20,9 @@ Authorization: Bearer {{Token}}
 {
     "displayName": "testuser"
 }
+
+###
+
+GET {{RpgCalendar.API_HostAddress}}/users/{{userId}}/calendar/absences
+
+###
