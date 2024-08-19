@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RpgCalendar.API.Requests;
 
 namespace RpgCalendar.API.Controllers;
 
@@ -14,7 +15,7 @@ public class GroupsController : CustomController
     }
 
     [HttpPost]
-    public IActionResult AddGroup()
+    public IActionResult AddGroup([FromBody] CreateGroup payload)
     {
         throw new NotImplementedException();
     }
