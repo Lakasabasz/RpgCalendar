@@ -20,6 +20,9 @@ public static partial class Consts
             [ErrorCode.UserAlreadyRegistered] = new ErrorApiModel(ErrorCode.UserAlreadyRegistered, "The user is already registered."),
             [ErrorCode.InvalidTimeRange] = new ErrorApiModel(ErrorCode.InvalidTimeRange, "Provided time range is negative."),
             [ErrorCode.TitleAndDescriptionMismatch] = new ErrorApiModel(ErrorCode.TitleAndDescriptionMismatch, "Title and description must be provided both or not provided at all"),
+            [ErrorCode.TitleAndDescriptionMismatch] = new ErrorApiModel(ErrorCode.NoChangesRequested, "Patch changes nothing"),
+            [ErrorCode.CannotChangeEventType] = new ErrorApiModel(ErrorCode.CannotChangeEventType, "Patch cannot remove or add title or description"),
+            [ErrorCode.PatchInvalidTimeRange] = new ErrorApiModel(ErrorCode.PatchInvalidTimeRange, "Patch change leads to invalid time range"),
         };
 
         public static ErrorApiModel FallbackErrorMessage(ErrorCode errorCode)

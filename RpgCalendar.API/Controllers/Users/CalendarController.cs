@@ -13,13 +13,14 @@ namespace RpgCalendar.API.Controllers.Users;
 public class CalendarController(AccessTester tester, 
     Lazy<GetAbsencesJob> absencesJob, 
     Lazy<GetEventsJob> getEventsJob,
-    Lazy<AddEventJob> addEventJob) : CustomController
+    Lazy<AddEventJob> addEventJob,
+    Lazy<PatchEventJob> patchEventJob) : CustomController
 {
     [HttpGet("absences")]
     public IActionResult GetAbsences([FromRoute] Guid userId, [FromQuery] PrivateCalendarQuery query)
     {
         if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
-        if (!tester.TestIf(Invoker).HasAccessTo.User(userId)) Forbid();
+        if (!tester.TestIf(Invoker).HasAccessTo.User(userId).Validate()) Forbid();
 
         TimePagination pagination = new TimePagination(query.FromDate, query.FromTime, query.ToDate, query.ToTime);
         if (!pagination.Validate) return EarlyError(ErrorCode.InvalidTimeRange);
@@ -32,7 +33,7 @@ public class CalendarController(AccessTester tester,
     public IActionResult GetEvents([FromRoute] Guid userId, [FromQuery] PrivateCalendarQuery query)
     {
         if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
-        if (!tester.TestIf(Invoker).HasAccessTo.User(userId)) Forbid();
+        if (!tester.TestIf(Invoker).HasAccessTo.User(userId).Validate()) Forbid();
 
         TimePagination pagination = new TimePagination(query.FromDate, query.FromTime, query.ToDate, query.ToTime);
         if (!pagination.Validate) return EarlyError(ErrorCode.InvalidTimeRange);
@@ -45,7 +46,7 @@ public class CalendarController(AccessTester tester,
     public IActionResult AddEvent([FromRoute] Guid userId, [FromBody] PrivateCalendarAddEvent payload)
     {
         if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
-        if (!tester.TestIf(Invoker).HasAccessTo.User(userId)) Forbid();
+        if (!tester.TestIf(Invoker).HasAccessTo.User(userId).Validate()) Forbid();
 
         if (new DateTime(payload.StartingDay, payload.StartingHour) > new DateTime(payload.EndingDay, payload.EndingHour))
             return EarlyError(ErrorCode.InvalidTimeRange);
@@ -56,9 +57,17 @@ public class CalendarController(AccessTester tester,
     }
     
     [HttpPatch("events/{eventId:guid}")]
-    public IActionResult UpdateEvent()
+    public IActionResult UpdateEvent([FromRoute] Guid userId, [FromRoute] Guid eventId,
+        [FromBody] PrivateCalendarPatchEvent payload)
     {
-        return Ok();
+        if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
+        if (!tester.TestIf(Invoker).HasAccessTo.User(userId).Event(eventId)) Forbid();
+
+        if (!payload.HasChange) return EarlyError(ErrorCode.NoChangesRequested);
+
+        patchEventJob.Value.Execute(new PatchEventJob.JobData(eventId, payload.Title, payload.Description,
+            payload.StartingDay, payload.StartingHour, payload.EndingDay, payload.EndingHour));
+        return HandleJobResult(patchEventJob.Value);
     }
     
     [HttpDelete("events/{eventId:guid}")]

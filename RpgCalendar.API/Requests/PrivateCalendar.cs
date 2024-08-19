@@ -9,3 +9,17 @@ public record PrivateCalendarAddEvent(
     [MaxLength(1024), MinLength(3)] string? Description, 
     DateOnly StartingDay, TimeOnly StartingHour,
     DateOnly EndingDay, TimeOnly EndingHour);
+
+public record PrivateCalendarPatchEvent(
+    [MaxLength(256), MinLength(3)] string? Title,
+    [MaxLength(1024), MinLength(3)] string? Description,
+    DateOnly? StartingDay, TimeOnly? StartingHour,
+    DateOnly? EndingDay, TimeOnly? EndingHour)
+{
+    public bool HasChange => Title is not null
+                             || Description is not null
+                             || StartingDay.HasValue
+                             || StartingHour.HasValue
+                             || EndingDay.HasValue
+                             || EndingHour.HasValue;
+}

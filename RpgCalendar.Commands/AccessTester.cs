@@ -13,11 +13,22 @@ public class UserScope(RelationalDb db, ILogger<AccessTester> logger, User? invo
             invoker?.Id, invoker?.Nick, targetUserId);
         return false;
     }
+
+    // ReSharper disable once EntityFramework.NPlusOne.IncompleteDataQuery
+    // ReSharper disable once EntityFramework.NPlusOne.IncompleteDataUsage
+    public bool Event(Guid eventId)
+    {
+        var @event = db.PrivateEvents.FirstOrDefault(x => x.EventId == eventId);
+        if (Validate() && @event?.OwnerId == invoker?.Id) return true;
+        logger.LogInformation("Invoker ({InvokerId}:{InvokerNick}) has no access to target event ({Target})",
+            invoker?.Id, invoker?.Nick, eventId);
+        return false;
+    }
 }
 
 public class AccessScope(RelationalDb db, ILogger<AccessTester> logger, User? invoker)
 {
-    public bool User(Guid userId) => new UserScope(db, logger, invoker, userId).Validate();
+    public UserScope User(Guid userId) => new UserScope(db, logger, invoker, userId);
 }
 
 public class AccessTester(RelationalDb db, ILogger<AccessTester> logger)

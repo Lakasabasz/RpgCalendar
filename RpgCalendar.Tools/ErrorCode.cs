@@ -6,5 +6,8 @@ public enum ErrorCode
     UserNotRegistered = 1,
     UserAlreadyRegistered = 2,
     InvalidTimeRange = 3,
-    TitleAndDescriptionMismatch = 4
+    TitleAndDescriptionMismatch = 4,
+    NoChangesRequested = 5,
+    CannotChangeEventType = 6,
+    PatchInvalidTimeRange = 7,
 }
