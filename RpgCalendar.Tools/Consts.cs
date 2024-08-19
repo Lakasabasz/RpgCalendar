@@ -18,6 +18,7 @@ public static partial class Consts
         {
             [ErrorCode.UserNotRegistered] = new ErrorApiModel(ErrorCode.UserNotRegistered, "The user is not registered."),
             [ErrorCode.UserAlreadyRegistered] = new ErrorApiModel(ErrorCode.UserAlreadyRegistered, "The user is already registered."),
+            [ErrorCode.InvalidTimePagination] = new ErrorApiModel(ErrorCode.InvalidTimePagination, "Provided time span is negative."),
         };
 
         public static ErrorApiModel FallbackErrorMessage(ErrorCode errorCode)
