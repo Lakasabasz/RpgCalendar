@@ -8,6 +8,9 @@ public class RelationalDb: DbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<PrivateEvent> PrivateEvents { get; set; }
+    public DbSet<Group> Groups { get; set; }
+    public DbSet<GroupMembers> GroupsMembers { get; set; }
+    public DbSet<Invites> GroupsInvites { get; set; }
 
     public RelationalDb(){}
     public RelationalDb(DbContextOptions options): base(options){}
