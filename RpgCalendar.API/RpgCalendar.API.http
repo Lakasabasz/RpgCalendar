@@ -24,5 +24,19 @@ Authorization: Bearer {{Token}}
 ###
 
 GET {{RpgCalendar.API_HostAddress}}/users/{{userId}}/calendar/absences
+Authorization: Bearer {{Token}}
 
 ###
+
+GET {{RpgCalendar.API_HostAddress}}
+Authorization: Bearer {{Token}}
+
+###
+
+POST {{RpgCalendar.API_HostAddress}}
+Authorization: Bearer {{Token}}
+Content-Type: application/json
+
+{
+  
+}

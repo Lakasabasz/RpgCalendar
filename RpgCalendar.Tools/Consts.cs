@@ -18,7 +18,8 @@ public static partial class Consts
         {
             [ErrorCode.UserNotRegistered] = new ErrorApiModel(ErrorCode.UserNotRegistered, "The user is not registered."),
             [ErrorCode.UserAlreadyRegistered] = new ErrorApiModel(ErrorCode.UserAlreadyRegistered, "The user is already registered."),
-            [ErrorCode.InvalidTimePagination] = new ErrorApiModel(ErrorCode.InvalidTimePagination, "Provided time span is negative."),
+            [ErrorCode.InvalidTimeRange] = new ErrorApiModel(ErrorCode.InvalidTimeRange, "Provided time range is negative."),
+            [ErrorCode.TitleAndDescriptionMismatch] = new ErrorApiModel(ErrorCode.TitleAndDescriptionMismatch, "Title and description must be provided both or not provided at all"),
         };
 
         public static ErrorApiModel FallbackErrorMessage(ErrorCode errorCode)

@@ -11,7 +11,9 @@ namespace RpgCalendar.API.Controllers.Users;
 [Authorize]
 [ApiController, Route("/users/{userId:guid}/calendar")]
 public class CalendarController(AccessTester tester, 
-    Lazy<GetAbsencesJob> absencesJob, Lazy<GetEventsJob> getEventsJob) : CustomController
+    Lazy<GetAbsencesJob> absencesJob, 
+    Lazy<GetEventsJob> getEventsJob,
+    Lazy<AddEventJob> addEventJob) : CustomController
 {
     [HttpGet("absences")]
     public IActionResult GetAbsences([FromRoute] Guid userId, [FromQuery] PrivateCalendarQuery query)
@@ -20,7 +22,7 @@ public class CalendarController(AccessTester tester,
         if (!tester.TestIf(Invoker).HasAccessTo.User(userId)) Forbid();
 
         TimePagination pagination = new TimePagination(query.FromDate, query.FromTime, query.ToDate, query.ToTime);
-        if (!pagination.Validate) return EarlyError(ErrorCode.InvalidTimePagination);
+        if (!pagination.Validate) return EarlyError(ErrorCode.InvalidTimeRange);
 
         absencesJob.Value.Execute(pagination, new GetAbsencesJob.JobData(userId));
         return HandleJobResult(absencesJob.Value);
@@ -33,16 +35,24 @@ public class CalendarController(AccessTester tester,
         if (!tester.TestIf(Invoker).HasAccessTo.User(userId)) Forbid();
 
         TimePagination pagination = new TimePagination(query.FromDate, query.FromTime, query.ToDate, query.ToTime);
-        if (!pagination.Validate) return EarlyError(ErrorCode.InvalidTimePagination);
+        if (!pagination.Validate) return EarlyError(ErrorCode.InvalidTimeRange);
 
         getEventsJob.Value.Execute(pagination, new GetEventsJob.JobData(userId));
         return HandleJobResult(getEventsJob.Value);
     }
 
     [HttpPost]
-    public IActionResult AddEvent()
+    public IActionResult AddEvent([FromRoute] Guid userId, [FromBody] PrivateCalendarAddEvent payload)
     {
-        return Ok();
+        if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
+        if (!tester.TestIf(Invoker).HasAccessTo.User(userId)) Forbid();
+
+        if (new DateTime(payload.StartingDay, payload.StartingHour) > new DateTime(payload.EndingDay, payload.EndingHour))
+            return EarlyError(ErrorCode.InvalidTimeRange);
+
+        addEventJob.Value.Execute(new AddEventJob.JobData(userId, payload.Title, payload.Description,
+            payload.StartingDay, payload.StartingHour, payload.EndingDay, payload.EndingHour));
+        return HandleJobResult(addEventJob.Value);
     }
     
     [HttpPatch("events/{eventId:guid}")]

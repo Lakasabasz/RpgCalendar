@@ -19,4 +19,16 @@ public class PrivateEvent
     public Guid OwnerId { get; set; }
 
     public virtual User Owner { get; set; } = null!;
+
+    public static PrivateEvent Prepare(string? title, string? description, bool simpleAbsence,
+        DateTime start, DateTime end, Guid ownerId) => new()
+    {
+        EventId = Guid.NewGuid(),
+        Title = title,
+        Description = description,
+        SimpleAbsence = simpleAbsence,
+        End = end,
+        Start = start,
+        OwnerId = ownerId
+    };
 }
