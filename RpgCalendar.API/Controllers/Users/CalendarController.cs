@@ -14,7 +14,8 @@ public class CalendarController(AccessTester tester,
     Lazy<GetAbsencesJob> absencesJob, 
     Lazy<GetEventsJob> getEventsJob,
     Lazy<AddEventJob> addEventJob,
-    Lazy<PatchEventJob> patchEventJob) : CustomController
+    Lazy<PatchEventJob> patchEventJob,
+    Lazy<DeleteEventJob> deleteEventJob) : CustomController
 {
     [HttpGet("absences")]
     public IActionResult GetAbsences([FromRoute] Guid userId, [FromQuery] PrivateCalendarQuery query)
@@ -71,8 +72,12 @@ public class CalendarController(AccessTester tester,
     }
     
     [HttpDelete("events/{eventId:guid}")]
-    public IActionResult DeleteEvent()
+    public IActionResult DeleteEvent([FromRoute] Guid userId, [FromRoute] Guid eventId)
     {
-        return Ok();
+        if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
+        if (!tester.TestIf(Invoker).HasAccessTo.User(userId).Event(eventId)) Forbid();
+
+        deleteEventJob.Value.Execute(new DeleteEventJob.JobData(eventId));
+        return HandleJobResult(deleteEventJob.Value);
     }
 }
