@@ -10,7 +10,8 @@ namespace RpgCalendar.API.Controllers.Users;
 
 [Authorize]
 [ApiController, Route("/users/{userId:guid}/calendar")]
-public class CalendarController(AccessTester tester, Lazy<GetAbsencesJob> absencesJob) : CustomController
+public class CalendarController(AccessTester tester, 
+    Lazy<GetAbsencesJob> absencesJob, Lazy<GetEventsJob> getEventsJob) : CustomController
 {
     [HttpGet("absences")]
     public IActionResult GetAbsences([FromRoute] Guid userId, [FromQuery] PrivateCalendarQuery query)
@@ -26,9 +27,16 @@ public class CalendarController(AccessTester tester, Lazy<GetAbsencesJob> absenc
     }
     
     [HttpGet("events")]
-    public IActionResult GetEvents()
+    public IActionResult GetEvents([FromRoute] Guid userId, [FromQuery] PrivateCalendarQuery query)
     {
-        return Ok();
+        if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
+        if (!tester.TestIf(Invoker).HasAccessTo.User(userId)) Forbid();
+
+        TimePagination pagination = new TimePagination(query.FromDate, query.FromTime, query.ToDate, query.ToTime);
+        if (!pagination.Validate) return EarlyError(ErrorCode.InvalidTimePagination);
+
+        getEventsJob.Value.Execute(pagination, new GetEventsJob.JobData(userId));
+        return HandleJobResult(getEventsJob.Value);
     }
 
     [HttpPost]
