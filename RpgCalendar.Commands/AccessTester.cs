@@ -26,9 +26,25 @@ public class UserScope(RelationalDb db, ILogger<AccessTester> logger, User? invo
     }
 }
 
+public class GroupScope(RelationalDb db, ILogger<AccessTester> logger, User? invoker, Guid targetGroupId)
+{
+    public bool Validate()
+    {
+        var invokerId = invoker?.Id;
+        var membership = db.GroupsMembers
+            .FirstOrDefault(x => x.GroupId == targetGroupId && x.UserId == invokerId);
+        if (membership is not null) return true;
+        logger.LogInformation("Invoker ({InvokerId}:{InvokerNick}) has no access to target group ({Target})",
+            invoker?.Id, invoker?.Nick, targetGroupId);
+        return membership is not null;
+    }
+}
+
 public class AccessScope(RelationalDb db, ILogger<AccessTester> logger, User? invoker)
 {
     public UserScope User(Guid userId) => new UserScope(db, logger, invoker, userId);
+
+    public GroupScope Group(Guid groupId) => new GroupScope(db, logger, invoker, groupId);
 }
 
 public class AccessTester(RelationalDb db, ILogger<AccessTester> logger)
