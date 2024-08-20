@@ -41,9 +41,4 @@ public class AccessTester(RelationalDb db, ILogger<AccessTester> logger)
         _invoker = invoker;
         return this;
     }
-
-    public bool HasAccess()
-    {
-        throw new NotImplementedException();
-    }
 }
