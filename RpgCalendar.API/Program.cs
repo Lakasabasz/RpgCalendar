@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RpgCalendar.API;
 using RpgCalendar.API.Middlewares;
+using RpgCalendar.Commands;
 using RpgCalendar.Commands.Jobs;
 using RpgCalendar.Database;
 using Serilog;
@@ -35,6 +36,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
         .Where(x => x.GetInterface(nameof(IJob)) is not null)
         .AsImplementedInterfaces()
         .AsSelf();
+    container.RegisterType<ImageService>();
 });
 
 builder.Logging.ClearProviders();
