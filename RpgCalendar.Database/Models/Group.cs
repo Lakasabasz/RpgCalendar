@@ -11,15 +11,20 @@ public class Group
     public Guid? ProfilePicture { get; set; }
     
     public DateTime CreationDate { get; set; }
+    
+    public Guid OwnerId { get; set; }
 
-    public static Group Prepare(string name, Guid? profilePicture)
+    public User Owner { get; set; } = null!;
+
+    public static Group Prepare(Guid ownerId, string name, Guid? profilePicture)
     {
         return new Group()
         {
             GroupId = Guid.NewGuid(),
             Name = name,
             CreationDate = DateTime.Now,
-            ProfilePicture = profilePicture
+            ProfilePicture = profilePicture,
+            OwnerId = ownerId
         };
     }
 }
