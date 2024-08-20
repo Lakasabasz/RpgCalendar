@@ -10,4 +10,5 @@ public enum ErrorCode
     NoChangesRequested = 5,
     CannotChangeEventType = 6,
     PatchInvalidTimeRange = 7,
+    ImageNotExists = 8
 }
