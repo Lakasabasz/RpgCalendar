@@ -24,6 +24,11 @@ public static partial class Consts
             [ErrorCode.CannotChangeEventType] = new ErrorApiModel(ErrorCode.CannotChangeEventType, "Patch cannot remove or add title or description"),
             [ErrorCode.PatchInvalidTimeRange] = new ErrorApiModel(ErrorCode.PatchInvalidTimeRange, "Patch change leads to invalid time range"),
             [ErrorCode.ImageNotExists] = new ErrorApiModel(ErrorCode.ImageNotExists, "Chosen image found in storage"),
+            [ErrorCode.UserNotExists] = new ErrorApiModel(ErrorCode.UserNotExists, "User not exists"),
+            [ErrorCode.UserAlreadyInGroup] = new ErrorApiModel(ErrorCode.UserAlreadyInGroup, "User is already in group"),
+            [ErrorCode.InviteNotExists] = new ErrorApiModel(ErrorCode.InviteNotExists, "Invite not exists"),
+            [ErrorCode.CannotRemoveOwner] = new ErrorApiModel(ErrorCode.CannotRemoveOwner, "Cannot remove owner from it's group"),
+            [ErrorCode.MemberNotInGroup] = new ErrorApiModel(ErrorCode.MemberNotInGroup, "Member already not in group"),
         };
 
         public static ErrorApiModel FallbackErrorMessage(ErrorCode errorCode)

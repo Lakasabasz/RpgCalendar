@@ -10,5 +10,10 @@ public enum ErrorCode
     NoChangesRequested = 5,
     CannotChangeEventType = 6,
     PatchInvalidTimeRange = 7,
-    ImageNotExists = 8
+    ImageNotExists = 8,
+    UserNotExists = 9,
+    UserAlreadyInGroup = 10,
+    InviteNotExists = 11,
+    CannotRemoveOwner = 12,
+    MemberNotInGroup = 13,
 }

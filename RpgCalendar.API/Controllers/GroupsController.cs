@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RpgCalendar.API.Requests;
 using RpgCalendar.Commands;
 using RpgCalendar.Commands.Jobs.Groups;
+using RpgCalendar.Commands.Jobs.Users;
 using RpgCalendar.Tools;
 
 namespace RpgCalendar.API.Controllers;
@@ -12,7 +13,8 @@ namespace RpgCalendar.API.Controllers;
 public class GroupsController(
     AccessTester tester,
     Lazy<GetGroupsJob> getGroupsJob,
-    Lazy<CreateGroupJob> createGroupJob) : CustomController
+    Lazy<CreateGroupJob> createGroupJob,
+    Lazy<JoinGroupJob> joinGroupJob) : CustomController
 {
     [HttpGet]
     public IActionResult GetUserGroups()
@@ -30,5 +32,14 @@ public class GroupsController(
         
         createGroupJob.Value.Execute(new CreateGroupJob.JobData(Invoker.Id, payload.Name, payload.ProfilePicture));
         return HandleJobResult(createGroupJob.Value);
+    }
+
+    [HttpPost("join/{inviteId:guid}")]
+    public IActionResult JoinGroup([FromRoute] Guid inviteId)
+    {
+        if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
+
+        joinGroupJob.Value.Execute(new JoinGroupJob.JobData(Invoker.Id, inviteId));
+        return HandleJobResult(joinGroupJob.Value);
     }
 }
