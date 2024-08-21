@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using RpgCalendar.Database;
 using RpgCalendar.Database.Models;
 
@@ -36,7 +37,18 @@ public class GroupScope(RelationalDb db, ILogger<AccessTester> logger, User? inv
         if (membership is not null) return true;
         logger.LogInformation("Invoker ({InvokerId}:{InvokerNick}) has no access to target group ({Target})",
             invoker?.Id, invoker?.Nick, targetGroupId);
-        return membership is not null;
+        return false;
+    }
+
+    public bool Manage()
+    {
+        var invokerId = invoker?.Id;
+        var group = db.Groups.FirstOrDefault(x => x.GroupId == targetGroupId);
+        var membership = db.GroupsMembers.FirstOrDefault(x => x.GroupId == targetGroupId && x.UserId == invokerId);
+        if (Validate() && (group?.OwnerId == invokerId)) return true;
+        logger.LogInformation("Invoker ({InvokerId}:{InvokerNick}) has no access to manage target group ({Target})",
+            invoker?.Id, invoker?.Nick, targetGroupId);
+        return false;
     }
 }
 

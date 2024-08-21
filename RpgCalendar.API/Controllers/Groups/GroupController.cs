@@ -10,7 +10,8 @@ namespace RpgCalendar.API.Controllers.Groups;
 [Authorize]
 [ApiController, Route("/groups/{groupId:guid}")]
 public class GroupController(AccessTester tester,
-    Lazy<GetGroupJob> getGroupJob) : CustomController
+    Lazy<GetGroupJob> getGroupJob,
+    Lazy<PatchGroupJob> patchGroupJob) : CustomController
 {
     [HttpGet]
     public IActionResult GetGroupDetails([FromRoute] Guid groupId)
@@ -25,7 +26,12 @@ public class GroupController(AccessTester tester,
     [HttpPatch]
     public IActionResult PatchGroup([FromRoute] Guid groupId, [FromBody] PatchGroup payload)
     {
-        throw new NotImplementedException();
+        if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
+        if (!tester.TestIf(Invoker).HasAccessTo.Group(groupId).Manage()) return Forbid();
+        if (!payload.HasChanges) return EarlyError(ErrorCode.NoChangesRequested);
+        
+        patchGroupJob.Value.Execute(new PatchGroupJob.JobData(groupId, payload.Name, payload.ProfilePicture));
+        return HandleJobResult(patchGroupJob.Value);
     }
 
     [HttpDelete]
