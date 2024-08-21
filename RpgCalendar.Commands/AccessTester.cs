@@ -50,6 +50,16 @@ public class GroupScope(RelationalDb db, ILogger<AccessTester> logger, User? inv
             invoker?.Id, invoker?.Nick, targetGroupId);
         return false;
     }
+
+    public bool Ownership()
+    {
+        var invokerId = invoker?.Id;
+        var group = db.Groups.FirstOrDefault(x => x.GroupId == targetGroupId);
+        if (Validate() && group?.OwnerId == invokerId) return true;
+        logger.LogInformation("Invoker ({InvokerId}:{InvokerNick}) has no access to owner permissions in target group ({Target})",
+            invoker?.Id, invoker?.Nick, targetGroupId);
+        return false;
+    }
 }
 
 public class AccessScope(RelationalDb db, ILogger<AccessTester> logger, User? invoker)
