@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RpgCalendar.Tools;
 
 namespace RpgCalendar.Database.Models;
 
@@ -10,11 +11,14 @@ public class GroupMembers
     
     public Guid GroupId { get; set; }
     public Group Group { get; set; } = null!;
+    
+    public PermissionLevel PermissionLevel { get; set; }
 
-    public static GroupMembers Prepare(Guid userId, Guid groupId)
+    public static GroupMembers Prepare(Guid userId, Guid groupId, PermissionLevel level)
         => new GroupMembers()
         {
             UserId = userId,
-            GroupId = groupId
+            GroupId = groupId,
+            PermissionLevel = level
         };
 }

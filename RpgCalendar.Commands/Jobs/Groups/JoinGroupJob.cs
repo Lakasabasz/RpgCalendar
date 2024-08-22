@@ -28,7 +28,7 @@ public class JoinGroupJob(RelationalDb db, ImageService imageService): IJob
         }
 
         var group = db.Groups.First(x => x.GroupId == invite.GroupId);
-        db.GroupsMembers.Add(GroupMembers.Prepare(data.InviteId, invite.GroupId));
+        db.GroupsMembers.Add(GroupMembers.Prepare(data.InviteId, invite.GroupId, PermissionLevel.Member));
         db.GroupsInvites.Remove(invite);
         db.SaveChanges();
         ApiResponse = new GroupFull(group.GroupId, group.OwnerId, group.Name,

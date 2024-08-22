@@ -28,12 +28,12 @@ public class InviteExistingJob(RelationalDb db): IJob
             return;
         }
 
-        db.GroupsMembers.Add(GroupMembers.Prepare(user.Id, data.GroupId));
+        db.GroupsMembers.Add(GroupMembers.Prepare(user.Id, data.GroupId, PermissionLevel.Member));
         db.SaveChanges();
         var members = db.GroupsMembers
             .Where(x => x.GroupId == data.GroupId)
             .Include(x => x.User)
-            .Select(x => new Member(x.User.Id, x.User.Nick));
+            .Select(x => new Member(x.User.Id, x.User.Nick, x.PermissionLevel));
         ApiResponse = new MembersList(members);
     }
 }
