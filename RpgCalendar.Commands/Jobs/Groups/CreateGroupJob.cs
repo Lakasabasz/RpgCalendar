@@ -19,6 +19,14 @@ public class CreateGroupJob(RelationalDb db, ImageService imageServices): IJob
             return;
         }
 
+        var user = db.Users.First(x => x.Id == data.owner);
+        var userOwnedGroupsCount = db.Groups.Count(x => x.OwnerId == data.owner);
+        if(userOwnedGroupsCount > user.GroupsLimit)
+        {
+            Error = ErrorCode.OwnedGroupsLimitReached;
+            return;
+        }
+
         var group = Group.Prepare(data.owner, data.groupName, data.profilePicture);
         db.Groups.Add(group);
         db.GroupsMembers.Add(GroupMembers.Prepare(data.owner, group.GroupId, PermissionLevel.Owner));
