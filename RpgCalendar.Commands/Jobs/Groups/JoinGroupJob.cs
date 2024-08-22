@@ -26,8 +26,14 @@ public class JoinGroupJob(RelationalDb db, ImageService imageService): IJob
             Error = ErrorCode.UserAlreadyRegistered;
             return;
         }
-
+        
         var group = db.Groups.First(x => x.GroupId == invite.GroupId);
+        if(db.GroupsMembers.Count(x => x.GroupId == invite.GroupId) + 1 > group.UserLimit)
+        {
+            Error = ErrorCode.MembersLimitReached;
+            return;
+        }
+
         db.GroupsMembers.Add(GroupMembers.Prepare(data.InviteId, invite.GroupId, PermissionLevel.Member));
         db.GroupsInvites.Remove(invite);
         db.SaveChanges();
