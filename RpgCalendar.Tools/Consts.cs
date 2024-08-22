@@ -29,6 +29,8 @@ public static partial class Consts
             [ErrorCode.InviteNotExists] = new ErrorApiModel(ErrorCode.InviteNotExists, "Invite not exists"),
             [ErrorCode.CannotRemoveOwner] = new ErrorApiModel(ErrorCode.CannotRemoveOwner, "Cannot remove owner from it's group"),
             [ErrorCode.MemberNotInGroup] = new ErrorApiModel(ErrorCode.MemberNotInGroup, "Member already not in group"),
+            [ErrorCode.CannotSetOwnerPermission] = new ErrorApiModel(ErrorCode.CannotSetOwnerPermission, "This endpoint cannot be used to set owner permission"),
+            [ErrorCode.CannotChangeOwnerPermission] = new ErrorApiModel(ErrorCode.CannotChangeOwnerPermission, "Cannot remove owner permission from it's group"),
         };
 
         public static ErrorApiModel FallbackErrorMessage(ErrorCode errorCode)
