@@ -21,7 +21,7 @@ public class CreateGroupJob(RelationalDb db, ImageService imageServices): IJob
 
         var user = db.Users.First(x => x.Id == data.owner);
         var userOwnedGroupsCount = db.Groups.Count(x => x.OwnerId == data.owner);
-        if(userOwnedGroupsCount > user.GroupsLimit)
+        if(userOwnedGroupsCount + 1 > user.GroupsLimit)
         {
             Error = ErrorCode.OwnedGroupsLimitReached;
             return;

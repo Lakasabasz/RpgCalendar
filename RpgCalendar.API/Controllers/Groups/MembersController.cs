@@ -9,7 +9,7 @@ namespace RpgCalendar.API.Controllers.Groups;
 
 [Authorize]
 [ApiController, Route("/groups/{groupId:guid}/members")]
-public class MemberController(AccessTester tester,
+public class MembersController(AccessTester tester,
     Lazy<GetMembersJob> getMembersJob,
     Lazy<InviteExistingJob> inviteExistingJob,
     Lazy<GenerateInviteLinkJob> generateInviteLinkJob,

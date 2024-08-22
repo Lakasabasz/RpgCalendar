@@ -19,6 +19,15 @@ public class TransferOwnershipJob(RelationalDb db, ImageService imageService): I
             Error = ErrorCode.MemberNotInGroup;
             return;
         }
+        
+        var newOwner = db.Users.First(x => x.Id == data.MemberId);
+        var newOwnerCurrentGroups = db.Groups.Count(x => x.OwnerId == data.MemberId);
+        
+        if(newOwnerCurrentGroups + 1 > newOwner.GroupsLimit)
+        {
+            Error = ErrorCode.OwnedGroupsLimitReached;
+            return;
+        }
 
         membership.PermissionLevel = PermissionLevel.Owner;
         var group = db.Groups.First(x => x.GroupId == data.GroupId);
