@@ -7,15 +7,18 @@ namespace RpgCalendar.Database.Models;
 public class User
 {
     [Key] public Guid Id { get; set; }
+
+    [MaxLength(64)] public string Nick { get; set; } = null!;
+
+    [MaxLength(6)] public string PrivateCode { get; set; } = null!;
     
-    [MaxLength(64)] public string Nick { get; set; }
-    
-    [MaxLength(6)] public string PrivateCode { get; set; }
-    
-    public static User Prepare(Guid id, string nick, string privateCode) => new()
+    public Guid? ProfilePicture { get; set; }
+
+    public static User Prepare(Guid id, string nick, string privateCode, Guid? profilePicture) => new()
     {
         Id = id,
         Nick = nick,
-        PrivateCode = privateCode
+        PrivateCode = privateCode,
+        ProfilePicture = profilePicture
     };
 }

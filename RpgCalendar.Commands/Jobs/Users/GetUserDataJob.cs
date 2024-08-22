@@ -1,10 +1,11 @@
 ﻿using RpgCalendar.Commands.ApiModels;
+using RpgCalendar.Database;
 using RpgCalendar.Database.Models;
 using RpgCalendar.Tools;
 
 namespace RpgCalendar.Commands.Jobs.Users;
 
-public class GetUserDataJob: IJob
+public class GetUserDataJob(RelationalDb db, ImageService imageService): IJob
 {
     public ErrorCode? Error { get; private set; }
     
@@ -12,6 +13,7 @@ public class GetUserDataJob: IJob
 
     public void Execute(User invoker)
     {
-        ApiResponse = new UserModel(invoker.Nick, invoker.PrivateCode);
+        var user = db.Users.First(x => x.Id == invoker.Id);
+        ApiResponse = new UserModel(invoker.Nick, invoker.PrivateCode, imageService.GetImageUrl(user.ProfilePicture));
     }
 }
