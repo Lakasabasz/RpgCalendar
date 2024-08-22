@@ -21,6 +21,7 @@ public class CreateGroupJob(RelationalDb db, ImageService imageServices): IJob
 
         var group = Group.Prepare(data.owner, data.groupName, data.profilePicture);
         db.Groups.Add(group);
+        db.GroupsMembers.Add(GroupMembers.Prepare(data.owner, group.GroupId, PermissionLevel.Owner));
         db.SaveChanges();
         var dbGroup = db.Groups.First(x => group.GroupId == x.GroupId);
         ApiResponse = new GroupFull(dbGroup.GroupId, dbGroup.OwnerId, dbGroup.Name, 
