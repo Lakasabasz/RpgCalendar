@@ -18,4 +18,6 @@ public enum ErrorCode
     MemberNotInGroup = 13,
     CannotSetOwnerPermission = 14,
     CannotChangeOwnerPermission = 15,
+    OwnedGroupsLimitReached = 16,
+    MembersLimitReached = 17,
 }
