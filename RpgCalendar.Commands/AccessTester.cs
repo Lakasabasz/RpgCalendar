@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using RpgCalendar.Database;
 using RpgCalendar.Database.Models;
+using RpgCalendar.Tools;
 
 namespace RpgCalendar.Commands;
 
@@ -45,7 +46,7 @@ public class GroupScope(RelationalDb db, ILogger<AccessTester> logger, User? inv
         var invokerId = invoker?.Id;
         var group = db.Groups.FirstOrDefault(x => x.GroupId == targetGroupId);
         var membership = db.GroupsMembers.FirstOrDefault(x => x.GroupId == targetGroupId && x.UserId == invokerId);
-        if (Validate() && (group?.OwnerId == invokerId)) return true;
+        if (Validate() && (group?.OwnerId == invokerId || membership?.PermissionLevel == PermissionLevel.Admin)) return true;
         logger.LogInformation("Invoker ({InvokerId}:{InvokerNick}) has no access to manage target group ({Target})",
             invoker?.Id, invoker?.Nick, targetGroupId);
         return false;
