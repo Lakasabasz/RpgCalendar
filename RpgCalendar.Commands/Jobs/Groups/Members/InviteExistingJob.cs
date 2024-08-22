@@ -27,6 +27,13 @@ public class InviteExistingJob(RelationalDb db): IJob
             Error = ErrorCode.UserAlreadyInGroup;
             return;
         }
+        
+        var group = db.Groups.First(x => x.GroupId == data.GroupId);
+        if(db.GroupsMembers.Count(x => x.GroupId == data.GroupId) + 1 > group.UserLimit)
+        {
+            Error = ErrorCode.MembersLimitReached;
+            return;
+        }
 
         db.GroupsMembers.Add(GroupMembers.Prepare(user.Id, data.GroupId, PermissionLevel.Member));
         db.SaveChanges();
