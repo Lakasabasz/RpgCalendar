@@ -15,6 +15,8 @@ public class Group
     public Guid OwnerId { get; set; }
 
     public User Owner { get; set; } = null!;
+    
+    public uint UserLimit { get; set; }
 
     public static Group Prepare(Guid ownerId, string name, Guid? profilePicture)
     {
@@ -24,7 +26,8 @@ public class Group
             Name = name,
             CreationDate = DateTime.Now,
             ProfilePicture = profilePicture,
-            OwnerId = ownerId
+            OwnerId = ownerId,
+            UserLimit = 20
         };
     }
 }
