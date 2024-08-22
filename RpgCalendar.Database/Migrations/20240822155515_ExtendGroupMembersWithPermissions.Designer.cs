@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RpgCalendar.Database;
 
@@ -11,9 +12,11 @@ using RpgCalendar.Database;
 namespace RpgCalendar.Database.Migrations
 {
     [DbContext(typeof(RelationalDb))]
-    partial class RelationalDbModelSnapshot : ModelSnapshot
+    [Migration("20240822155515_ExtendGroupMembersWithPermissions")]
+    partial class ExtendGroupMembersWithPermissions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,9 +134,6 @@ namespace RpgCalendar.Database.Migrations
                         .IsRequired()
                         .HasMaxLength(6)
                         .HasColumnType("varchar(6)");
-
-                    b.Property<Guid?>("ProfilePicture")
-                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 

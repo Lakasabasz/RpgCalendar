@@ -1,39 +1,37 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RpgCalendar.Commands.ApiModels;
 using RpgCalendar.Database;
-using RpgCalendar.Database.Models;
 using RpgCalendar.Tools;
 
 namespace RpgCalendar.Commands.Jobs.Groups.Members;
 
-public class InviteExistingJob(RelationalDb db): IJob
+public class PatchMemberPermissionJob(RelationalDb db): IJob
 {
-    public record JobData(Guid GroupId, string PrivateCode);
+    public record JobData(Guid GroupId, Guid MemberId, PermissionLevel Permission);
 
     public ErrorCode? Error { get; private set; }
     public IApiResponse? ApiResponse { get; private set; }
 
     public void Execute(JobData data)
     {
-        var user = db.Users.FirstOrDefault(x => x.PrivateCode == data.PrivateCode);
-        if (user is null)
+        var member = db.GroupsMembers.FirstOrDefault(x => x.GroupId == data.GroupId && x.UserId == data.MemberId);
+        if(member is null)
         {
-            Error = ErrorCode.UserNotExists;
+            Error = ErrorCode.MemberNotInGroup;
+            return;
+        }
+        if(member.PermissionLevel == PermissionLevel.Owner)
+        {
+            Error = ErrorCode.CannotChangeOwnerPermission;
             return;
         }
 
-        if (db.GroupsMembers.FirstOrDefault(x => x.UserId == user.Id) is not null)
-        {
-            Error = ErrorCode.UserAlreadyInGroup;
-            return;
-        }
-
-        db.GroupsMembers.Add(GroupMembers.Prepare(user.Id, data.GroupId, PermissionLevel.Member));
+        member.PermissionLevel = data.Permission;
         db.SaveChanges();
         var members = db.GroupsMembers
             .Where(x => x.GroupId == data.GroupId)
             .Include(x => x.User)
-            .Select(x => new Member(x.User.Id, x.User.Nick, x.PermissionLevel));
+            .Select(x => new Member(x.UserId, x.User.Nick, x.PermissionLevel));
         ApiResponse = new MembersList(members);
     }
 }

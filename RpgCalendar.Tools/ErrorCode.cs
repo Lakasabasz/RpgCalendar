@@ -16,4 +16,6 @@ public enum ErrorCode
     InviteNotExists = 11,
     CannotRemoveOwner = 12,
     MemberNotInGroup = 13,
+    CannotSetOwnerPermission = 14,
+    CannotChangeOwnerPermission = 15,
 }

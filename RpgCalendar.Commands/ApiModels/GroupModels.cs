@@ -11,6 +11,6 @@ public record GroupFull(Guid Id, Guid OwnerId, string Name, string ProfilePictur
 
 public record MembersList(IEnumerable<Member> Members) : IApiResponse;
 
-public record Member(Guid MemberId, string DisplayName);
+public record Member(Guid MemberId, string DisplayName, PermissionLevel PermissionLevel);
 
 public record ExternalInvite(Guid InviteId): IApiResponse;
