@@ -9,7 +9,7 @@ public record GroupShort(Guid Id, string Name, string ProfilePicture, DateTime C
 
 public record GroupFull(Guid Id, Guid OwnerId, string Name, string ProfilePicture, DateTime CreatedAt): IApiResponse;
 
-public record MembersList(IEnumerable<Member> Members) : IApiResponse;
+public record MembersList(IEnumerable<Member> Members, ulong MaxMembers) : IApiResponse;
 
 public record Member(Guid MemberId, string DisplayName, PermissionLevel PermissionLevel);
 

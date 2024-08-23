@@ -14,10 +14,11 @@ public class GetMembersJob(RelationalDb db): IJob
 
     public void Execute(JobData data)
     {
+        var memberLimits = db.Groups.First(x => x.GroupId == data.groupId).UserLimit;
         var members = db.GroupsMembers
             .Where(x => x.GroupId == data.groupId)
             .Include(x => x.User)
             .Select(x => new Member(x.User.Id, x.User.Nick, x.PermissionLevel));
-        ApiResponse = new MembersList(members);
+        ApiResponse = new MembersList(members, memberLimits);
     }
 }

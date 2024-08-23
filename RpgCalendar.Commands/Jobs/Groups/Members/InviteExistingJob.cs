@@ -41,6 +41,6 @@ public class InviteExistingJob(RelationalDb db): IJob
             .Where(x => x.GroupId == data.GroupId)
             .Include(x => x.User)
             .Select(x => new Member(x.User.Id, x.User.Nick, x.PermissionLevel));
-        ApiResponse = new MembersList(members);
+        ApiResponse = new MembersList(members, group.UserLimit);
     }
 }
