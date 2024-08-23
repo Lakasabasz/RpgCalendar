@@ -45,12 +45,6 @@ public class GroupController(AccessTester tester,
         return HandleJobResult(deleteGroupJob.Value);
     }
     
-    [HttpGet("limits")]
-    public IActionResult Index()
-    {
-        throw new NotImplementedException();
-    }
-    
     [HttpPatch("limits")]
     public IActionResult UpdateLimits([FromQuery] int limit)
     {

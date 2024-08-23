@@ -8,12 +8,6 @@ namespace RpgCalendar.API.Controllers.Users;
 [ApiController, Route("/users/{userId:guid}")]
 public class UserController(AccessTester tester) : CustomController
 {
-    [HttpGet("limits")]
-    public IActionResult Index()
-    {
-        throw new NotImplementedException();
-    }
-    
     [HttpPatch("limits")]
     public IActionResult UpdateLimits([FromQuery] int limit)
     {
