@@ -14,6 +14,7 @@ class InjectUserMiddleware(RequestDelegate next, RelationalDb db)
         ctx.Items[Consts.AuthConsts.UserContextField] = parseSuccess 
             ? await db.Users.FirstOrDefaultAsync(x => x.Id == userGuid)
             : null;
+        ctx.Items[Consts.AuthConsts.Privileged] = ctx.User.FindFirstValue(Consts.JwtConsts.Privileged) is not null;
         await next(ctx);
     }
 }

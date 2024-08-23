@@ -5,11 +5,13 @@ public static partial class Consts
     public static class JwtConsts
     {
         public const string UserId = "userid";
+        public const string Privileged = "privileged";
     }
 
     public static class AuthConsts
     {
         public const string UserContextField = "UserContext";
+        public const string Privileged = "Privileged";
     }
 
     public static class Errors

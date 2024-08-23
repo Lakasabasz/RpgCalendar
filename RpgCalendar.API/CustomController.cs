@@ -9,6 +9,8 @@ namespace RpgCalendar.API;
 public class CustomController: Controller
 {
     protected User? Invoker => HttpContext.Items[Consts.AuthConsts.UserContextField] as User;
+    
+    protected bool Privileged => HttpContext.Items[Consts.AuthConsts.Privileged] as bool? == true;
 
     protected Guid InvokerGuid => 
         Guid.TryParse(User.FindFirstValue(Consts.JwtConsts.UserId), out var id) && id != Guid.Empty 
