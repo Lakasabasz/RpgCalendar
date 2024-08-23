@@ -35,6 +35,7 @@ public static partial class Consts
             [ErrorCode.CannotChangeOwnerPermission] = new ErrorApiModel(ErrorCode.CannotChangeOwnerPermission, "Cannot remove owner permission from it's group"),
             [ErrorCode.OwnedGroupsLimitReached] = new ErrorApiModel(ErrorCode.OwnedGroupsLimitReached, "Owned groups limit reached"),
             [ErrorCode.MembersLimitReached] = new ErrorApiModel(ErrorCode.MembersLimitReached, "Members limit reached"),
+            [ErrorCode.GroupNotExists] = new ErrorApiModel(ErrorCode.GroupNotExists, "Group not exists"),
         };
 
         public static ErrorApiModel FallbackErrorMessage(ErrorCode errorCode)

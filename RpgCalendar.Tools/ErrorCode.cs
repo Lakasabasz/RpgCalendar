@@ -20,4 +20,5 @@ public enum ErrorCode
     CannotChangeOwnerPermission = 15,
     OwnedGroupsLimitReached = 16,
     MembersLimitReached = 17,
+    GroupNotExists = 18,
 }

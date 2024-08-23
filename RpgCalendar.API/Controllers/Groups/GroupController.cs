@@ -12,7 +12,8 @@ namespace RpgCalendar.API.Controllers.Groups;
 public class GroupController(AccessTester tester,
     Lazy<GetGroupJob> getGroupJob,
     Lazy<PatchGroupJob> patchGroupJob,
-    Lazy<DeleteGroupJob> deleteGroupJob) : CustomController
+    Lazy<DeleteGroupJob> deleteGroupJob,
+    Lazy<PatchMembersLimitsJob> patchMembersLimitsJob) : CustomController
 {
     [HttpGet]
     public IActionResult GetGroupDetails([FromRoute] Guid groupId)
@@ -46,8 +47,11 @@ public class GroupController(AccessTester tester,
     }
     
     [HttpPatch("limits")]
-    public IActionResult UpdateLimits([FromQuery] int limit)
+    public IActionResult UpdateLimits([FromRoute] Guid groupId, [FromBody] PatchMembersLimit limit)
     {
-        throw new NotImplementedException();
+        if (!Privileged) return Forbid();
+
+        patchMembersLimitsJob.Value.Execute(new PatchMembersLimitsJob.JobData(groupId, limit.Limit));
+        return HandleJobResult(patchMembersLimitsJob.Value);
     }
 }

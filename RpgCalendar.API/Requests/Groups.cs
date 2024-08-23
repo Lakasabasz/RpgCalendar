@@ -8,3 +8,5 @@ public record PatchGroup([MaxLength(32), MinLength(3)] string? Name, Guid? Profi
 {
     public bool HasChanges => Name is not null || ProfilePicture is not null;
 };
+
+public record PatchMembersLimit(uint Limit);
