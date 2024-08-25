@@ -11,11 +11,10 @@ namespace RpgCalendar.API.Controllers;
 
 public record UserModel([MaxLength(64), MinLength(3)] string displayName, Guid? ProfilePicture);
 
-//[Authorize]
+[Authorize]
 [ApiController, Route("/users")]
 public class UsersController(Lazy<GetUserDataJob> getUserDataJob, Lazy<RegisterUserJob> registerUserJob) : CustomController
 {
-    [Authorize]
     [HttpGet("me")]
     public IActionResult Me()
     {
@@ -24,31 +23,11 @@ public class UsersController(Lazy<GetUserDataJob> getUserDataJob, Lazy<RegisterU
         return HandleJobResult(getUserDataJob.Value);
     }
 
-    [Authorize]
     [HttpPost("")]
     public IActionResult Register([FromBody] UserModel user)
     {
         if (Invoker is not null) return EarlyError(ErrorCode.UserAlreadyRegistered);
         registerUserJob.Value.Execute(new RegisterUserJob.JobData(InvokerGuid, user.displayName, user.ProfilePicture));
         return HandleJobResult(registerUserJob.Value);
-    }
-
-    [HttpPost("login")]
-    public IActionResult Login()
-    {
-        var secretKey = new SymmetricSecurityKey(EnvironmentData.JwtSigningKeyBytes);
-        var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-        var tokeOptions = new JwtSecurityToken(
-            claims: new List<Claim>()
-            {
-                new Claim(Consts.JwtConsts.UserId, Guid.NewGuid().ToString()),
-            },
-            expires: DateTime.Now.AddHours(1),
-            signingCredentials: signinCredentials
-        );
-
-        var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-
-        return Ok(new{ Token = tokenString });
     }
 }

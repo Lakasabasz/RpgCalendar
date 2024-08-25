@@ -76,13 +76,10 @@ builder.Services.AddAuthentication(x =>
     x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(x =>
 {
-    x.Authority = "http://localhost:8080/realms/test";
+    x.Authority = $"{EnvironmentData.KeycloakInternalUrl}/realms/{EnvironmentData.KeycloakRealm}";
+    x.Audience = "test-api";
     x.RequireHttpsMetadata = false;
-    x.MetadataAddress = "http://localhost:8080/realms/test/.well-known/openid-configuration";
-    x.TokenValidationParameters = new TokenValidationParameters()
-    {
-        ValidateAudience = false
-    };
+    x.MetadataAddress = $"{EnvironmentData.KeycloakInternalUrl}/realms/{EnvironmentData.KeycloakRealm}/.well-known/openid-configuration";
 });
 
 builder.Services.AddAuthorization();

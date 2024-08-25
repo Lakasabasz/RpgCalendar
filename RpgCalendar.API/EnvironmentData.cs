@@ -13,8 +13,9 @@ static class EnvironmentData
     private const string RelationalDbPasswdEnv = "MYSQL_ROOT_PASSWORD";
     public static string RelationalDbPasswd => Environment.GetEnvironmentVariable(RelationalDbPasswdEnv) ?? "root";
 
-    private const string JwtSigningKeyEnv = "JWT_SECRET";
-    private static string JwtSigningKey =>
-        Environment.GetEnvironmentVariable(JwtSigningKeyEnv) ?? "bXktc3VwZXItc2VjcmV0LWtleS0xMjM0NTY3ODk2NTQ2ODc2NDU=";
-    public static byte[] JwtSigningKeyBytes => Convert.FromBase64String(JwtSigningKey);
+    private const string KeycloakRealmEnv = "KEYCLOAK_REALM";
+    public static string KeycloakRealm => Environment.GetEnvironmentVariable(KeycloakRealmEnv) ?? "rpgcalendar";
+    
+    private const string KeycloakInternalUrlEnv = "KEYCLOAK_INTERNAL_URL";
+    public static string KeycloakInternalUrl => Environment.GetEnvironmentVariable(KeycloakInternalUrlEnv) ?? "http://localhost:8080";
 }
