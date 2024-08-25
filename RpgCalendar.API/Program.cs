@@ -76,15 +76,12 @@ builder.Services.AddAuthentication(x =>
     x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(x =>
 {
+    x.Authority = "http://localhost:8080/realms/test";
+    x.RequireHttpsMetadata = false;
+    x.MetadataAddress = "http://localhost:8080/realms/test/.well-known/openid-configuration";
     x.TokenValidationParameters = new TokenValidationParameters()
     {
-        IssuerSigningKey = new SymmetricSecurityKey(EnvironmentData.JwtSigningKeyBytes),
-        RequireAudience = false,
-        ValidateAudience = false,
-        ValidateIssuer = false,
-        ValidateIssuerSigningKey = true,
-        ValidateActor = false,
-        ValidateLifetime = true,
+        ValidateAudience = false
     };
 });
 

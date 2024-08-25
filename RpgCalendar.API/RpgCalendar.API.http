@@ -1,19 +1,19 @@
-@RpgCalendar.API_HostAddress = http://localhost:8000
-@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI0ZDFiNGEwZi0yMDgwLTQ5MDYtYjAyZi0wMDc5Y2M1ODA2NGYiLCJleHAiOjE3MjQwMTczMzZ9.tRY63UcnELM4rhVoICgGD8vwDmYbHQOh6wWklhW804M
+@RpgCalendar_API_HostAddress = http://localhost:8000
+@Token = eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ0WUtkVFFVUHQzOWhZSndRSVBRVE15MUJXQVVzM3NDTllJYkc2NERRYmY4In0.eyJleHAiOjE3MjQ1ODQzMzYsImlhdCI6MTcyNDU4NDAzNiwianRpIjoiYjQzMGEwOTQtNzNlYy00ODcxLWI0NTMtNmI0OTIxMDE2OWJiIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy90ZXN0Iiwic3ViIjoiNjgxZmE0NDAtYjA4Yy00MDMyLThhZmMtYzM4YTI3ZDFkODRlIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYWRtaW4tY2xpIiwic2lkIjoiM2VhOGQxYzktY2U1MC00ODdiLTg5YjEtNTRiM2U2YWMzOTFkIiwiYWNyIjoiMSIsInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiRHVwYSBEdXBhIiwicHJlZmVycmVkX3VzZXJuYW1lIjoidGVzdC1hZG1pbiIsImdpdmVuX25hbWUiOiJEdXBhIiwiZmFtaWx5X25hbWUiOiJEdXBhIiwiZW1haWwiOiJkdXBhQGdtYWlsLmNvbSJ9.NvsZCOOE4XEoELygZqJ0ML-aPlxLKyF8uWRcBfYAYlh75k8LIy4Wp-gK3M3E8gXViQCuhPZcwcitTVSsiuyQjk0BHTprptEzsWfHsn5QVSXKdjrwke-HTlHErmdzc1Svb6Qre-BOxPyHKSOrnzYxQ8ZVjfGNOVH8FwtaoaNQAAskmyUnk8Y6eR3Lmq3o_zoKA8ng264YZU3rWAVBHt58i_-uG_v9LyDZYPHv5aS8LXbRzaHWA77Q8F6IRhQBQoGLrN8wkhf9WoupRASQ7Jw47aCkkB1OLvyeIf8ZIiY3mww9zYID58s3_8EZAZJ5Q71JvF8LZCJmsh4SNdYy8ZtMA
 @userId = ""
 
 
-GET {{RpgCalendar.API_HostAddress}}/users/me/
+GET {{RpgCalendar_API_HostAddress}}/users/me/
 Accept: application/json
 Authorization: Bearer {{Token}}
 
 ###
 
-POST {{RpgCalendar.API_HostAddress}}/users/login
+POST {{RpgCalendar_API_HostAddress}}/users/login
 
 ###
 
-POST {{RpgCalendar.API_HostAddress}}/users
+POST {{RpgCalendar_API_HostAddress}}/users
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
@@ -23,17 +23,17 @@ Authorization: Bearer {{Token}}
 
 ###
 
-GET {{RpgCalendar.API_HostAddress}}/users/{{userId}}/calendar/absences
+GET {{RpgCalendar_API_HostAddress}}/users/{{userId}}/calendar/absences
 Authorization: Bearer {{Token}}
 
 ###
 
-GET {{RpgCalendar.API_HostAddress}}
+GET {{RpgCalendar_API_HostAddress}}
 Authorization: Bearer {{Token}}
 
 ###
 
-POST {{RpgCalendar.API_HostAddress}}
+POST {{RpgCalendar_API_HostAddress}}
 Authorization: Bearer {{Token}}
 Content-Type: application/json
 
