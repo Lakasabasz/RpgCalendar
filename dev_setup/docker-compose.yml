@@ -30,8 +30,7 @@ services:
       GRAYLOG_URL: graylog
       API_RELATIONAL_DB_HOST: mariadb
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
-        
+  
   mariadb:
     image: mariadb:11.5
     hostname: mariadb
@@ -70,9 +69,9 @@ services:
   keycloak:
     hostname: keycloak
     image: quay.io/keycloak/keycloak:25.0.0
-    command: start --log-level=DEBUG
+    command: start --import-realm # --log-level=DEBUG 
     environment:
-      KC_HOSTNAME: 0.0.0.0
+      KC_HOSTNAME: ${KEYCLOAK_EXTERNAL_URL}
       KC_HOSTNAME_PORT: 8080
       KC_HOSTNAME_STRICT_BACKCHANNEL: false
       KC_HTTP_ENABLED: true
@@ -84,9 +83,9 @@ services:
       KC_DB_URL: jdbc:postgresql://postgres/${POSTGRES_DB}
       KC_DB_USERNAME: ${POSTGRES_USER}
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - 8080:8080
     restart: always
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import
     depends_on:
       postgres:
         condition: service_healthy
@@ -103,8 +102,6 @@ services:
     volumes:
       - mongodb_data:/data/db
     restart: "on-failure"
-    ports:
-      - 27017:27017
     networks:
       - internal
 
@@ -157,11 +154,6 @@ services:
       # Password: "admin"
       GRAYLOG_ROOT_PASSWORD_SHA2: ${GRAYLOG_ROOT_PASSWORD_SHA2}
       GRAYLOG_HTTP_EXTERNAL_URI: ${GRAYLOG_HTTP_EXTERNAL_URI}/
-    ports:
-      # Graylog web interface and REST API
-      - "9000:9000/tcp"
-      # Serilog
-      - "12201:12201"
     volumes:
       - graylog_data:/usr/share/graylog/data/data
       - graylog_journal:/usr/share/graylog/data/journal

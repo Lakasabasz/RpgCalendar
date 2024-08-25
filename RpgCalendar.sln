@@ -27,7 +27,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Graylog seeder", "Graylog s
 		graylog_seeder/graylog_seeder.py = graylog_seeder/graylog_seeder.py
 	EndProjectSection
 EndProject
-
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keycloak", "Keycloak", "{d4919094-1a9a-43d2-b982-5d26a9bcab24}"
+	ProjectSection(SolutionItems) = preProject
+		keycloak/rpgcalendar.json = keycloak/rpgcalendar.json
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgCalendar.API", "RpgCalendar.API\RpgCalendar.API.csproj", "{6D5ACD22-B950-4910-846B-9B7D38620F3D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgCalendar.Database", "RpgCalendar.Database\RpgCalendar.Database.csproj", "{43F1E151-9205-498F-9C32-6E10CB26C522}"
