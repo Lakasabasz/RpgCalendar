@@ -3,15 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{031DE1A1-750F-4770-88B8-AA50689B1513}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Local setup", "Local setup", "{031DE1A1-750F-4770-88B8-AA50689B1513}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
+		.env.example = .env.example
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dev setup", "Dev setup", "{23baaf20-9a37-458d-99ee-81379e93f4d1}"
+	ProjectSection(SolutionItems) = preProject
+		dev_setup/docker-compose.yml = dev_setup/docker-compose.yml
+		dev_setup/.env.example = dev_setup/.env.example
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nginx", "Nginx", "{00A7BA05-0F77-425A-9336-0C406A207631}"
+	ProjectSection(SolutionItems) = preProject
 		nginx/Dockerfile = nginx/Dockerfile
 		nginx/nginx.conf = nginx/nginx.conf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Graylog seeder", "Graylog seeder", "{bbff479f-c219-4fa3-a0d7-860fc1a7d475}"
+	ProjectSection(SolutionItems) = preProject
 		graylog_seeder/Dockerfile = graylog_seeder/Dockerfile
 		graylog_seeder/graylog_seeder.py = graylog_seeder/graylog_seeder.py
 	EndProjectSection
 EndProject
+
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgCalendar.API", "RpgCalendar.API\RpgCalendar.API.csproj", "{6D5ACD22-B950-4910-846B-9B7D38620F3D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgCalendar.Database", "RpgCalendar.Database\RpgCalendar.Database.csproj", "{43F1E151-9205-498F-9C32-6E10CB26C522}"
