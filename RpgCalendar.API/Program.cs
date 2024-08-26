@@ -76,8 +76,9 @@ builder.Services.AddAuthentication(x =>
     x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(x =>
 {
+    x.MapInboundClaims = false;
     x.Authority = $"{EnvironmentData.KeycloakInternalUrl}/realms/{EnvironmentData.KeycloakRealm}";
-    x.Audience = "test-api";
+    x.Audience = EnvironmentData.KeycloakAudience;
     x.RequireHttpsMetadata = false;
     x.MetadataAddress = $"{EnvironmentData.KeycloakInternalUrl}/realms/{EnvironmentData.KeycloakRealm}/.well-known/openid-configuration";
 });

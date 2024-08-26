@@ -30,6 +30,9 @@ services:
       GRAYLOG_URL: graylog
       API_RELATIONAL_DB_HOST: mariadb
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM}
+      KEYCLOAK_INTERNAL_URL: ${KEYCLOAK_INTERNAL_URL}
+      KEYCLOAK_AUDIENCE: audience
   
   mariadb:
     image: mariadb:11.5

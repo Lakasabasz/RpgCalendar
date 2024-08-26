@@ -9,10 +9,6 @@ Authorization: Bearer {{Token}}
 
 ###
 
-POST {{RpgCalendar_API_HostAddress}}/users/login
-
-###
-
 POST {{RpgCalendar_API_HostAddress}}/users
 Content-Type: application/json
 Authorization: Bearer {{Token}}

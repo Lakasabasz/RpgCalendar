@@ -18,4 +18,7 @@ static class EnvironmentData
     
     private const string KeycloakInternalUrlEnv = "KEYCLOAK_INTERNAL_URL";
     public static string KeycloakInternalUrl => Environment.GetEnvironmentVariable(KeycloakInternalUrlEnv) ?? "http://localhost:8080";
+
+    private const string KeycloakAudienceEnv = "KEYCLOAK_AUDIENCE";
+    public static string? KeycloakAudience => Environment.GetEnvironmentVariable(KeycloakAudienceEnv) ?? "account";
 }

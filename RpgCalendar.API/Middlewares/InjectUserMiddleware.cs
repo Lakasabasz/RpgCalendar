@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using RpgCalendar.Database;
 using RpgCalendar.Tools;
@@ -9,7 +10,7 @@ class InjectUserMiddleware(RequestDelegate next, RelationalDb db)
 {
     public async Task InvokeAsync(HttpContext ctx)
     {
-        var userId = ctx.User.FindFirstValue(Consts.JwtConsts.UserId);
+        var userId = ctx.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
         var parseSuccess = Guid.TryParse(userId, out var userGuid);
         ctx.Items[Consts.AuthConsts.UserContextField] = parseSuccess 
             ? await db.Users.FirstOrDefaultAsync(x => x.Id == userGuid)

@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using RpgCalendar.Commands.Jobs;
 using RpgCalendar.Database.Models;
@@ -13,7 +14,7 @@ public class CustomController: Controller
     protected bool Privileged => HttpContext.Items[Consts.AuthConsts.Privileged] as bool? == true;
 
     protected Guid InvokerGuid => 
-        Guid.TryParse(User.FindFirstValue(Consts.JwtConsts.UserId), out var id) && id != Guid.Empty 
+        Guid.TryParse(User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value, out var id) && id != Guid.Empty 
             ? id : throw new InvalidCastException("Cannot cast token guid claim to Guid");
 
     protected IActionResult HandleJobResult(IJob job)
