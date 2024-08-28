@@ -107,6 +107,11 @@ services:
     restart: "on-failure"
     networks:
       - internal
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh mongodb:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   graylog_seeder:
     image: registry.jakubkrawczyk.com/rpg-calendar/graylog_seeder
@@ -141,7 +146,7 @@ services:
     image: "graylog/graylog:6.0"
     depends_on:
       mongodb:
-        condition: service_started
+        condition: service_healthy
       opensearch:
         condition: service_started
     entrypoint: "/usr/bin/tini -- wait-for-it opensearch:9200 --  /docker-entrypoint.sh"
