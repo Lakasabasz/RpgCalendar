@@ -33,6 +33,7 @@ services:
       KEYCLOAK_REALM: ${KEYCLOAK_REALM}
       KEYCLOAK_INTERNAL_URL: ${KEYCLOAK_INTERNAL_URL}
       KEYCLOAK_AUDIENCE: audience
+      FF_KEYCLOAK_CERT: true
   
   mariadb:
     image: mariadb:11.5
