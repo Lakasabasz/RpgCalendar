@@ -5,12 +5,15 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Protocols;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using RpgCalendar.API;
 using RpgCalendar.API.Middlewares;
 using RpgCalendar.Commands;
 using RpgCalendar.Commands.Jobs;
 using RpgCalendar.Database;
+using RpgCalendar.Tools;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Graylog;
@@ -42,6 +45,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 builder.Logging.ClearProviders();
 
 builder.Services.AddSerilog(configuration => configuration
+    .MinimumLevel.Verbose()
     .WriteTo.Console()
     .WriteTo.Graylog(new GraylogSinkOptions()
     {
@@ -81,6 +85,14 @@ builder.Services.AddAuthentication(x =>
     x.Audience = EnvironmentData.KeycloakAudience;
     x.RequireHttpsMetadata = false;
     x.MetadataAddress = $"{EnvironmentData.KeycloakInternalUrl}/realms/{EnvironmentData.KeycloakRealm}/.well-known/openid-configuration";
+
+    FeatureFlag.RequireFeatureFlag(FeatureFlag.FeatureFlagEnum.KEYCLOAK_CERT, () =>
+    {
+        HttpClientHandler handler = new HttpClientHandler();
+        handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+        x.ConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
+            x.MetadataAddress, new OpenIdConnectConfigurationRetriever(), new HttpClient(handler));
+    });
 });
 
 builder.Services.AddAuthorization();

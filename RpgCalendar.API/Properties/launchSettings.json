@@ -20,6 +20,19 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "asdev-keycloak": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:8000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "KEYCLOAK_REALM": "rpgcalendar",
+        "KEYCLOAK_INTERNAL_URL": "https://auth.dev.rpg-calendar.jakubkrawczyk.com",
+        "KEYCLOAK_AUDIENCE": "account"
+      }
     }
   }
 }

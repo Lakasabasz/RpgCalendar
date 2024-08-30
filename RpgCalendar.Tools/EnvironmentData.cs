@@ -1,8 +1,6 @@
-﻿using System.Buffers.Text;
+﻿namespace RpgCalendar.Tools;
 
-namespace RpgCalendar.API;
-
-static class EnvironmentData
+public static class EnvironmentData
 {
     private const string GraylogUrlEnv = "GRAYLOG_URL";
     public static string GraylogUrl => Environment.GetEnvironmentVariable(GraylogUrlEnv) ?? "localhost";
@@ -21,4 +19,8 @@ static class EnvironmentData
 
     private const string KeycloakAudienceEnv = "KEYCLOAK_AUDIENCE";
     public static string? KeycloakAudience => Environment.GetEnvironmentVariable(KeycloakAudienceEnv) ?? "account";
+
+    private const string FeatureFlagPrefixEnv = "FF_";
+    public static bool GetFlag(FeatureFlag.FeatureFlagEnum requiredFlag)
+        => bool.TryParse(Environment.GetEnvironmentVariable(FeatureFlagPrefixEnv + requiredFlag), out var result) && result;
 }
