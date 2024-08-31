@@ -7,7 +7,7 @@ namespace RpgCalendar.Commands.Jobs.Users.PrivateCalendar;
 public class AddEventJob(RelationalDb db): IJob
 {
     public record JobData(Guid OwnerId, string? Title, string? Description, DateOnly StartingDay, TimeOnly StartingHour,
-        DateOnly EndingDay, TimeOnly EndingHour);
+        DateOnly EndingDay, TimeOnly EndingHour, bool IsOnline, string? Location);
     public ErrorCode? Error { get; private set; }
     public IApiResponse? ApiResponse { get; private set; }
 
@@ -23,11 +23,11 @@ public class AddEventJob(RelationalDb db): IJob
         var model = Database.Models.PrivateEvent.Prepare(data.Title, data.Description,
             data.Title is null,
             new DateTime(data.StartingDay, data.StartingHour), new DateTime(data.EndingDay, data.EndingHour),
-            data.OwnerId);
+            data.OwnerId, data.IsOnline, data.Location);
         db.PrivateEvents.Add(model);
         db.SaveChanges();
         var saved = db.PrivateEvents.First(x => x.EventId == model.EventId);
         ApiResponse = FullPrivateEvent.FromDateTime(saved.EventId, saved.OwnerId,
-            saved.Title, saved.Description, saved.Start, saved.End);
+            saved.Title, saved.Description, saved.Start, saved.End, saved.IsOnline, saved.Location);
     }
 }

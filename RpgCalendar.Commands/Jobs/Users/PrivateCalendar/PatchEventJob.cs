@@ -1,8 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
-using RpgCalendar.Commands.ApiModels;
+﻿using RpgCalendar.Commands.ApiModels;
 using RpgCalendar.Database;
 using RpgCalendar.Tools;
-using PrivateEvent = RpgCalendar.Database.Models.PrivateEvent;
 
 namespace RpgCalendar.Commands.Jobs.Users.PrivateCalendar;
 
@@ -12,7 +10,8 @@ public class PatchEventJob(RelationalDb db): IJob
         Guid EventId,
         string? Title, string? Description,
         DateOnly? StartingDay, TimeOnly? StartingHour,
-        DateOnly? EndingDay, TimeOnly? EndingHour);
+        DateOnly? EndingDay, TimeOnly? EndingHour,
+        bool? IsOnline, string? Location);
     public ErrorCode? Error { get; private set; }
     public IApiResponse? ApiResponse { get; private set; }
 
@@ -36,15 +35,17 @@ public class PatchEventJob(RelationalDb db): IJob
             return;
         }
 
-        @event.Title = data.Title;
-        @event.Description = data.Description;
+        @event.Title = data.Title ?? @event.Title;
+        @event.Description = data.Description ?? @event.Description;
         @event.Start = patchedStarting;
         @event.End = patchedEnding;
+        @event.Location = data.Location ?? @event.Location;
+        @event.IsOnline = data.IsOnline ?? @event.IsOnline;
 
         db.SaveChanges();
         var saved = db.PrivateEvents.First(x => x.EventId == data.EventId);
         ApiResponse = FullPrivateEvent.FromDateTime(saved.EventId, saved.OwnerId,
-            saved.Title, saved.Description, saved.Start, saved.End);
+            saved.Title, saved.Description, saved.Start, saved.End, saved.IsOnline, saved.Location);
     }
 
 }

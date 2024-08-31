@@ -16,20 +16,26 @@ public record AbsencePeriod(Guid EventId, DateOnly StartingDay, TimeOnly Startin
 public record PrivateEvents(IEnumerable<PrivateEvent> Events): IApiResponse;
 
 public record PrivateEvent(Guid EventId, string Title, string Description,
-    DateOnly StartingDay, TimeOnly StartingHour, DateOnly EndingDay, TimeOnly EndingOnly)
+    DateOnly StartingDay, TimeOnly StartingHour, DateOnly EndingDay, TimeOnly EndingOnly,
+    bool IsOnline, string? Location)
 {
-    public static PrivateEvent FromDateTime(Guid eventId, string title, string description, DateTime start, DateTime end)
+    public static PrivateEvent FromDateTime(Guid eventId, string title, string description, DateTime start, DateTime end,
+        bool isOnline, string? location)
         => new PrivateEvent(eventId, title, description,
             DateOnly.FromDateTime(start), TimeOnly.FromDateTime(start),
-            DateOnly.FromDateTime(end), TimeOnly.FromDateTime(end));
+            DateOnly.FromDateTime(end), TimeOnly.FromDateTime(end),
+            isOnline, location);
 }
 
 public record FullPrivateEvent(Guid EventId, Guid OwnerId, string? Title, string? Description,
-    DateOnly StartingDay, TimeOnly StartingHour, DateOnly EndingDay, TimeOnly EndingOnly)
+    DateOnly StartingDay, TimeOnly StartingHour, DateOnly EndingDay, TimeOnly EndingOnly,
+    bool IsOnline, string? Location)
     : IApiResponse
 {
-    public static FullPrivateEvent FromDateTime(Guid eventId, Guid ownerId, string? title, string? description, DateTime start, DateTime end)
+    public static FullPrivateEvent FromDateTime(Guid eventId, Guid ownerId, string? title, string? description,
+        DateTime start, DateTime end, bool isOnline, string? location)
         => new FullPrivateEvent(eventId, ownerId, title, description,
             DateOnly.FromDateTime(start), TimeOnly.FromDateTime(start),
-            DateOnly.FromDateTime(end), TimeOnly.FromDateTime(end));
+            DateOnly.FromDateTime(end), TimeOnly.FromDateTime(end),
+            isOnline, location);
 }

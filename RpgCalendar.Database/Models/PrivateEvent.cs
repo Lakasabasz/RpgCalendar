@@ -19,9 +19,13 @@ public class PrivateEvent
     public Guid OwnerId { get; set; }
 
     public virtual User Owner { get; set; } = null!;
+    
+    public bool IsOnline { get; set; }
+
+    [MaxLength(128)] public string? Location { get; set; }
 
     public static PrivateEvent Prepare(string? title, string? description, bool simpleAbsence,
-        DateTime start, DateTime end, Guid ownerId) => new()
+        DateTime start, DateTime end, Guid ownerId, bool isOnline, string? location) => new()
     {
         EventId = Guid.NewGuid(),
         Title = title,
@@ -29,6 +33,8 @@ public class PrivateEvent
         SimpleAbsence = simpleAbsence,
         End = end,
         Start = start,
-        OwnerId = ownerId
+        OwnerId = ownerId,
+        IsOnline = isOnline,
+        Location = location
     };
 }

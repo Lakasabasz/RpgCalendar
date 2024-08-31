@@ -53,7 +53,8 @@ public class CalendarController(AccessTester tester,
             return EarlyError(ErrorCode.InvalidTimeRange);
 
         addEventJob.Value.Execute(new AddEventJob.JobData(userId, payload.Title, payload.Description,
-            payload.StartingDay, payload.StartingHour, payload.EndingDay, payload.EndingHour));
+            payload.StartingDay, payload.StartingHour, payload.EndingDay, payload.EndingHour,
+            payload.IsOnline, payload.Location));
         return HandleJobResult(addEventJob.Value);
     }
     
@@ -67,7 +68,8 @@ public class CalendarController(AccessTester tester,
         if (!payload.HasChange) return EarlyError(ErrorCode.NoChangesRequested);
 
         patchEventJob.Value.Execute(new PatchEventJob.JobData(eventId, payload.Title, payload.Description,
-            payload.StartingDay, payload.StartingHour, payload.EndingDay, payload.EndingHour));
+            payload.StartingDay, payload.StartingHour, payload.EndingDay, payload.EndingHour, payload.IsOnline,
+            payload.Location));
         return HandleJobResult(patchEventJob.Value);
     }
     

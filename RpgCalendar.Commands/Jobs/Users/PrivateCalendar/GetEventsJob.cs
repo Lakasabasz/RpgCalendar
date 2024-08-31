@@ -19,7 +19,8 @@ public class GetEventsJob(RelationalDb db): IJob
             .Where(x => !x.SimpleAbsence)
             .Where(x => (pagination.Start <= x.Start && x.Start <= pagination.End)
                         || (pagination.Start <= x.End && x.End <= pagination.End))
-            .Select(x => PrivateEvent.FromDateTime(x.EventId, x.Title ?? "", x.Description ?? "", x.Start, x.End));
+            .Select(x => PrivateEvent.FromDateTime(x.EventId, x.Title ?? "", x.Description ?? "",
+                x.Start, x.End, x.IsOnline, x.Location));
         ApiResponse = new PrivateEvents(events);
     }
 }
