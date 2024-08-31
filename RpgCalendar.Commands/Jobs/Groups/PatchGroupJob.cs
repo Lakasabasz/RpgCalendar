@@ -1,29 +1,29 @@
-﻿using RpgCalendar.Commands.ApiModels;
-using RpgCalendar.Database;
+﻿using RpgCalendar.Database;
 using RpgCalendar.Tools;
 
 namespace RpgCalendar.Commands.Jobs.Groups;
 
-public class PatchGroupJob(RelationalDb db, ImageService imageService): IJob
+public class PatchGroupJob(RelationalDb db, ImageService imageService, GroupService groupService): IJob
 {
-    public record JobData(Guid GroupId, string? Name, Guid? ImageId);
+    public record JobData(Guid GroupId, Guid InvokerId, string? Name, Guid? ImageId);
     public ErrorCode? Error { get; private set; }
     public IApiResponse? ApiResponse { get; private set; }
 
     public void Execute(JobData data)
     {
-        if (data.ImageId is not null && imageService.Contains(data.ImageId.Value))
+        if(data.ImageId is not null)
         {
-            Error = ErrorCode.ImageNotExists;
-            return;
+            Error = groupService.UpdateImage(out _, data.GroupId, data.ImageId.Value, data.InvokerId, false);
+            if (Error is not null) return;
         }
-
-        var group = db.Groups.First(x => x.GroupId == data.GroupId);
-        group.Name = data.Name ?? group.Name;
-        group.ProfilePicture = data.ImageId ?? group.ProfilePicture;
+        
+        if(data.Name is not null)
+        {
+            Error = groupService.UpdateName(out _, data.GroupId, data.Name, data.InvokerId, false);
+            if (Error is not null) return;
+        }
+        
         db.SaveChanges();
-        var savedGroup = db.Groups.First(x => x.GroupId == data.GroupId);
-        ApiResponse = new GroupFull(savedGroup.GroupId, savedGroup.OwnerId, savedGroup.Name,
-            imageService.GetImageUrl(savedGroup.ProfilePicture), savedGroup.CreationDate);
+        ApiResponse = groupService.GetGroupInfo(data.GroupId, data.InvokerId).ToFullGroup();
     }
 }

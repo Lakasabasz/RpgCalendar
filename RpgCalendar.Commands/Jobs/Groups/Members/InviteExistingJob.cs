@@ -6,9 +6,9 @@ using RpgCalendar.Tools;
 
 namespace RpgCalendar.Commands.Jobs.Groups.Members;
 
-public class InviteExistingJob(RelationalDb db): IJob
+public class InviteExistingJob(RelationalDb db, GroupService groupService): IJob
 {
-    public record JobData(Guid GroupId, string PrivateCode);
+    public record JobData(Guid GroupId, string PrivateCode, Guid InvokerId);
 
     public ErrorCode? Error { get; private set; }
     public IApiResponse? ApiResponse { get; private set; }
@@ -22,25 +22,14 @@ public class InviteExistingJob(RelationalDb db): IJob
             return;
         }
 
-        if (db.GroupsMembers.FirstOrDefault(x => x.UserId == user.Id) is not null)
-        {
-            Error = ErrorCode.UserAlreadyInGroup;
-            return;
-        }
-        
-        var group = db.Groups.First(x => x.GroupId == data.GroupId);
-        if(db.GroupsMembers.Count(x => x.GroupId == data.GroupId) + 1 > group.UserLimit)
-        {
-            Error = ErrorCode.MembersLimitReached;
-            return;
-        }
+        Error = groupService.AddMember(data.GroupId, user.Id);
 
-        db.GroupsMembers.Add(GroupMembers.Prepare(user.Id, data.GroupId, PermissionLevel.Member));
-        db.SaveChanges();
+        var groupInfo = groupService.GetGroupInfo(data.GroupId, data.InvokerId);
+        
         var members = db.GroupsMembers
             .Where(x => x.GroupId == data.GroupId)
             .Include(x => x.User)
             .Select(x => new Member(x.User.Id, x.User.Nick, x.PermissionLevel));
-        ApiResponse = new MembersList(members, group.UserLimit);
+        ApiResponse = new MembersList(members, groupInfo.group.UserLimit);
     }
 }

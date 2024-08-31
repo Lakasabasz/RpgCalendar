@@ -5,7 +5,7 @@ using RpgCalendar.Tools;
 
 namespace RpgCalendar.Commands.Jobs.Groups;
 
-public class CreateGroupJob(RelationalDb db, ImageService imageServices): IJob
+public class CreateGroupJob(RelationalDb db, ImageService imageServices, GroupService groupService): IJob
 {
     public record JobData(Guid owner, string groupName, Guid? profilePicture); 
     public ErrorCode? Error { get; private set; }
@@ -26,13 +26,9 @@ public class CreateGroupJob(RelationalDb db, ImageService imageServices): IJob
             Error = ErrorCode.OwnedGroupsLimitReached;
             return;
         }
-
-        var group = Group.Prepare(data.owner, data.groupName, data.profilePicture);
-        db.Groups.Add(group);
-        db.GroupsMembers.Add(GroupMembers.Prepare(data.owner, group.GroupId, PermissionLevel.Owner));
-        db.SaveChanges();
-        var dbGroup = db.Groups.First(x => group.GroupId == x.GroupId);
-        ApiResponse = new GroupFull(dbGroup.GroupId, dbGroup.OwnerId, dbGroup.Name, 
-            imageServices.GetImageUrl(dbGroup.ProfilePicture), dbGroup.CreationDate);
+        
+        Error = groupService.AddGroup(out var created, Guid.Empty, data.owner, data.groupName, data.profilePicture);
+        
+        ApiResponse = created?.ToFullGroup();
     }
 }

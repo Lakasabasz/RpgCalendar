@@ -21,7 +21,7 @@ public class GroupController(AccessTester tester,
         if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
         if (!tester.TestIf(Invoker).HasAccessTo.Group(groupId).Validate()) return Forbid();
 
-        getGroupJob.Value.Execute(new GetGroupJob.JobData(groupId));
+        getGroupJob.Value.Execute(new GetGroupJob.JobData(groupId, Invoker.Id));
         return HandleJobResult(getGroupJob.Value);
     }
 
@@ -32,7 +32,7 @@ public class GroupController(AccessTester tester,
         if (!tester.TestIf(Invoker).HasAccessTo.Group(groupId).Manage()) return Forbid();
         if (!payload.HasChanges) return EarlyError(ErrorCode.NoChangesRequested);
         
-        patchGroupJob.Value.Execute(new PatchGroupJob.JobData(groupId, payload.Name, payload.ProfilePicture));
+        patchGroupJob.Value.Execute(new PatchGroupJob.JobData(groupId, Invoker.Id, payload.Name, payload.ProfilePicture));
         return HandleJobResult(patchGroupJob.Value);
     }
 

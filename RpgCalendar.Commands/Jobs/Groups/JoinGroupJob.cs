@@ -5,7 +5,7 @@ using RpgCalendar.Tools;
 
 namespace RpgCalendar.Commands.Jobs.Groups;
 
-public class JoinGroupJob(RelationalDb db, ImageService imageService): IJob
+public class JoinGroupJob(RelationalDb db, ImageService imageService, GroupService groupService): IJob
 {
     public record JobData(Guid InvokerId, Guid InviteId);
 
@@ -13,31 +13,9 @@ public class JoinGroupJob(RelationalDb db, ImageService imageService): IJob
     public IApiResponse? ApiResponse { get; private set; }
 
     public void Execute(JobData data)
-    {
-        var invite = db.GroupsInvites.FirstOrDefault(x => x.InviteId == data.InviteId);
-        if (invite is null)
-        {
-            Error = ErrorCode.InviteNotExists;
-            return;
-        }
-
-        if (db.GroupsMembers.FirstOrDefault(x => x.GroupId == invite.GroupId && x.UserId == data.InvokerId) is not null)
-        {
-            Error = ErrorCode.UserAlreadyRegistered;
-            return;
-        }
+    {        
+        Error = groupService.Join(out var groupDto, data.InviteId, data.InvokerId);
         
-        var group = db.Groups.First(x => x.GroupId == invite.GroupId);
-        if(db.GroupsMembers.Count(x => x.GroupId == invite.GroupId) + 1 > group.UserLimit)
-        {
-            Error = ErrorCode.MembersLimitReached;
-            return;
-        }
-
-        db.GroupsMembers.Add(GroupMembers.Prepare(data.InviteId, invite.GroupId, PermissionLevel.Member));
-        db.GroupsInvites.Remove(invite);
-        db.SaveChanges();
-        ApiResponse = new GroupFull(group.GroupId, group.OwnerId, group.Name,
-            imageService.GetImageUrl(group.ProfilePicture), group.CreationDate);
+        ApiResponse = groupDto?.ToFullGroup();
     }
 }

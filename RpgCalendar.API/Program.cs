@@ -40,6 +40,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
         .AsImplementedInterfaces()
         .AsSelf();
     container.RegisterType<ImageService>();
+    container.RegisterType<GroupService>();
 });
 
 builder.Logging.ClearProviders();

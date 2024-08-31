@@ -9,7 +9,7 @@ public class RelationalDb: DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<PrivateEvent> PrivateEvents { get; set; }
     public DbSet<Group> Groups { get; set; }
-    public DbSet<GroupMembers> GroupsMembers { get; set; }
+    public DbSet<GroupMember> GroupsMembers { get; set; }
     public DbSet<Invite> GroupsInvites { get; set; }
 
     public RelationalDb(){}

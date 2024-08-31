@@ -31,7 +31,7 @@ class MemberController(AccessTester tester,
         if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
         if (tester.TestIf(Invoker).HasAccessTo.Group(groupId).Ownership()) return Forbid();
         
-        transferOwnership.Value.Execute(new TransferOwnershipJob.JobData(groupId, memberId));
+        transferOwnership.Value.Execute(new TransferOwnershipJob.JobData(groupId, memberId, Invoker.Id));
         return HandleJobResult(transferOwnership.Value);
     }
 }

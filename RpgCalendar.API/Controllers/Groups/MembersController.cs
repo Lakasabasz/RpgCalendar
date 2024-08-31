@@ -31,7 +31,7 @@ public class MembersController(AccessTester tester,
         if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
         if (!tester.TestIf(Invoker).HasAccessTo.Group(groupId).Manage()) return Forbid();
 
-        inviteExistingJob.Value.Execute(new InviteExistingJob.JobData(groupId, payload.PrivateCode));
+        inviteExistingJob.Value.Execute(new InviteExistingJob.JobData(groupId, payload.PrivateCode, Invoker.Id));
         return HandleJobResult(inviteExistingJob.Value);
     }
 
