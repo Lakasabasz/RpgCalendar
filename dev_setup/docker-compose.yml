@@ -180,3 +180,4 @@ volumes:
   graylog_journal:
   mongodb_data:
   mariadb_data:
+  api_data:
