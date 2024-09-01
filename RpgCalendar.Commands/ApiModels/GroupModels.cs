@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using RpgCalendar.Tools;
+using RpgCalendar.Tools.Enums;
 
 namespace RpgCalendar.Commands.ApiModels;
 

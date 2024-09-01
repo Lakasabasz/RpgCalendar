@@ -23,4 +23,7 @@ public static class EnvironmentData
     private const string FeatureFlagPrefixEnv = "FF_";
     public static bool GetFlag(FeatureFlag.FeatureFlagEnum requiredFlag)
         => bool.TryParse(Environment.GetEnvironmentVariable(FeatureFlagPrefixEnv + requiredFlag), out var result) && result;
+    
+    private const string StaticFilesRootEnv = "FILESYSTEM_ROOT";
+    public static string StaticFilesRoot => Environment.GetEnvironmentVariable(StaticFilesRootEnv) ?? "./files";
 }

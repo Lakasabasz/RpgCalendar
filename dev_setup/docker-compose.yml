@@ -34,6 +34,9 @@ services:
       KEYCLOAK_INTERNAL_URL: ${KEYCLOAK_INTERNAL_URL}
       KEYCLOAK_AUDIENCE: audience
       FF_KEYCLOAK_CERT: true
+      FILESYSTEM_ROOT: /files
+    volumes:
+      - api_data:/files
   
   mariadb:
     image: mariadb:11.5

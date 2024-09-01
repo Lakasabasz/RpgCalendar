@@ -2,6 +2,7 @@
 using RpgCalendar.Database;
 using RpgCalendar.Database.Models;
 using RpgCalendar.Tools;
+using RpgCalendar.Tools.Enums;
 
 namespace RpgCalendar.Commands.Jobs;
 

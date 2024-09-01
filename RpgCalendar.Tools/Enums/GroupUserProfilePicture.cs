@@ -1,4 +1,4 @@
-﻿namespace RpgCalendar.Tools;
+﻿namespace RpgCalendar.Tools.Enums;
 
 public enum GroupUserProfilePicture
 {

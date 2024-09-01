@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using RpgCalendar.Tools;
+using RpgCalendar.Tools.Enums;
 
 namespace RpgCalendar.Database.Models;
 
