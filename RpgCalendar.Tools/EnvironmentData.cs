@@ -1,4 +1,7 @@
-﻿namespace RpgCalendar.Tools;
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
+
+namespace RpgCalendar.Tools;
 
 public static class EnvironmentData
 {
@@ -25,5 +28,7 @@ public static class EnvironmentData
         => bool.TryParse(Environment.GetEnvironmentVariable(FeatureFlagPrefixEnv + requiredFlag), out var result) && result;
     
     private const string StaticFilesRootEnv = "FILESYSTEM_ROOT";
-    public static string StaticFilesRoot => Environment.GetEnvironmentVariable(StaticFilesRootEnv) ?? "./files";
+    public static string StaticFilesRoot 
+        => Environment.GetEnvironmentVariable(StaticFilesRootEnv) 
+        ?? Path.Join(Directory.GetParent(Assembly.GetExecutingAssembly().Location)?.ToString(), "files");
 }

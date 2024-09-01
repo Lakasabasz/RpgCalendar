@@ -118,6 +118,8 @@ app.UseExceptionHandler("/error");
 
 app.UseHttpLogging();
 
+Directory.CreateDirectory(EnvironmentData.StaticFilesRoot);
+
 app.UseStaticFiles(new StaticFileOptions()
 {
     FileProvider = new PhysicalFileProvider(EnvironmentData.StaticFilesRoot),
