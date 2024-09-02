@@ -29,8 +29,9 @@ public class BlacklistController(AccessTester tester,
     {
         if(Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
         if(!tester.TestIf(Invoker).HasAccessTo.User(userId).Validate()) return Forbid();
+        if (userId == payload.BlacklistId) return EarlyError(ErrorCode.CannotSelfBlock);
         
-        blacklistEntryJob.Value.Execxute(new BlacklistEntryJob.JobData(userId, payload.BlacklistId));
+        blacklistEntryJob.Value.Execute(new BlacklistEntryJob.JobData(userId, payload.BlacklistId));
         return HandleJobResult(blacklistEntryJob.Value);
     }
     

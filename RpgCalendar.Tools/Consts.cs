@@ -36,6 +36,8 @@ public static partial class Consts
             [ErrorCode.OwnedGroupsLimitReached] = new ErrorApiModel(ErrorCode.OwnedGroupsLimitReached, "Owned groups limit reached"),
             [ErrorCode.MembersLimitReached] = new ErrorApiModel(ErrorCode.MembersLimitReached, "Members limit reached"),
             [ErrorCode.GroupNotExists] = new ErrorApiModel(ErrorCode.GroupNotExists, "Group not exists"),
+            [ErrorCode.CannotSelfBlock] = new ErrorApiModel(ErrorCode.CannotSelfBlock, "Cannot block yourself"),
+            [ErrorCode.UserAlreadyBlacklisted] = new ErrorApiModel(ErrorCode.UserAlreadyBlacklisted, "User already blacklisted")
         };
 
         public static ErrorApiModel FallbackErrorMessage(ErrorCode errorCode)
