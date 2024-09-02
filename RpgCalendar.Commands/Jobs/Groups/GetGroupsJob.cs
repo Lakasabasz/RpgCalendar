@@ -16,7 +16,7 @@ public class GetGroupsJob(RelationalDb db, ImageService imageService): IJob
     {
         var groups = db.GroupsMembers.Include(x => x.Group)
             .Where(x => x.UserId == data.userId)
-            .Select(x => new GroupShort(x.Group.GroupId, x.Group.Name,
+            .Select(x => new GroupModel(x.Group.GroupId, x.Group.Name,
                 imageService.GetImageUrl(x.Group.ProfilePicture), x.Group.CreationDate));
         ApiResponse = new GroupsList(groups);
     }

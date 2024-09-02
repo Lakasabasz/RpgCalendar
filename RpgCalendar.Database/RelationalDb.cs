@@ -11,7 +11,7 @@ public class RelationalDb: DbContext
     public DbSet<Group> Groups { get; set; }
     public DbSet<GroupMember> GroupsMembers { get; set; }
     public DbSet<Invite> GroupsInvites { get; set; }
-    public DbSet<BlacklistUser> BlacklistsUsers { get; set; }
+    public DbSet<BlacklistUser> BlacklistUsers { get; set; }
     public DbSet<BlacklistGroup> BlacklistGroups { get; set; }
 
     public RelationalDb(){}

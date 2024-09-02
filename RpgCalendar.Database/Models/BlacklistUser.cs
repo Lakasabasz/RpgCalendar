@@ -9,5 +9,5 @@ public class BlacklistUser
     public User EntryOwner { get; set; }
     
     public Guid BlacklistedUserId { get; set; }
-    public Group BlacklistedUser { get; set; }
+    public User BlacklistedUser { get; set; }
 }
