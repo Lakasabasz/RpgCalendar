@@ -10,4 +10,11 @@ public class BlacklistGroup
     
     public Guid BlacklistedGroupId { get; set; }
     public Group BlacklistedGroup { get; set; }
+
+    public static BlacklistGroup Prepare(Guid ownerId, Guid groupId) =>
+        new()
+        {
+            EntryOwnerId = ownerId,
+            BlacklistedGroupId = groupId
+        };
 }

@@ -22,5 +22,8 @@ public enum ErrorCode
     MembersLimitReached = 17,
     GroupNotExists = 18,
     CannotSelfBlock = 19,
-    UserAlreadyBlacklisted = 20
+    UserAlreadyBlacklisted = 20,
+    BlacklistIdInvalid = 21,
+    GroupAlreadyBlacklisted = 22,
+    CannotBlacklistOwnGroup = 23,
 }

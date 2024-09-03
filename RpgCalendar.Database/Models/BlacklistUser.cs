@@ -6,8 +6,15 @@ namespace RpgCalendar.Database.Models;
 public class BlacklistUser
 {
     public Guid EntryOwnerId { get; set; }
-    public User EntryOwner { get; set; }
+    public User EntryOwner { get; set; } = null!;
     
     public Guid BlacklistedUserId { get; set; }
-    public User BlacklistedUser { get; set; }
+    public User BlacklistedUser { get; set; } = null!;
+
+    public static BlacklistUser Prepare(Guid ownerId, Guid userId) =>
+        new()
+        {
+            EntryOwnerId = ownerId,
+            BlacklistedUserId = userId
+        };
 }

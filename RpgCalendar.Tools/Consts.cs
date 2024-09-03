@@ -37,7 +37,10 @@ public static partial class Consts
             [ErrorCode.MembersLimitReached] = new ErrorApiModel(ErrorCode.MembersLimitReached, "Members limit reached"),
             [ErrorCode.GroupNotExists] = new ErrorApiModel(ErrorCode.GroupNotExists, "Group not exists"),
             [ErrorCode.CannotSelfBlock] = new ErrorApiModel(ErrorCode.CannotSelfBlock, "Cannot block yourself"),
-            [ErrorCode.UserAlreadyBlacklisted] = new ErrorApiModel(ErrorCode.UserAlreadyBlacklisted, "User already blacklisted")
+            [ErrorCode.UserAlreadyBlacklisted] = new ErrorApiModel(ErrorCode.UserAlreadyBlacklisted, "User already blacklisted"),
+            [ErrorCode.BlacklistIdInvalid] = new ErrorApiModel(ErrorCode.BlacklistIdInvalid, "Provided id could not be match to group or user"),
+            [ErrorCode.GroupAlreadyBlacklisted] = new ErrorApiModel(ErrorCode.GroupAlreadyBlacklisted, "Group already blacklisted"),
+            [ErrorCode.CannotBlacklistOwnGroup] = new ErrorApiModel(ErrorCode.CannotBlacklistOwnGroup, "Cannot blacklist group you are member of")
         };
 
         public static ErrorApiModel FallbackErrorMessage(ErrorCode errorCode)
