@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RpgCalendar.Commands.ApiModels;
-using RpgCalendar.Database;
+﻿using RpgCalendar.Database;
 using RpgCalendar.Tools;
 
 namespace RpgCalendar.Commands.Jobs.Blacklist;
@@ -14,13 +12,6 @@ public class GetBlacklistJob(RelationalDb db): IJob
 
     public void Execute(JobData data)
     {
-        var users = db.BlacklistUsers.Where(x => x.EntryOwnerId == data.UserId)
-            .Include(x => x.BlacklistedUser)
-            .Select(x => new UserShort(x.BlacklistedUser.Id, x.BlacklistedUser.Nick));
-        var groups = db.BlacklistGroups.Where(x => x.EntryOwnerId == data.UserId)
-            .Include(x => x.BlacklistedGroup)
-            .Select(x => new GroupShort(x.BlacklistedGroup.GroupId, x.BlacklistedGroup.Name));
-
-        ApiResponse = new BlacklistModel(users, groups);
+        ApiResponse = BlacklistTools.PrepareBlacklistResponse(db, data.UserId);
     }
 }

@@ -2,5 +2,5 @@
 
 namespace RpgCalendar.Commands.ApiModels;
 
-record UserShort(Guid userId, string displayName);
-record UserModel(string displayName, string privateCode, string profileImage, uint OwnedGroupLimit): IApiResponse;
+public record UserShort(Guid userId, string displayName);
+public record UserModel(string displayName, string privateCode, string profileImage, uint OwnedGroupLimit): IApiResponse;

@@ -2,4 +2,4 @@
 
 namespace RpgCalendar.Commands.ApiModels;
 
-record BlacklistModel(IEnumerable<UserShort> Users, IEnumerable<GroupShort> Groups): IApiResponse;
+public record BlacklistModel(IEnumerable<UserShort> Users, IEnumerable<GroupShort> Groups): IApiResponse;
