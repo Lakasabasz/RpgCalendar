@@ -13,7 +13,7 @@ public class JoinGroupJob(RelationalDb db, ImageService imageService, GroupServi
     public IApiResponse? ApiResponse { get; private set; }
 
     public void Execute(JobData data)
-    {        
+    {
         Error = groupService.Join(out var groupDto, data.InviteId, data.InvokerId);
         
         ApiResponse = groupDto?.ToFullGroup();

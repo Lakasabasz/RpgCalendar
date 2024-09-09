@@ -1,4 +1,6 @@
-﻿namespace RpgCalendar.Tools;
+﻿using System.Runtime.InteropServices.JavaScript;
+
+namespace RpgCalendar.Tools;
 
 public static partial class Consts
 {
@@ -40,7 +42,9 @@ public static partial class Consts
             [ErrorCode.UserAlreadyBlacklisted] = new ErrorApiModel(ErrorCode.UserAlreadyBlacklisted, "User already blacklisted"),
             [ErrorCode.BlacklistIdInvalid] = new ErrorApiModel(ErrorCode.BlacklistIdInvalid, "Provided id could not be match to group or user"),
             [ErrorCode.GroupAlreadyBlacklisted] = new ErrorApiModel(ErrorCode.GroupAlreadyBlacklisted, "Group already blacklisted"),
-            [ErrorCode.CannotBlacklistOwnGroup] = new ErrorApiModel(ErrorCode.CannotBlacklistOwnGroup, "Cannot blacklist group you are member of")
+            [ErrorCode.CannotBlacklistOwnGroup] = new ErrorApiModel(ErrorCode.CannotBlacklistOwnGroup, "Cannot blacklist group you are member of"),
+            [ErrorCode.CannotJoinBlacklistedGroup] = new ErrorApiModel(ErrorCode.CannotJoinBlacklistedGroup, "Cannot join blacklisted group"),
+            [ErrorCode.UserBlacklistedInvoker] = new ErrorApiModel(ErrorCode.UserBlacklistedInvoker, "Cannot add user, because invoker is blocked"),
         };
 
         public static ErrorApiModel FallbackErrorMessage(ErrorCode errorCode)

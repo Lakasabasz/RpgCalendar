@@ -22,6 +22,14 @@ public class InviteExistingJob(RelationalDb db, GroupService groupService): IJob
             return;
         }
 
+        var blacklistEntry =
+            db.BlacklistUsers.FirstOrDefault(x => x.EntryOwnerId == user.Id && x.BlacklistedUserId == data.InvokerId);
+        if(blacklistEntry is not null)
+        {
+            Error = ErrorCode.UserBlacklistedInvoker;
+            return;
+        }
+
         Error = groupService.AddMember(data.GroupId, user.Id);
 
         var groupInfo = groupService.GetGroupInfo(data.GroupId, data.InvokerId);

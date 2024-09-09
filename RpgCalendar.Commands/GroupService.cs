@@ -53,6 +53,10 @@ public class GroupService(RelationalDb db, ImageService imageService)
         if(db.GroupsMembers.Count(x => x.GroupId == groupId) + 1 > group.UserLimit)
             return ErrorCode.MembersLimitReached;
 
+        if (db.BlacklistGroups
+            .FirstOrDefault(x => x.EntryOwnerId == memberId && x.BlacklistedGroupId == groupId) is not null)
+            return ErrorCode.CannotJoinBlacklistedGroup;
+
         db.GroupsMembers.Add(GroupMember.Prepare(memberId, groupId, PermissionLevel.Member, GroupUserProfilePicture.GHOST_OF_ASS,
             "Sarumun", "Duch Dupy", "Labirynt Downa"));
         if(save) db.SaveChanges();

@@ -26,4 +26,6 @@ public enum ErrorCode
     BlacklistIdInvalid = 21,
     GroupAlreadyBlacklisted = 22,
     CannotBlacklistOwnGroup = 23,
+    CannotJoinBlacklistedGroup = 24,
+    UserBlacklistedInvoker = 25
 }
