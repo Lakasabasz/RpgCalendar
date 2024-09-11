@@ -13,6 +13,8 @@ public class RelationalDb: DbContext
     public DbSet<Invite> GroupsInvites { get; set; }
     public DbSet<BlacklistUser> BlacklistUsers { get; set; }
     public DbSet<BlacklistGroup> BlacklistGroups { get; set; }
+    public DbSet<GroupEvent> GroupEvents { get; set; }
+    public DbSet<UserGroupEventApproval> UserGroupEventApprovals { get; set; }
 
     public RelationalDb(){}
     public RelationalDb(DbContextOptions options): base(options){}
