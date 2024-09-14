@@ -1,10 +1,8 @@
-﻿using RpgCalendar.Commands.ApiModels;
-using RpgCalendar.Database;
-using RpgCalendar.Tools;
+﻿using RpgCalendar.Tools;
 
 namespace RpgCalendar.Commands.Jobs.Groups;
 
-public class GetGroupJob(RelationalDb db, ImageService imageServices, GroupService groupService): IJob
+public class GetGroupJob(GroupService groupService): IJob
 {
     public record JobData(Guid GroupId, Guid InvokerId);
 
@@ -13,6 +11,6 @@ public class GetGroupJob(RelationalDb db, ImageService imageServices, GroupServi
 
     public void Execute(JobData data)
     {
-        ApiResponse = groupService.GetGroupInfo(data.GroupId, data.InvokerId).ToFullGroup();
+        ApiResponse = groupService.SelectGroup(data.GroupId, data.InvokerId).GetFullApiModel();
     }
 }

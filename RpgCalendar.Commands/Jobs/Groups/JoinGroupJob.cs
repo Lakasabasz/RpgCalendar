@@ -14,8 +14,8 @@ public class JoinGroupJob(RelationalDb db, ImageService imageService, GroupServi
 
     public void Execute(JobData data)
     {
-        Error = groupService.Join(out var groupDto, data.InviteId, data.InvokerId);
+        Error = groupService.Join(data.InviteId, data.InvokerId);
         
-        ApiResponse = groupDto?.ToFullGroup();
+        ApiResponse = groupService.GetFullApiModel();
     }
 }

@@ -32,7 +32,7 @@ public class PatchMemberPermissionJob(RelationalDb db): IJob
         var members = db.GroupsMembers
             .Where(x => x.GroupId == data.GroupId)
             .Include(x => x.User)
-            .Select(x => new Member(x.UserId, x.User.Nick, x.PermissionLevel));
-        ApiResponse = new MembersList(members, group.UserLimit);
+            .Select(x => new MemberApiModel(x.UserId, x.User.Nick, x.PermissionLevel));
+        ApiResponse = new MembersListApiModel(members, group.UserLimit);
     }
 }

@@ -18,7 +18,7 @@ public class GetMembersJob(RelationalDb db): IJob
         var members = db.GroupsMembers
             .Where(x => x.GroupId == data.groupId)
             .Include(x => x.User)
-            .Select(x => new Member(x.User.Id, x.User.Nick, x.PermissionLevel));
-        ApiResponse = new MembersList(members, memberLimits);
+            .Select(x => new MemberApiModel(x.User.Id, x.User.Nick, x.PermissionLevel));
+        ApiResponse = new MembersListApiModel(members, memberLimits);
     }
 }
