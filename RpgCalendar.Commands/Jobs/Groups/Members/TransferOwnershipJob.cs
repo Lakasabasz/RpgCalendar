@@ -10,8 +10,9 @@ public class TransferOwnershipJob(GroupService groupService): IJob
 
     public void Execute(JobData data)
     {
-        Error = groupService.TransferOwnership(out var groupDto, data.GroupId, data.MemberId, data.InvokerId);
+        groupService.SelectGroup(data.GroupId, data.InvokerId);
+        Error = groupService.TransferOwnership(data.MemberId);
         
-        ApiResponse = groupDto?.ToFullGroup();
+        ApiResponse = groupService.GetFullApiModel();
     }
 }

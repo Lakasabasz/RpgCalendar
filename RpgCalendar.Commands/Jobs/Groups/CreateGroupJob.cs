@@ -27,8 +27,8 @@ public class CreateGroupJob(RelationalDb db, ImageService imageServices, GroupSe
             return;
         }
         
-        Error = groupService.AddGroup(out var created, Guid.Empty, data.owner, data.groupName, data.profilePicture);
+        Error = groupService.AddGroup(Guid.Empty, data.owner, data.groupName, data.profilePicture);
         
-        ApiResponse = created?.ToFullGroup();
+        ApiResponse = groupService.GetFullApiModel();
     }
 }

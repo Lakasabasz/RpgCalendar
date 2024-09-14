@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Data;
+using Microsoft.EntityFrameworkCore;
 using RpgCalendar.Commands.ApiModels;
 using RpgCalendar.Database;
 using RpgCalendar.Database.Models;
@@ -30,14 +31,8 @@ public class InviteExistingJob(RelationalDb db, GroupService groupService): IJob
             return;
         }
 
-        Error = groupService.AddMember(data.GroupId, user.Id);
+        Error = groupService.SelectGroup(data.GroupId, data.InvokerId).AddMember(user.Id);
 
-        var groupInfo = groupService.GetGroupInfo(data.GroupId, data.InvokerId);
-        
-        var members = db.GroupsMembers
-            .Where(x => x.GroupId == data.GroupId)
-            .Include(x => x.User)
-            .Select(x => new Member(x.User.Id, x.User.Nick, x.PermissionLevel));
-        ApiResponse = new MembersList(members, groupInfo.group.UserLimit);
+        ApiResponse = groupService.GetMemberListApiModel();
     }
 }

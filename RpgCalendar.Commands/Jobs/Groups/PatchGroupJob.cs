@@ -11,19 +11,20 @@ public class PatchGroupJob(RelationalDb db, ImageService imageService, GroupServ
 
     public void Execute(JobData data)
     {
+        groupService.SelectGroup(data.GroupId, data.InvokerId);
         if(data.ImageId is not null)
         {
-            Error = groupService.UpdateImage(out _, data.GroupId, data.ImageId.Value, data.InvokerId, false);
+            Error = groupService.UpdateImage(data.ImageId.Value, false);
             if (Error is not null) return;
         }
         
         if(data.Name is not null)
         {
-            Error = groupService.UpdateName(out _, data.GroupId, data.Name, data.InvokerId, false);
+            Error = groupService.UpdateName(data.Name, false);
             if (Error is not null) return;
         }
         
         db.SaveChanges();
-        ApiResponse = groupService.GetGroupInfo(data.GroupId, data.InvokerId).ToFullGroup();
+        ApiResponse = groupService.SelectGroup(data.GroupId, data.InvokerId).GetFullApiModel();
     }
 }

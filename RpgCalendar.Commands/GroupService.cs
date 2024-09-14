@@ -1,28 +1,36 @@
-﻿using RpgCalendar.Commands.ApiModels;
+﻿using Microsoft.EntityFrameworkCore;
+using RpgCalendar.Commands.ApiModels;
 using RpgCalendar.Database;
 using RpgCalendar.Database.Models;
 using RpgCalendar.Tools;
 using RpgCalendar.Tools.Enums;
 
-namespace RpgCalendar.Commands.Jobs;
+namespace RpgCalendar.Commands;
 
 public class GroupService(RelationalDb db, ImageService imageService)
-{  
-    public record GroupDto(Group group, GroupMember Member, ImageService ImageService)
-    {
-        public GroupFull ToFullGroup()
-        {
-            var system = new ApiModels.System(Guid.Empty, "Kapitan Bomba");
-            var hero = new GroupUserHeroProfile(Member.HeroPicture, Member.Class, Member.Race,
-                Member.Location);
+{
+    private Guid? _groupId;
+    private Group? _dbGroup;
+    public Group DbGroup => _dbGroup ??= db.Groups.First(x => x.GroupId == _groupId);
 
-            return new GroupFull(group.GroupId, group.OwnerId, group.Name,
-                ImageService.GetImageUrl(group.ProfilePicture), group.CreationDate,
-                system, hero);
-        }
+    private Guid? _currentMemberId;
+    private GroupMember? _currentMember;
+    public GroupMember DbCurrentGroupMember => _currentMember ??= db.GroupsMembers
+        .First(x => x.GroupId == _groupId && x.UserId == _currentMemberId);
+    
+    public IQueryable<MemberApiModel> MembersApiModels => db.GroupsMembers
+        .Where(x => x.GroupId == _groupId)
+        .Include(x => x.User)
+        .Select(x => new MemberApiModel(x.User.Id, x.User.Nick, x.PermissionLevel));
+    
+    public GroupService SelectGroup(Guid groupId, Guid invokerId)
+    {
+        _groupId = groupId;
+        _currentMemberId = invokerId;
+        return this;
     }
 
-    public ErrorCode? AddGroup(out GroupDto? groupDto, Guid systemId, Guid owner, string name, Guid? profilePictureId)
+    public ErrorCode? AddGroup(Guid systemId, Guid owner, string name, Guid? profilePictureId)
     {
         var group = Group.Prepare(owner, name, profilePictureId);
         db.Groups.Add(group);
@@ -30,46 +38,54 @@ public class GroupService(RelationalDb db, ImageService imageService)
             GroupUserProfilePicture.CYCLOPE, "Żołnierz Gwiezdnej Floty", "Kurvinox", "Galaktyka Kurvix"));
 
         db.SaveChanges();
-        
-        groupDto = GetGroupInfo(group.GroupId, group.OwnerId);
 
+        _groupId = group.GroupId;
+        _currentMemberId = group.OwnerId;
         return null;
     }
-    
-    public GroupDto GetGroupInfo(Guid groupId, Guid memberId)
+
+    public GroupFullApiModel GetFullApiModel()
     {
-        var dbGroup = db.Groups.First(x => groupId == x.GroupId);
-        var membership = db.GroupsMembers.First(x => groupId == x.GroupId && x.UserId == memberId);
-        
-        return new GroupDto(dbGroup, membership, imageService);
+        var system = new ApiModels.System(Guid.Empty, "Kapitan Bomba");
+        var hero = new GroupUserHeroProfile(DbCurrentGroupMember.HeroPicture, DbCurrentGroupMember.Class, 
+            DbCurrentGroupMember.Race, DbCurrentGroupMember.Location);
+
+        return new GroupFullApiModel(DbGroup.GroupId, DbGroup.OwnerId, DbGroup.Name,
+            imageService.GetImageUrl(DbGroup.ProfilePicture), DbGroup.CreationDate,
+            system, hero);
     }
     
-    public ErrorCode? AddMember(Guid groupId, Guid memberId, bool save = true)
+    public MembersListApiModel GetMemberListApiModel()
     {
-        if (db.GroupsMembers.FirstOrDefault(x => x.GroupId == groupId && x.UserId == memberId) is not null)
+        return new MembersListApiModel(MembersApiModels, DbGroup.UserLimit);
+    }
+    
+    public ErrorCode? AddMember(Guid memberId, bool save = true)
+    {
+        if (db.GroupsMembers.FirstOrDefault(x => x.GroupId == DbGroup.GroupId && x.UserId == memberId) is not null)
             return ErrorCode.UserAlreadyRegistered;
         
-        var group = db.Groups.First(x => x.GroupId == groupId);
-        if(db.GroupsMembers.Count(x => x.GroupId == groupId) + 1 > group.UserLimit)
+        if(db.GroupsMembers.Count(x => x.GroupId == DbGroup.GroupId) + 1 > DbGroup.UserLimit)
             return ErrorCode.MembersLimitReached;
 
         if (db.BlacklistGroups
-            .FirstOrDefault(x => x.EntryOwnerId == memberId && x.BlacklistedGroupId == groupId) is not null)
+            .FirstOrDefault(x => x.EntryOwnerId == memberId && x.BlacklistedGroupId == _groupId) is not null)
             return ErrorCode.CannotJoinBlacklistedGroup;
 
-        db.GroupsMembers.Add(GroupMember.Prepare(memberId, groupId, PermissionLevel.Member, GroupUserProfilePicture.GHOST_OF_ASS,
+        db.GroupsMembers.Add(GroupMember.Prepare(memberId, DbGroup.GroupId, PermissionLevel.Member, GroupUserProfilePicture.GHOST_OF_ASS,
             "Sarumun", "Duch Dupy", "Labirynt Downa"));
         if(save) db.SaveChanges();
         return null;
     }
 
-    public ErrorCode? Join(out GroupDto? groupDto, Guid inviteId, Guid invokerId)
+    public ErrorCode? Join(Guid inviteId, Guid invokerId)
     {
-        groupDto = null;
         var invite = db.GroupsInvites.FirstOrDefault(x => x.InviteId == inviteId);
         if (invite is null) return ErrorCode.InviteNotExists;
 
-        var err = AddMember(invite.GroupId, invokerId, false);
+        SelectGroup(invite.GroupId, invokerId);
+        
+        var err = AddMember(invokerId, false);
         if (err is not null) return err;
         
         db.GroupsInvites.Remove(invite);
@@ -77,37 +93,28 @@ public class GroupService(RelationalDb db, ImageService imageService)
         return null;
     }
 
-    public ErrorCode? UpdateImage(out GroupDto? groupDto, Guid groupId, Guid imageId, Guid invokerId, bool save = true)
+    public ErrorCode? UpdateImage(Guid imageId, bool save = true)
     {
-        groupDto = null;
         if (imageService.Contains(imageId)) return ErrorCode.ImageNotExists;
 
-        var group = db.Groups.First(x => x.GroupId == groupId);
-        group.ProfilePicture = imageId;
+        DbGroup.ProfilePicture = imageId;
         
-        if(!save) return null;
-        db.SaveChanges();
-        groupDto = GetGroupInfo(groupId, invokerId);
+        if(save) db.SaveChanges();
         return null;
     }
 
-    public ErrorCode? UpdateName(out GroupDto? groupDto, Guid groupId, string name, Guid invokerId, bool save = true)
+    public ErrorCode? UpdateName(string name, bool save = true)
     {
-        groupDto = null;
-        var group = db.Groups.First(x => x.GroupId == groupId);
-        group.Name = name;
-        
-        if(!save) return null;
-        db.SaveChanges();
-        groupDto = GetGroupInfo(groupId, invokerId);
+        DbGroup.Name = name;
+
+        if (save) db.SaveChanges();
         return null;
     }
 
-    public ErrorCode? TransferOwnership(out GroupDto? groupDto, Guid groupId, Guid memberId, Guid invokerId, bool save = true)
+    public ErrorCode? TransferOwnership(Guid memberId, bool save = true)
     {
-        groupDto = null;
         var membership = db.GroupsMembers
-            .FirstOrDefault(x => x.GroupId == groupId && x.UserId == memberId);
+            .FirstOrDefault(x => x.GroupId == _groupId && x.UserId == memberId);
         if(membership is null) return ErrorCode.MemberNotInGroup;
         
         var newOwner = db.Users.First(x => x.Id == memberId);
@@ -116,15 +123,10 @@ public class GroupService(RelationalDb db, ImageService imageService)
         if(newOwnerCurrentGroups + 1 > newOwner.GroupsLimit) return ErrorCode.OwnedGroupsLimitReached;
 
         membership.PermissionLevel = PermissionLevel.Owner;
-        var group = db.Groups.First(x => x.GroupId == groupId);
-        var ownerMembership = db.GroupsMembers
-            .First(x => x.GroupId == groupId && x.UserId == group.OwnerId);
-        group.OwnerId = memberId;
-        ownerMembership.GroupId = groupId;
+        DbGroup.OwnerId = memberId;
+        DbCurrentGroupMember.PermissionLevel = PermissionLevel.Member;
         
-        if(!save) return null;
-        db.SaveChanges();
-        groupDto = GetGroupInfo(groupId, membership.GroupId);
+        if(save) db.SaveChanges();
         return null;
     }
 }
