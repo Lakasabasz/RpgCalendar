@@ -32,7 +32,7 @@ public static partial class Consts
             [ErrorCode.CannotRemoveOwner] = new ErrorApiModel(ErrorCode.CannotRemoveOwner, "Cannot remove owner from its group"),
             [ErrorCode.MemberNotInGroup] = new ErrorApiModel(ErrorCode.MemberNotInGroup, "Member already not in group"),
             [ErrorCode.CannotSetOwnerPermission] = new ErrorApiModel(ErrorCode.CannotSetOwnerPermission, "This endpoint cannot be used to set owner permission"),
-            [ErrorCode.CannotChangeOwnerPermission] = new ErrorApiModel(ErrorCode.CannotChangeOwnerPermission, "Cannot remove owner permission from it's group"),
+            [ErrorCode.CannotChangeOwnerPermission] = new ErrorApiModel(ErrorCode.CannotChangeOwnerPermission, "Cannot remove owner permission from its group"),
             [ErrorCode.OwnedGroupsLimitReached] = new ErrorApiModel(ErrorCode.OwnedGroupsLimitReached, "Owned groups limit reached"),
             [ErrorCode.MembersLimitReached] = new ErrorApiModel(ErrorCode.MembersLimitReached, "Members limit reached"),
             [ErrorCode.GroupNotExists] = new ErrorApiModel(ErrorCode.GroupNotExists, "Group not exists"),
