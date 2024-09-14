@@ -42,6 +42,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
         .AsSelf();
     container.RegisterType<ImageService>();
     container.RegisterType<GroupService>();
+    container.RegisterType<EventService>();
 });
 
 builder.Logging.ClearProviders();
