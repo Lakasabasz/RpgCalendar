@@ -29,7 +29,7 @@ public static partial class Consts
             [ErrorCode.UserNotExists] = new ErrorApiModel(ErrorCode.UserNotExists, "User not exists"),
             [ErrorCode.UserAlreadyInGroup] = new ErrorApiModel(ErrorCode.UserAlreadyInGroup, "User is already in group"),
             [ErrorCode.InviteNotExists] = new ErrorApiModel(ErrorCode.InviteNotExists, "Invite not exists"),
-            [ErrorCode.CannotRemoveOwner] = new ErrorApiModel(ErrorCode.CannotRemoveOwner, "Cannot remove owner from it's group"),
+            [ErrorCode.CannotRemoveOwner] = new ErrorApiModel(ErrorCode.CannotRemoveOwner, "Cannot remove owner from its group"),
             [ErrorCode.MemberNotInGroup] = new ErrorApiModel(ErrorCode.MemberNotInGroup, "Member already not in group"),
             [ErrorCode.CannotSetOwnerPermission] = new ErrorApiModel(ErrorCode.CannotSetOwnerPermission, "This endpoint cannot be used to set owner permission"),
             [ErrorCode.CannotChangeOwnerPermission] = new ErrorApiModel(ErrorCode.CannotChangeOwnerPermission, "Cannot remove owner permission from it's group"),
