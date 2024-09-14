@@ -10,7 +10,7 @@ public class BlacklistTools
     {
         var users = db.BlacklistUsers.Where(x => x.EntryOwnerId == invokerId)
             .Include(x => x.BlacklistedUser)
-            .Select(x => new UserShort(x.BlacklistedUser.Id, x.BlacklistedUser.Nick));
+            .Select(x => new UserShortModel(x.BlacklistedUser.Id, x.BlacklistedUser.Nick));
         var groups = db.BlacklistGroups.Where(x => x.EntryOwnerId == invokerId)
             .Include(x => x.BlacklistedGroup)
             .Select(x => new GroupShort(x.BlacklistedGroup.GroupId, x.BlacklistedGroup.Name));

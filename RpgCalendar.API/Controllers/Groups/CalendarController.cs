@@ -1,16 +1,25 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RpgCalendar.API.Requests;
+using RpgCalendar.Commands;
+using RpgCalendar.Commands.Jobs.Groups.Events;
+using RpgCalendar.Tools;
 
 namespace RpgCalendar.API.Controllers.Groups;
 
 [Authorize]
 [ApiController, Route("/groups/{groupId:guid}/calendar")]
-public class CalendarController: CustomController
+public class CalendarController(AccessTester tester,
+    Lazy<GetGroupsEventsJob> getEventList): CustomController
 {
     [HttpGet]
-    public IActionResult EventLists([FromRoute] Guid groupId)
+    public IActionResult EventLists([FromRoute] Guid groupId, [FromQuery] EventsTimePagination range)
     {
-        throw new NotImplementedException();
+        if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
+        if (!tester.TestIf(Invoker).HasAccessTo.Group(groupId).Validate()) return Forbid();
+
+        getEventList.Value.Execute(new GetGroupsEventsJob.JobData(range.From, range.To, groupId, Invoker.Id));
+        return HandleJobResult(getEventList.Value);
     }
 
     [HttpPost]

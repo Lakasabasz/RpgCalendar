@@ -129,4 +129,14 @@ public class GroupService(RelationalDb db, ImageService imageService)
         if(save) db.SaveChanges();
         return null;
     }
+
+    public IApiResponse GetEventsListApiModel(DateTime from, DateTime to)
+    {
+        var events = db.GroupEvents.Where(x => x.GroupId == _groupId)
+            .Where(x => x.StartTime >= from && x.EndTime <= to)
+            .Include(x => x.Creator)
+            .Select(x => new EventShortModel(x.Title, new UserShortModel(x.CreatorId, x.Creator.Nick),
+                x.StartTime, x.EndTime));
+        return new EventsListModel(events);
+    }
 }
