@@ -14,7 +14,8 @@ public class CalendarController(AccessTester tester,
     Lazy<GetGroupsEventsJob> getEventList,
     Lazy<AddGroupEventJob> addGroupEvent,
     Lazy<GetGroupEventJob> getGroupEvent,
-    Lazy<DeleteGroupEventJob> deleteGroupEvent): CustomController
+    Lazy<DeleteGroupEventJob> deleteGroupEvent,
+    Lazy<PatchGroupEventJob> patchGroupEvent): CustomController
 {
     [HttpGet]
     public IActionResult EventLists([FromRoute] Guid groupId, [FromQuery] EventsTimePagination range)
@@ -61,8 +62,16 @@ public class CalendarController(AccessTester tester,
     }
 
     [HttpPatch("{eventId:guid}")]
-    public IActionResult EditEvent([FromRoute] Guid groupId, [FromRoute] Guid eventId)
+    public IActionResult EditEvent([FromRoute] Guid groupId, [FromRoute] Guid eventId, [FromBody] EventsPatchRequest payload)
     {
-        throw new NotImplementedException();
+        if(Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
+        if(payload.Start is not null && payload.End is not null && !payload.ValidateTimeRange())
+            return EarlyError(ErrorCode.InvalidTimeRange);
+        if (!tester.TestIf(Invoker).HasAccessTo.Group(groupId).Event(eventId) ||
+            !tester.TestIf(Invoker).HasAccessTo.Group(groupId).Manage()) return Forbid();
+        
+        patchGroupEvent.Value.Execute(new PatchGroupEventJob.JobData(eventId, payload.Title, payload.Description, 
+            payload.Location, payload.IsOnline, payload.Summary, payload.Start, payload.End));
+        return HandleJobResult(patchGroupEvent.Value);
     }
 }
