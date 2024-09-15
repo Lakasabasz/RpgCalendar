@@ -13,7 +13,8 @@ namespace RpgCalendar.API.Controllers.Groups;
 public class CalendarController(AccessTester tester,
     Lazy<GetGroupsEventsJob> getEventList,
     Lazy<AddGroupEventJob> addGroupEvent,
-    Lazy<GetGroupEventJob> getGroupEvent): CustomController
+    Lazy<GetGroupEventJob> getGroupEvent,
+    Lazy<DeleteGroupEventJob> deleteGroupEvent): CustomController
 {
     [HttpGet]
     public IActionResult EventLists([FromRoute] Guid groupId, [FromQuery] EventsTimePagination range)
@@ -51,7 +52,12 @@ public class CalendarController(AccessTester tester,
     [HttpDelete("{eventId:guid}")]
     public IActionResult DeleteEvent([FromRoute] Guid groupId, [FromRoute] Guid eventId)
     {
-        throw new NotImplementedException();
+        if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
+        if(!tester.TestIf(Invoker).HasAccessTo.Group(groupId).Event(eventId) ||
+           !tester.TestIf(Invoker).HasAccessTo.Group(groupId).Manage()) return Forbid();
+
+        deleteGroupEvent.Value.Execute(new DeleteGroupEventJob.JobData(eventId));
+        return HandleJobResult(deleteGroupEvent.Value);
     }
 
     [HttpPatch("{eventId:guid}")]

@@ -43,6 +43,14 @@ public class EventService(RelationalDb db)
         db.SaveChanges();
         return null;
     }
+    
+    public void Delete()
+    {
+        var relations = db.UserGroupEventApprovals.Where(x => x.GroupEventId == _eventId);
+        db.UserGroupEventApprovals.RemoveRange(relations);
+        db.GroupEvents.Remove(DbEvent);
+        db.SaveChanges();
+    }
 
     public IApiResponse? GetFullApiModel()
     {
