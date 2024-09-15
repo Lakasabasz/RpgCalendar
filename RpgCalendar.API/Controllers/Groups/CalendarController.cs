@@ -12,7 +12,8 @@ namespace RpgCalendar.API.Controllers.Groups;
 [ApiController, Route("/groups/{groupId:guid}/calendar")]
 public class CalendarController(AccessTester tester,
     Lazy<GetGroupsEventsJob> getEventList,
-    Lazy<AddGroupEventJob> addGroupEvent): CustomController
+    Lazy<AddGroupEventJob> addGroupEvent,
+    Lazy<GetGroupEventJob> getGroupEvent): CustomController
 {
     [HttpGet]
     public IActionResult EventLists([FromRoute] Guid groupId, [FromQuery] EventsTimePagination range)
@@ -40,7 +41,11 @@ public class CalendarController(AccessTester tester,
     [HttpGet("{eventId:guid}")]
     public IActionResult EventDetails([FromRoute] Guid groupId, [FromRoute] Guid eventId)
     {
-        throw new NotImplementedException();
+        if (Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
+        if(!tester.TestIf(Invoker).HasAccessTo.Group(groupId).Event(eventId)) return Forbid();
+
+        getGroupEvent.Value.Execute(new GetGroupEventJob.JobData(eventId));
+        return HandleJobResult(getGroupEvent.Value);
     }
 
     [HttpDelete("{eventId:guid}")]

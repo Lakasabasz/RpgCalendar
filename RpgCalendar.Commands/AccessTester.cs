@@ -61,6 +61,15 @@ public class GroupScope(RelationalDb db, ILogger<AccessTester> logger, User? inv
             invoker?.Id, invoker?.Nick, targetGroupId);
         return false;
     }
+
+    public bool Event(Guid eventId)
+    {
+        var groupEvent = db.GroupEvents.FirstOrDefault(x => x.GroupEventId == eventId);
+        if(Validate() && groupEvent?.GroupId == targetGroupId) return true;
+        logger.LogInformation("Invoker ({InvokerId}:{InvokerNick}) has no access to event ({Target})",
+            invoker?.Id, invoker?.Nick, eventId);
+        return false;
+    }
 }
 
 public class AccessScope(RelationalDb db, ILogger<AccessTester> logger, User? invoker)
