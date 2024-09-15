@@ -25,4 +25,21 @@ public class GroupEvent
     [MaxLength(32)] public string? Location { get; set; }
     
     public bool? IsOnline { get; set; }
+
+    public static GroupEvent Prepare(Guid creatorId, Guid groupId, string title, string description, DateTime start,
+        DateTime end, string? location, bool? isOnline)
+    {
+        return new GroupEvent()
+        {
+            GroupEventId = Guid.NewGuid(),
+            CreatorId = creatorId,
+            GroupId = groupId,
+            Title = title,
+            Description = description,
+            StartTime = start,
+            EndTime = end,
+            Location = location,
+            IsOnline = isOnline
+        };
+    }
 }

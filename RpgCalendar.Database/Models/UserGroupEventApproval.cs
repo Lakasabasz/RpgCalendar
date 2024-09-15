@@ -13,4 +13,12 @@ public class UserGroupEventApproval
     public User User { get; set; } = null!;
     
     public RelationTowardsEventEnum RelationTowardsEvent { get; set; }
+
+    public static UserGroupEventApproval Prepare(Guid groupEventId, Guid userId, RelationTowardsEventEnum relationTowardsEvent) 
+        => new()
+        {
+            GroupEventId = groupEventId,
+            UserId = userId,
+            RelationTowardsEvent = relationTowardsEvent
+        };
 }
