@@ -35,6 +35,7 @@ public class CalendarController(AccessTester tester,
     {
         if(Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
         if (!payload.ValidateTimeRange()) return EarlyError(ErrorCode.InvalidTimeRange);
+        if (payload.Start < DateTime.Now) return EarlyError(ErrorCode.StartDateCannotBePast);
         if (!tester.TestIf(Invoker).HasAccessTo.Group(groupId).Manage()) return Forbid();
 
         addGroupEvent.Value.Execute(new AddGroupEventJob.JobData(groupId, Invoker.Id, payload.Title, payload.Description,

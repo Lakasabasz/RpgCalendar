@@ -48,6 +48,8 @@ public static partial class Consts
             [ErrorCode.NoRelationChange] = new ErrorApiModel(ErrorCode.NoRelationChange, "Cannot change relation towards event with the same status"),
             [ErrorCode.PatchOverlappingEvent] = new ErrorApiModel(ErrorCode.PatchOverlappingEvent, "Patch leads to overlapping events"),
             [ErrorCode.CannotAddOverlappingEvent] = new ErrorApiModel(ErrorCode.CannotAddOverlappingEvent, "Event overlaps with existing events"),
+            [ErrorCode.StartDateCannotBePast] = new ErrorApiModel(ErrorCode.StartDateCannotBePast, "Cannot create event that starts in the past"),
+            [ErrorCode.CannotEditFinishedEvents] = new ErrorApiModel(ErrorCode.CannotEditFinishedEvents, "Cannot edit finished events"),
         };
 
         public static ErrorApiModel FallbackErrorMessage(ErrorCode errorCode)

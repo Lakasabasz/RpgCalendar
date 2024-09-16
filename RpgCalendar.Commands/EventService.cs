@@ -74,6 +74,7 @@ public class EventService(RelationalDb db)
 
     public ErrorCode? UpdateTitle(string title, bool save)
     {
+        if (DbEvent.EndTime < DateTime.Now) return ErrorCode.CannotEditFinishedEvents;
         DbEvent.Title = title;
         if (save) db.SaveChanges();
         return null;
@@ -81,6 +82,7 @@ public class EventService(RelationalDb db)
 
     public ErrorCode? UpdateDescription(string description, bool save)
     {
+        if (DbEvent.EndTime < DateTime.Now) return ErrorCode.CannotEditFinishedEvents;
         DbEvent.Description = description;
         if(save) db.SaveChanges();
         return null;
@@ -88,6 +90,7 @@ public class EventService(RelationalDb db)
 
     public ErrorCode? UpdateLocation(string location, bool save)
     {
+        if (DbEvent.EndTime < DateTime.Now) return ErrorCode.CannotEditFinishedEvents;
         DbEvent.Location = location;
         if(save) db.SaveChanges();
         return null;
@@ -95,6 +98,7 @@ public class EventService(RelationalDb db)
 
     public ErrorCode? UpdateOnline(bool? isOnline, bool save)
     {
+        if (DbEvent.EndTime < DateTime.Now) return ErrorCode.CannotEditFinishedEvents;
         DbEvent.IsOnline = isOnline;
         if(save) db.SaveChanges();
         return null;
@@ -109,6 +113,7 @@ public class EventService(RelationalDb db)
 
     public ErrorCode? UpdateData(DateTime? start, DateTime? end, bool save)
     {
+        if (DbEvent.EndTime < DateTime.Now) return ErrorCode.CannotEditFinishedEvents;
         var newStartTime = start ?? DbEvent.StartTime;
         var newEndTime = end ?? DbEvent.EndTime;
         if(newStartTime >= newEndTime) return ErrorCode.PatchInvalidTimeRange;

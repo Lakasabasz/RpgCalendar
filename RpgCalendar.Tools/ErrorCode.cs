@@ -31,4 +31,6 @@ public enum ErrorCode
     NoRelationChange = 26,
     PatchOverlappingEvent = 27,
     CannotAddOverlappingEvent = 28,
+    StartDateCannotBePast = 29,
+    CannotEditFinishedEvents = 30
 }
