@@ -15,7 +15,8 @@ public class CalendarController(AccessTester tester,
     Lazy<AddGroupEventJob> addGroupEvent,
     Lazy<GetGroupEventJob> getGroupEvent,
     Lazy<DeleteGroupEventJob> deleteGroupEvent,
-    Lazy<PatchGroupEventJob> patchGroupEvent): CustomController
+    Lazy<PatchGroupEventJob> patchGroupEvent,
+    Lazy<PatchEventApproveJob> patchEventApprove): CustomController
 {
     [HttpGet]
     public IActionResult EventLists([FromRoute] Guid groupId, [FromQuery] EventsTimePagination range)
@@ -73,5 +74,15 @@ public class CalendarController(AccessTester tester,
         patchGroupEvent.Value.Execute(new PatchGroupEventJob.JobData(eventId, payload.Title, payload.Description, 
             payload.Location, payload.IsOnline, payload.Summary, payload.Start, payload.End));
         return HandleJobResult(patchGroupEvent.Value);
+    }
+    
+    [HttpPatch("{eventId:guid}/approve")]
+    public IActionResult ApproveEvent([FromRoute] Guid groupId, [FromRoute] Guid eventId)
+    {
+        if(Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
+        if(!tester.TestIf(Invoker).HasAccessTo.Group(groupId).Event(eventId)) return Forbid();
+
+        patchEventApprove.Value.Execute(new PatchEventApproveJob.JobData(Invoker.Id, eventId));
+        return HandleJobResult(patchEventApprove.Value);
     }
 }

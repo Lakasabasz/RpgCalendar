@@ -45,6 +45,7 @@ public static partial class Consts
             [ErrorCode.CannotBlacklistOwnGroup] = new ErrorApiModel(ErrorCode.CannotBlacklistOwnGroup, "Cannot blacklist group you are member of"),
             [ErrorCode.CannotJoinBlacklistedGroup] = new ErrorApiModel(ErrorCode.CannotJoinBlacklistedGroup, "Cannot join blacklisted group"),
             [ErrorCode.UserBlacklistedInvoker] = new ErrorApiModel(ErrorCode.UserBlacklistedInvoker, "Cannot add user, because invoker is blocked"),
+            [ErrorCode.CannotAcceptAcceptedEvent] = new ErrorApiModel(ErrorCode.CannotAcceptAcceptedEvent, "Cannot accept already accepted event"),
         };
 
         public static ErrorApiModel FallbackErrorMessage(ErrorCode errorCode)

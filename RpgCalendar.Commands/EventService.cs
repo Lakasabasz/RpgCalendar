@@ -138,4 +138,23 @@ public class EventService(RelationalDb db)
         if(save) db.SaveChanges();
         return null;
     }
+
+    public ErrorCode? Approve(Guid invokerId, bool save=true)
+    {
+        var relation = db.UserGroupEventApprovals.FirstOrDefault(x => x.GroupEventId == _eventId && x.UserId == invokerId);
+        if(relation is not null)
+        {
+            if (relation.RelationTowardsEvent == RelationTowardsEventEnum.HardAccept)
+                return ErrorCode.CannotAcceptAcceptedEvent;
+            relation.RelationTowardsEvent = RelationTowardsEventEnum.HardAccept;
+        }
+        else{
+            relation = UserGroupEventApproval.Prepare(_eventId ?? throw new ArgumentNullException(nameof(invokerId)), 
+                invokerId, RelationTowardsEventEnum.HardAccept);
+            db.UserGroupEventApprovals.Add(relation);
+        }
+        
+        if(save) db.SaveChanges();
+        return null;
+    }
 }
