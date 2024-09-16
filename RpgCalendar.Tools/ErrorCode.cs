@@ -29,4 +29,6 @@ public enum ErrorCode
     CannotJoinBlacklistedGroup = 24,
     UserBlacklistedInvoker = 25,
     NoRelationChange = 26,
+    PatchOverlappingEvent = 27,
+    CannotAddOverlappingEvent = 28,
 }

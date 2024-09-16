@@ -20,6 +20,17 @@ public class EventService(RelationalDb db)
         .Where(x => x.GroupEventId == _eventId)
         .Include(x => x.User)
         .Select(x => new EventUserRelationModel(new UserShortModel(x.User.Id, x.User.Nick), x.RelationTowardsEvent));
+    
+    private bool IsOverlappingEventExists(DateTime start, DateTime end)
+    {
+        var overlappingEvent = db.GroupEvents
+            .Where(x => (x.StartTime < start && start == x.EndTime)
+                        || (x.StartTime < end && end < x.EndTime)
+                        || (start < x.StartTime && x.StartTime < end)
+                        || (start < x.EndTime && x.EndTime < end))
+            .FirstOrDefault(x => x.GroupEventId != DbEvent.GroupEventId);
+        return overlappingEvent is not null;
+    }
 
     public EventService SelectEvent(Guid eventId)
     {
@@ -30,6 +41,8 @@ public class EventService(RelationalDb db)
     public ErrorCode? AddEvent(Guid groupId, Guid creatorId, string title, string description, DateTime start, DateTime end,
         string? location, bool? isOnline)
     {
+        if (IsOverlappingEventExists(start, end)) return ErrorCode.CannotAddOverlappingEvent;
+        
         var groupEvent = GroupEvent.Prepare(creatorId, groupId, title, description, start, end, location, isOnline);
         var otherUsersAbsences = db.PrivateEvents
             .Where(x => x.OwnerId != creatorId)
@@ -99,6 +112,8 @@ public class EventService(RelationalDb db)
         var newStartTime = start ?? DbEvent.StartTime;
         var newEndTime = end ?? DbEvent.EndTime;
         if(newStartTime >= newEndTime) return ErrorCode.PatchInvalidTimeRange;
+
+        if (IsOverlappingEventExists(newStartTime, newEndTime)) return ErrorCode.PatchOverlappingEvent;
 
         var currentRelations = db.UserGroupEventApprovals
             .Where(x => x.GroupEventId == _eventId)

@@ -46,6 +46,8 @@ public static partial class Consts
             [ErrorCode.CannotJoinBlacklistedGroup] = new ErrorApiModel(ErrorCode.CannotJoinBlacklistedGroup, "Cannot join blacklisted group"),
             [ErrorCode.UserBlacklistedInvoker] = new ErrorApiModel(ErrorCode.UserBlacklistedInvoker, "Cannot add user, because invoker is blocked"),
             [ErrorCode.NoRelationChange] = new ErrorApiModel(ErrorCode.NoRelationChange, "Cannot change relation towards event with the same status"),
+            [ErrorCode.PatchOverlappingEvent] = new ErrorApiModel(ErrorCode.PatchOverlappingEvent, "Patch leads to overlapping events"),
+            [ErrorCode.CannotAddOverlappingEvent] = new ErrorApiModel(ErrorCode.CannotAddOverlappingEvent, "Event overlaps with existing events"),
         };
 
         public static ErrorApiModel FallbackErrorMessage(ErrorCode errorCode)
