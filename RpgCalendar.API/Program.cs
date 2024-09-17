@@ -52,7 +52,7 @@ builder.Services.AddSerilog(configuration => configuration
     .WriteTo.Graylog(new GraylogSinkOptions()
     {
         HostnameOrAddress = EnvironmentData.GraylogUrl,
-        MinimumLogEventLevel = LogEventLevel.Verbose,
+        //MinimumLogEventLevel = LogEventLevel.Verbose,
         TransportType = TransportType.Tcp
     })
 );
@@ -73,6 +73,11 @@ builder.Services.AddHttpLogging(x =>
     x.RequestBodyLogLimit = 4 * 1024;
     x.ResponseBodyLogLimit = 4 * 1024;
     x.CombineLogs = true;
+    FeatureFlag.RequireFeatureFlag(FeatureFlag.FeatureFlagEnum.SENSITIVE_HEADERS, () =>
+    {
+        x.RequestHeaders.Add("Authorization");
+        x.ResponseHeaders.Add("WWW-Authenticate");
+    });
 });
 
 builder.Services.AddAuthentication(x =>
