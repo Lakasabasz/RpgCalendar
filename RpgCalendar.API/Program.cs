@@ -85,10 +85,10 @@ builder.Services.AddAuthentication(x =>
 }).AddJwtBearer(x =>
 {
     x.MapInboundClaims = false;
-    x.Authority = $"{EnvironmentData.KeycloakInternalUrl}/realms/{EnvironmentData.KeycloakRealm}";
+    x.Authority = EnvironmentData.KeycloakRealmUrl;
     x.Audience = EnvironmentData.KeycloakAudience;
     x.RequireHttpsMetadata = false;
-    x.MetadataAddress = $"{EnvironmentData.KeycloakInternalUrl}/realms/{EnvironmentData.KeycloakRealm}/.well-known/openid-configuration";
+    x.MetadataAddress = EnvironmentData.KeycloakMetadataUrl;
 
     FeatureFlag.RequireFeatureFlag(FeatureFlag.FeatureFlagEnum.KEYCLOAK_CERT, () =>
     {
@@ -140,5 +140,6 @@ FeatureFlag.RequireFeatureFlag(FeatureFlag.FeatureFlagEnum.KEYCLOAK_CERT, () =>
 {
     app.Logger.Log(LogLevel.Information, "Keycloak ssl certificate ignored");
 });
+app.Logger.Log(LogLevel.Information, "Keycloak config url: {metadata}", EnvironmentData.KeycloakMetadataUrl);
 
 app.Run();

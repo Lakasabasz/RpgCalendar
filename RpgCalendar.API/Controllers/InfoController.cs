@@ -11,7 +11,6 @@ public class InfoController : Controller
     public IActionResult Index()
     {
         HttpClient? httpKeycloakClient = null;
-        var keycloakUrl = $"{EnvironmentData.KeycloakInternalUrl}/realms/{EnvironmentData.KeycloakRealm}/.well-known/openid-configuration";
         FeatureFlag.RequireFeatureFlag(FeatureFlag.FeatureFlagEnum.KEYCLOAK_CERT, () =>
         {
             HttpClientHandler handler = new HttpClientHandler();
@@ -20,7 +19,7 @@ public class InfoController : Controller
         });
         httpKeycloakClient ??= new HttpClient();
 
-        var response = httpKeycloakClient.Send(new HttpRequestMessage(HttpMethod.Get, keycloakUrl));
+        var response = httpKeycloakClient.Send(new HttpRequestMessage(HttpMethod.Get, EnvironmentData.KeycloakMetadataUrl));
         return Ok(new{Status = response.StatusCode, Content = response.Content.ReadAsStringAsync().Result});
     }
 }
