@@ -31,7 +31,9 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "KEYCLOAK_REALM": "rpgcalendar",
         "KEYCLOAK_INTERNAL_URL": "https://auth.dev.rpg-calendar.jakubkrawczyk.com",
-        "KEYCLOAK_AUDIENCE": "account"
+        "KEYCLOAK_AUDIENCE": "account",
+        "FF_KEYCLOAK_CERT": "true",
+        "FF_SENSITIVE_HEADERS": "true"
       }
     }
   }
