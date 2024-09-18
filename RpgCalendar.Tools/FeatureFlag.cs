@@ -4,7 +4,8 @@ public static class FeatureFlag
 {
     public enum FeatureFlagEnum
     {
-        KEYCLOAK_CERT
+        KEYCLOAK_CERT,
+        SENSITIVE_HEADERS
     }
     
     public static void RequireFeatureFlag(FeatureFlagEnum requiredFlag, Action action)

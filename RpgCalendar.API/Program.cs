@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
 using RpgCalendar.API;
 using RpgCalendar.API.Middlewares;
 using RpgCalendar.Commands;
@@ -16,7 +15,6 @@ using RpgCalendar.Commands.Jobs;
 using RpgCalendar.Database;
 using RpgCalendar.Tools;
 using Serilog;
-using Serilog.Events;
 using Serilog.Sinks.Graylog;
 using Serilog.Sinks.Graylog.Core.Transport;
 
@@ -53,7 +51,6 @@ builder.Services.AddSerilog(configuration => configuration
     .WriteTo.Graylog(new GraylogSinkOptions()
     {
         HostnameOrAddress = EnvironmentData.GraylogUrl,
-        MinimumLogEventLevel = LogEventLevel.Verbose,
         TransportType = TransportType.Tcp
     })
 );
@@ -74,6 +71,11 @@ builder.Services.AddHttpLogging(x =>
     x.RequestBodyLogLimit = 4 * 1024;
     x.ResponseBodyLogLimit = 4 * 1024;
     x.CombineLogs = true;
+    FeatureFlag.RequireFeatureFlag(FeatureFlag.FeatureFlagEnum.SENSITIVE_HEADERS, () =>
+    {
+        x.RequestHeaders.Add("Authorization");
+        x.ResponseHeaders.Add("WWW-Authenticate");
+    });
 });
 
 builder.Services.AddAuthentication(x =>
@@ -84,10 +86,10 @@ builder.Services.AddAuthentication(x =>
 }).AddJwtBearer(x =>
 {
     x.MapInboundClaims = false;
-    x.Authority = $"{EnvironmentData.KeycloakInternalUrl}/realms/{EnvironmentData.KeycloakRealm}";
+    x.Authority = EnvironmentData.KeycloakRealmUrl;
     x.Audience = EnvironmentData.KeycloakAudience;
     x.RequireHttpsMetadata = false;
-    x.MetadataAddress = $"{EnvironmentData.KeycloakInternalUrl}/realms/{EnvironmentData.KeycloakRealm}/.well-known/openid-configuration";
+    x.MetadataAddress = EnvironmentData.KeycloakMetadataUrl;
 
     FeatureFlag.RequireFeatureFlag(FeatureFlag.FeatureFlagEnum.KEYCLOAK_CERT, () =>
     {
@@ -134,5 +136,11 @@ app.UseAuthorization();
 app.UseUserInjection();
 
 app.MapControllers();
+
+FeatureFlag.RequireFeatureFlag(FeatureFlag.FeatureFlagEnum.KEYCLOAK_CERT, () =>
+{
+    app.Logger.Log(LogLevel.Information, "Keycloak ssl certificate ignored");
+});
+app.Logger.Log(LogLevel.Information, "Keycloak config url: {metadata}", EnvironmentData.KeycloakMetadataUrl);
 
 app.Run();
