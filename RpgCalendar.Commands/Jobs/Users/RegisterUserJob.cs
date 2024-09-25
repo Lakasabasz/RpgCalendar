@@ -24,6 +24,6 @@ public class RegisterUserJob(RelationalDb db, ImageService imageService): IJob
         db.SaveChanges();
         
         var user = db.Users.First(x => x.Id == data.userId);
-        ApiResponse = new UserModel(user.Nick, user.PrivateCode, imageService.GetImageUrl(user.ProfilePicture), user.GroupsLimit);
+        ApiResponse = new UserModel(user.Id, user.Nick, user.PrivateCode, imageService.GetImageUrl(user.ProfilePicture), user.GroupsLimit);
     }
 }

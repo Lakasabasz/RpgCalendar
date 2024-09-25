@@ -14,6 +14,6 @@ public class GetUserDataJob(RelationalDb db, ImageService imageService): IJob
     public void Execute(User invoker)
     {
         var user = db.Users.First(x => x.Id == invoker.Id);
-        ApiResponse = new UserModel(invoker.Nick, invoker.PrivateCode, imageService.GetImageUrl(user.ProfilePicture), user.GroupsLimit);
+        ApiResponse = new UserModel(invoker.Id, invoker.Nick, invoker.PrivateCode, imageService.GetImageUrl(user.ProfilePicture), user.GroupsLimit);
     }
 }
