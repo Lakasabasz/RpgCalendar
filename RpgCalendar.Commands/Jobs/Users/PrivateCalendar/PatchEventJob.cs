@@ -25,10 +25,10 @@ public class PatchEventJob(RelationalDb db): IJob
             Error = ErrorCode.CannotChangeEventType;
             return;
         }
-        DateTime patchedStarting = new DateTime(data.StartingDay ?? DateOnly.FromDateTime(@event.Start),
-            data.StartingHour ?? TimeOnly.FromDateTime(@event.Start));
-        DateTime patchedEnding = new DateTime(data.EndingDay ?? DateOnly.FromDateTime(@event.End),
-            data.EndingHour ?? TimeOnly.FromDateTime(@event.End));
+        DateTime patchedStarting = new DateTime(data.StartingDay ?? DateOnly.FromDateTime(@event.StartTime),
+            data.StartingHour ?? TimeOnly.FromDateTime(@event.StartTime));
+        DateTime patchedEnding = new DateTime(data.EndingDay ?? DateOnly.FromDateTime(@event.EndTime),
+            data.EndingHour ?? TimeOnly.FromDateTime(@event.EndTime));
         if (patchedStarting > patchedEnding)
         {
             Error = ErrorCode.PatchInvalidTimeRange;
@@ -37,15 +37,15 @@ public class PatchEventJob(RelationalDb db): IJob
 
         @event.Title = data.Title ?? @event.Title;
         @event.Description = data.Description ?? @event.Description;
-        @event.Start = patchedStarting;
-        @event.End = patchedEnding;
+        @event.StartTime = patchedStarting;
+        @event.EndTime = patchedEnding;
         @event.Location = data.Location ?? @event.Location;
         @event.IsOnline = data.IsOnline ?? @event.IsOnline;
 
         db.SaveChanges();
         var saved = db.PrivateEvents.First(x => x.EventId == data.EventId);
         ApiResponse = FullPrivateEvent.FromDateTime(saved.EventId, saved.OwnerId,
-            saved.Title, saved.Description, saved.Start, saved.End, saved.IsOnline, saved.Location);
+            saved.Title, saved.Description, saved.StartTime, saved.EndTime, saved.IsOnline, saved.Location);
     }
 
 }

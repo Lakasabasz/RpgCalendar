@@ -22,7 +22,9 @@ public class GroupService(RelationalDb db, ImageService imageService)
         .Where(x => x.GroupId == _groupId)
         .Include(x => x.User)
         .Select(x => new MemberApiModel(x.User.Id, x.User.Nick, x.PermissionLevel));
-    
+
+    public IQueryable<GroupMember> DbMembers => db.GroupsMembers.Where(x => x.GroupId == _groupId);
+
     public GroupService SelectGroup(Guid groupId, Guid invokerId)
     {
         _groupId = groupId;

@@ -46,8 +46,8 @@ public class EventService(RelationalDb db)
         var groupEvent = GroupEvent.Prepare(creatorId, groupId, title, description, start, end, location, isOnline);
         var otherUsersAbsences = db.PrivateEvents
             .Where(x => x.OwnerId != creatorId)
-            .Where(x => (x.Start < start && start == x.End) || (x.Start < end && end < x.End)
-                                || (start < x.Start && x.Start < end) || (start < x.End && x.End < end));
+            .Where(x => (x.StartTime < start && start == x.EndTime) || (x.StartTime < end && end < x.EndTime)
+                                || (start < x.StartTime && x.StartTime < end) || (start < x.EndTime && x.EndTime < end));
         db.GroupEvents.Add(groupEvent);
         db.UserGroupEventApprovals.AddRange(otherUsersAbsences.Select(x =>
             UserGroupEventApproval.Prepare(groupEvent.GroupEventId, x.OwnerId, RelationTowardsEventEnum.SoftReject)
@@ -125,8 +125,8 @@ public class EventService(RelationalDb db)
             .ToList();
         
         var usersAbsences = db.PrivateEvents
-            .Where(x => (x.Start < start && start == x.End) || (x.Start < end && end < x.End)
-                                || (start < x.Start && x.Start < end) || (start < x.End && x.End < end))
+            .Where(x => (x.StartTime < start && start == x.EndTime) || (x.StartTime < end && end < x.EndTime)
+                                || (start < x.StartTime && x.StartTime < end) || (start < x.EndTime && x.EndTime < end))
             .ToList();
         
         List<UserGroupEventApproval> removeList = [];

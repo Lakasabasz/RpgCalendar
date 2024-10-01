@@ -17,7 +17,8 @@ public class CalendarController(AccessTester tester,
     Lazy<DeleteGroupEventJob> deleteGroupEvent,
     Lazy<PatchGroupEventJob> patchGroupEvent,
     Lazy<PatchEventApproveJob> patchEventApprove,
-    Lazy<PatchEventRejectJob> patchEventReject): CustomController
+    Lazy<PatchEventRejectJob> patchEventReject,
+    Lazy<GetAbsencesListJob> getAbsencesList): CustomController
 {
     [HttpGet]
     public IActionResult EventLists([FromRoute] Guid groupId, [FromQuery] EventsTimePagination range)
@@ -96,5 +97,16 @@ public class CalendarController(AccessTester tester,
         
         patchEventReject.Value.Execute(new PatchEventRejectJob.JobData(Invoker.Id, eventId));
         return HandleJobResult(patchEventReject.Value);
+    }
+    
+    [HttpGet("absences")]
+    public IActionResult GetAbsences([FromRoute] Guid groupId, [FromQuery] EventsTimePagination range)
+    {
+        if(Invoker is null) return EarlyError(ErrorCode.UserNotRegistered);
+        if(!range.ValidateTimeRange()) return EarlyError(ErrorCode.InvalidTimeRange);
+        if(!tester.TestIf(Invoker).HasAccessTo.Group(groupId).Manage()) return Forbid();
+        
+        getAbsencesList.Value.Execute(new GetAbsencesListJob.JobData(Invoker.Id, range.From, range.To));
+        return HandleJobResult(getAbsencesList.Value);
     }
 }

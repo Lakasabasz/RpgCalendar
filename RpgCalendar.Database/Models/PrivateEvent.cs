@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using RpgCalendar.Tools.Primitives;
 
 namespace RpgCalendar.Database.Models;
 
-public class PrivateEvent
+public class PrivateEvent: ITimeRange
 {
     [Key] public Guid EventId { get; set; }
     
@@ -12,9 +13,9 @@ public class PrivateEvent
     
     public bool SimpleAbsence { get; set; }
     
-    public DateTime Start { get; set; }
+    public DateTime StartTime { get; set; }
     
-    public DateTime End { get; set; }
+    public DateTime EndTime { get; set; }
     
     public Guid OwnerId { get; set; }
 
@@ -31,8 +32,8 @@ public class PrivateEvent
         Title = title,
         Description = description,
         SimpleAbsence = simpleAbsence,
-        End = end,
-        Start = start,
+        EndTime = end,
+        StartTime = start,
         OwnerId = ownerId,
         IsOnline = isOnline,
         Location = location

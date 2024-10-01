@@ -27,7 +27,8 @@ public class AddEventJob(RelationalDb db): IJob
         db.PrivateEvents.Add(model);
         db.SaveChanges();
         var saved = db.PrivateEvents.First(x => x.EventId == model.EventId);
+        
         ApiResponse = FullPrivateEvent.FromDateTime(saved.EventId, saved.OwnerId,
-            saved.Title, saved.Description, saved.Start, saved.End, saved.IsOnline, saved.Location);
+            saved.Title, saved.Description, saved.StartTime, saved.EndTime, saved.IsOnline, saved.Location);
     }
 }

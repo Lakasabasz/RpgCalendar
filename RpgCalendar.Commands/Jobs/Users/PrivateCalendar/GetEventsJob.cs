@@ -17,10 +17,10 @@ public class GetEventsJob(RelationalDb db): IJob
         var events = db.PrivateEvents
             .Where(x => x.OwnerId == data.userId)
             .Where(x => !x.SimpleAbsence)
-            .Where(x => (pagination.Start <= x.Start && x.Start <= pagination.End)
-                        || (pagination.Start <= x.End && x.End <= pagination.End))
+            .Where(x => (pagination.Start <= x.StartTime && x.StartTime <= pagination.End)
+                        || (pagination.Start <= x.EndTime && x.EndTime <= pagination.End))
             .Select(x => PrivateEvent.FromDateTime(x.EventId, x.Title ?? "", x.Description ?? "",
-                x.Start, x.End, x.IsOnline, x.Location));
+                x.StartTime, x.EndTime, x.IsOnline, x.Location));
         ApiResponse = new PrivateEvents(events);
     }
 }
