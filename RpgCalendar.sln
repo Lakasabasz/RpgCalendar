@@ -9,6 +9,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Local setup", "Local setup"
 		.env.example = .env.example
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App Local setup", "App Local setup", "{87fc673a-2b13-43e4-82f2-8eb5abb70aed}"
+	ProjectSection(SolutionItems) = preProject
+		applocal_setup/docker-compose.yml = applocal_setup/docker-compose.yml
+		applocal_setup/.env.example = applocal_setup/.env.example
+	EndProjectSection
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dev setup", "Dev setup", "{23baaf20-9a37-458d-99ee-81379e93f4d1}"
 	ProjectSection(SolutionItems) = preProject
 		dev_setup/docker-compose.yml = dev_setup/docker-compose.yml
