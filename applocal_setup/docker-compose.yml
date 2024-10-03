@@ -70,9 +70,6 @@ services:
       KC_DB_URL: jdbc:postgresql://postgres/${POSTGRES_DB}
       KC_DB_USERNAME: ${POSTGRES_USER}
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - 18080:8080
-      - 19000:9000
     restart: always
     volumes:
       - ./keycloak:/opt/keycloak/data/import
