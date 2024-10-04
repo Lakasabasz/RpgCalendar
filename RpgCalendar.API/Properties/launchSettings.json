@@ -8,7 +8,13 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:8000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "FF_SENSITIVE_HEADERS": "true",
+        "KEYCLOAK_REALM": "rpgcalendar",
+        "KEYCLOAK_INTERNAL_URL": "https://auth.applocal.rpg-calendar.jakubkrawczyk.com",
+        "KEYCLOAK_AUDIENCE": "account",
+        "API_RELATIONAL_DB_HOST": "jakubkrawczyk.com",
+        "API_RELATIONAL_DB_PORT": "3013"
       }
     },
     "http-nobrowser": {
@@ -19,7 +25,13 @@
       "applicationUrl": "http://localhost:8000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "FF_SENSITIVE_HEADERS": "true"
+        "FF_SENSITIVE_HEADERS": "true",
+        "FF_KEYCLOAK_CERT": "true",
+        "KEYCLOAK_REALM": "rpgcalendar",
+        "KEYCLOAK_INTERNAL_URL": "https://auth.applocal.rpg-calendar.jakubkrawczyk.com",
+        "KEYCLOAK_AUDIENCE": "account",
+        "API_RELATIONAL_DB_HOST": "jakubkrawczyk.com",
+        "API_RELATIONAL_DB_PORT": "3013"
       }
     },
     "asdev-keycloak": {
