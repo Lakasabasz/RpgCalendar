@@ -23,7 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 var connectionString =
-    $"Server={EnvironmentData.RelationalDbHost};Port=3306;Database=rpgcalendar;Uid=root;Pwd={EnvironmentData.RelationalDbPasswd};";
+    $"Server={EnvironmentData.RelationalDbHost};Port={EnvironmentData.RelationalDbPort};Database=rpgcalendar;Uid=root;Pwd={EnvironmentData.RelationalDbPasswd};";
 
 builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 {
@@ -41,6 +41,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
     container.RegisterType<ImageService>();
     container.RegisterType<GroupService>();
     container.RegisterType<EventService>();
+    container.RegisterType<AccessTester>();
 });
 
 builder.Logging.ClearProviders();
