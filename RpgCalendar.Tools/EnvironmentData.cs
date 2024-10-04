@@ -10,6 +10,9 @@ public static class EnvironmentData
 
     private const string RelationalDbHostEnv = "API_RELATIONAL_DB_HOST";
     public static string RelationalDbHost => Environment.GetEnvironmentVariable(RelationalDbHostEnv) ?? "localhost";
+    
+    private const string RelationalDbPortEnv = "API_RELATIONAL_DB_PORT";
+    public static string RelationalDbPort => Environment.GetEnvironmentVariable(RelationalDbPortEnv) ?? "3306";
 
     private const string RelationalDbPasswdEnv = "MYSQL_ROOT_PASSWORD";
     public static string RelationalDbPasswd => Environment.GetEnvironmentVariable(RelationalDbPasswdEnv) ?? "root";
