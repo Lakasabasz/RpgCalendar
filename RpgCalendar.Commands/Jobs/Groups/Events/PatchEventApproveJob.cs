@@ -3,7 +3,7 @@ using RpgCalendar.Tools.Enums;
 
 namespace RpgCalendar.Commands.Jobs.Groups.Events;
 
-public class PatchEventApproveJob(EventService service): IJob
+public class PatchEventApproveJob(GroupEventService service): IJob
 {
     public record JobData(Guid InvokerId, Guid EventId);
     

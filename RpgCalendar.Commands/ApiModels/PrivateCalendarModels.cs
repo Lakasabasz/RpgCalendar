@@ -13,6 +13,12 @@ public record AbsencePeriod(Guid EventId, DateOnly StartingDay, TimeOnly Startin
             DateOnly.FromDateTime(end), TimeOnly.FromDateTime(end));
 }
 
+public record GroupRequestedAbsencesModel(IEnumerable<GroupRequestedAbsenceModel> Absences): IApiResponse;
+
+public record GroupRequestedAbsenceModel(IEnumerable<AbsencePeriodSimpleModel> Periods, UserShortWithProfileModel Member);
+
+public record AbsencePeriodSimpleModel(Guid EventId, DateTime Start, DateTime End);
+
 public record PrivateEvents(IEnumerable<PrivateEvent> Events): IApiResponse;
 
 public record PrivateEvent(Guid EventId, string Title, string Description,

@@ -106,7 +106,7 @@ public class CalendarController(AccessTester tester,
         if(!range.ValidateTimeRange()) return EarlyError(ErrorCode.InvalidTimeRange);
         if(!tester.TestIf(Invoker).HasAccessTo.Group(groupId).Manage()) return Forbid();
         
-        getAbsencesList.Value.Execute(new GetAbsencesListJob.JobData(Invoker.Id, range.From, range.To));
+        getAbsencesList.Value.Execute(new GetAbsencesListJob.JobData(groupId, range.From, range.To));
         return HandleJobResult(getAbsencesList.Value);
     }
 }

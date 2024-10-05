@@ -7,7 +7,7 @@ using RpgCalendar.Tools.Enums;
 
 namespace RpgCalendar.Commands;
 
-public class EventService(RelationalDb db)
+public class GroupEventService(RelationalDb db)
 {
     private Guid? _eventId;
     private GroupEvent? _event;
@@ -32,7 +32,7 @@ public class EventService(RelationalDb db)
         return overlappingEvent is not null;
     }
 
-    public EventService SelectEvent(Guid eventId)
+    public GroupEventService SelectEvent(Guid eventId)
     {
         _eventId = eventId;
         return this;

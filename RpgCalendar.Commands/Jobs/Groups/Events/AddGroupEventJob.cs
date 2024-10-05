@@ -2,7 +2,7 @@
 
 namespace RpgCalendar.Commands.Jobs.Groups.Events;
 
-public class AddGroupEventJob(EventService service): IJob
+public class AddGroupEventJob(GroupEventService service): IJob
 {
     public record JobData(Guid GroupId, Guid CreatorId, string Title, string Description, DateTime Start, DateTime End,
         string? Location, bool? IsOnline);

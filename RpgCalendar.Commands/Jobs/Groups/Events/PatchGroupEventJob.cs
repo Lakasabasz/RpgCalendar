@@ -3,7 +3,7 @@ using RpgCalendar.Tools;
 
 namespace RpgCalendar.Commands.Jobs.Groups.Events;
 
-public class PatchGroupEventJob(RelationalDb db, EventService service): IJob
+public class PatchGroupEventJob(RelationalDb db, GroupEventService service): IJob
 {
     public record JobData(Guid EventId, string? Title, string? Description, string? Location, bool? IsOnline, string? Summary,
         DateTime? Start, DateTime? End);

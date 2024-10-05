@@ -2,7 +2,7 @@
 
 namespace RpgCalendar.Commands.Jobs.Groups.Events;
 
-public class DeleteGroupEventJob(EventService service): IJob
+public class DeleteGroupEventJob(GroupEventService service): IJob
 {
     public record JobData(Guid EventId);
 

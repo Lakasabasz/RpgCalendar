@@ -40,7 +40,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
         .AsSelf();
     container.RegisterType<ImageService>();
     container.RegisterType<GroupService>();
-    container.RegisterType<EventService>();
+    container.RegisterType<GroupEventService>();
     container.RegisterType<AccessTester>();
 });
 

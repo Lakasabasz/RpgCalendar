@@ -2,7 +2,7 @@
 
 namespace RpgCalendar.Commands.Jobs.Groups.Events;
 
-public class GetGroupEventJob(EventService service): IJob
+public class GetGroupEventJob(GroupEventService service): IJob
 {
     public record JobData(Guid EventId);
 
