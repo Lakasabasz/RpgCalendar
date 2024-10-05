@@ -3,6 +3,7 @@ using RpgCalendar.Commands.ApiModels;
 using RpgCalendar.Database;
 using RpgCalendar.Database.Models;
 using RpgCalendar.Tools;
+using RpgCalendar.Tools.DbLinqExtensions;
 using RpgCalendar.Tools.Enums;
 
 namespace RpgCalendar.Commands;
@@ -24,10 +25,7 @@ public class GroupEventService(RelationalDb db)
     private bool IsOverlappingEventExists(DateTime start, DateTime end)
     {
         var overlappingEvent = db.GroupEvents
-            .Where(x => (x.StartTime < start && start == x.EndTime)
-                        || (x.StartTime < end && end < x.EndTime)
-                        || (start < x.StartTime && x.StartTime < end)
-                        || (start < x.EndTime && x.EndTime < end))
+            .WhereOverlapsTimeRange(start, end)
             .FirstOrDefault(x => x.GroupEventId != DbEvent.GroupEventId);
         return overlappingEvent is not null;
     }
@@ -161,7 +159,8 @@ public class GroupEventService(RelationalDb db)
 
     public ErrorCode? SetRelation(Guid invokerId, RelationTowardsEventEnum desiredRelation, bool save=true)
     {
-        var relation = db.UserGroupEventApprovals.FirstOrDefault(x => x.GroupEventId == _eventId && x.UserId == invokerId);
+        var relation = db.UserGroupEventApprovals
+            .FirstOrDefault(x => x.GroupEventId == _eventId && x.UserId == invokerId);
         if(relation is not null)
         {
             if (relation.RelationTowardsEvent == desiredRelation)

@@ -54,7 +54,7 @@ public class CalendarController(AccessTester tester,
 
         addEventJob.Value.Execute(new AddEventJob.JobData(userId, payload.Title, payload.Description,
             payload.StartingDay, payload.StartingHour, payload.EndingDay, payload.EndingHour,
-            payload.IsOnline, payload.Location));
+            payload.IsOnline, payload.Location, payload.OverwriteApprovals));
         return HandleJobResult(addEventJob.Value);
     }
     

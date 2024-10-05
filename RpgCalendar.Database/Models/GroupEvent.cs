@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using RpgCalendar.Tools.Primitives;
 
 namespace RpgCalendar.Database.Models;
 
-public class GroupEvent
+public class GroupEvent: ITimeRange
 {
     [Key] public Guid GroupEventId { get; set; }
     

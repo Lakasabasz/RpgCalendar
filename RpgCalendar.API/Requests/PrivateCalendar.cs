@@ -9,7 +9,8 @@ public record PrivateCalendarAddEvent(
     [MaxLength(1024), MinLength(3)] string? Description,
     DateOnly StartingDay, TimeOnly StartingHour,
     DateOnly EndingDay, TimeOnly EndingHour,
-    bool IsOnline, [MaxLength(128)] string? Location);
+    bool IsOnline, [MaxLength(128)] string? Location,
+    bool OverwriteApprovals);
 
 public record PrivateCalendarPatchEvent(
     [MaxLength(256), MinLength(3)] string? Title,
