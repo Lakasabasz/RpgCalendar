@@ -4,7 +4,7 @@ using RpgCalendar.Tools;
 
 namespace RpgCalendar.Commands.Jobs.Users.PrivateCalendar;
 
-public class PatchEventJob(RelationalDb db): IJob
+public class PatchEventJob(RelationalDb db, PrivateEventService service): IJob
 {
     public record JobData(
         Guid EventId,
@@ -19,33 +19,42 @@ public class PatchEventJob(RelationalDb db): IJob
     // ReSharper disable once EntityFramework.NPlusOne.IncompleteDataUsage
     public void Execute(JobData data)
     {
-        var @event = db.PrivateEvents.First(x => x.EventId == data.EventId);
-        if (@event.Title is null != data.Title is null || @event.Description is null != data.Description is null)
+        service.SelectEvent(data.EventId);
+        if(data.Title is not null)
         {
-            Error = ErrorCode.CannotChangeEventType;
-            return;
+            Error = service.UpdateTitle(data.Title, false);
+            if(Error is not null) return;
         }
-        DateTime patchedStarting = new DateTime(data.StartingDay ?? DateOnly.FromDateTime(@event.StartTime),
-            data.StartingHour ?? TimeOnly.FromDateTime(@event.StartTime));
-        DateTime patchedEnding = new DateTime(data.EndingDay ?? DateOnly.FromDateTime(@event.EndTime),
-            data.EndingHour ?? TimeOnly.FromDateTime(@event.EndTime));
-        if (patchedStarting > patchedEnding)
+        
+        if(data.Description is not null)
         {
-            Error = ErrorCode.PatchInvalidTimeRange;
-            return;
+            Error = service.UpdateDescription(data.Description, false);
+            if(Error is not null) return;
         }
-
-        @event.Title = data.Title ?? @event.Title;
-        @event.Description = data.Description ?? @event.Description;
-        @event.StartTime = patchedStarting;
-        @event.EndTime = patchedEnding;
-        @event.Location = data.Location ?? @event.Location;
-        @event.IsOnline = data.IsOnline ?? @event.IsOnline;
+        
+        if(data.StartingDay is not null || data.StartingHour is not null || data.EndingDay is not null || data.EndingHour is not null)
+        {
+            DateTime patchedStarting = new DateTime(data.StartingDay ?? DateOnly.FromDateTime(service.Event.StartTime),
+                data.StartingHour ?? TimeOnly.FromDateTime(service.Event.StartTime));
+            DateTime patchedEnding = new DateTime(data.EndingDay ?? DateOnly.FromDateTime(service.Event.EndTime),
+                data.EndingHour ?? TimeOnly.FromDateTime(service.Event.EndTime));
+            Error = service.UpdateDateTime(patchedStarting, patchedEnding, false);
+        }
+        
+        if(data.Location is not null)
+        {
+            Error = service.UpdateLocation(data.Location, false);
+            if(Error is not null) return;
+        }
+        
+        if(data.IsOnline is not null)
+        {
+            Error = service.UpdateIsOnline(data.IsOnline, false);
+            if(Error is not null) return;
+        }
 
         db.SaveChanges();
-        var saved = db.PrivateEvents.First(x => x.EventId == data.EventId);
-        ApiResponse = FullPrivateEventModel.FromDateTime(saved.EventId, saved.OwnerId,
-            saved.Title, saved.Description, saved.StartTime, saved.EndTime, saved.IsOnline, saved.Location);
-    }
 
+        ApiResponse = service.GetFullApiModel();
+    }
 }

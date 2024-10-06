@@ -21,6 +21,9 @@ public class GroupEventService(RelationalDb db)
         .Where(x => x.GroupEventId == _eventId)
         .Include(x => x.User)
         .Select(x => new EventUserRelationModel(new UserShortModel(x.User.Id, x.User.Nick), x.RelationTowardsEvent));
+
+    public IQueryable<UserGroupEventApproval> UserRelations => db.UserGroupEventApprovals
+        .Where(x => x.GroupEventId == _eventId);
     
     private bool IsOverlappingEventExists(DateTime start, DateTime end)
     {
@@ -166,7 +169,8 @@ public class GroupEventService(RelationalDb db)
                 return ErrorCode.NoRelationChange;
             relation.RelationTowardsEvent = desiredRelation;
         }
-        else{
+        else
+        {
             relation = UserGroupEventApproval.Prepare(_eventId ?? throw new ArgumentNullException(nameof(invokerId)), 
                 invokerId, desiredRelation);
             db.UserGroupEventApprovals.Add(relation);

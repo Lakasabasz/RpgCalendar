@@ -1,5 +1,4 @@
-﻿using RpgCalendar.Commands.ApiModels;
-using RpgCalendar.Tools;
+﻿using RpgCalendar.Tools;
 
 namespace RpgCalendar.Commands.Jobs.Users.PrivateCalendar;
 
