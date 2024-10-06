@@ -1,5 +1,4 @@
-﻿using RpgCalendar.Commands.ApiModels;
-using RpgCalendar.Database;
+﻿using RpgCalendar.Database;
 using RpgCalendar.Tools;
 
 namespace RpgCalendar.Commands.Jobs.Users.PrivateCalendar;
@@ -11,7 +10,8 @@ public class PatchEventJob(RelationalDb db, PrivateEventService service): IJob
         string? Title, string? Description,
         DateOnly? StartingDay, TimeOnly? StartingHour,
         DateOnly? EndingDay, TimeOnly? EndingHour,
-        bool? IsOnline, string? Location);
+        bool? IsOnline, string? Location,
+        bool OverwriteApprovals);
     public ErrorCode? Error { get; private set; }
     public IApiResponse? ApiResponse { get; private set; }
 
@@ -38,7 +38,7 @@ public class PatchEventJob(RelationalDb db, PrivateEventService service): IJob
                 data.StartingHour ?? TimeOnly.FromDateTime(service.Event.StartTime));
             DateTime patchedEnding = new DateTime(data.EndingDay ?? DateOnly.FromDateTime(service.Event.EndTime),
                 data.EndingHour ?? TimeOnly.FromDateTime(service.Event.EndTime));
-            Error = service.UpdateDateTime(patchedStarting, patchedEnding, false);
+            Error = service.UpdateDateTime(patchedStarting, patchedEnding, data.OverwriteApprovals);
         }
         
         if(data.Location is not null)

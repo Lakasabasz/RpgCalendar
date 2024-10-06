@@ -66,10 +66,11 @@ public class CalendarController(AccessTester tester,
         if (!tester.TestIf(Invoker).HasAccessTo.User(userId).Event(eventId)) Forbid();
 
         if (!payload.HasChange) return EarlyError(ErrorCode.NoChangesRequested);
+        if(payload is { HasTimeChanges: true, OverwriteApprovals: null }) return EarlyError(ErrorCode.OverwriteApprovalRequiredForTimeChanging);
 
         patchEventJob.Value.Execute(new PatchEventJob.JobData(eventId, payload.Title, payload.Description,
             payload.StartingDay, payload.StartingHour, payload.EndingDay, payload.EndingHour, payload.IsOnline,
-            payload.Location));
+            payload.Location, payload.OverwriteApprovals ?? false));
         return HandleJobResult(patchEventJob.Value);
     }
     

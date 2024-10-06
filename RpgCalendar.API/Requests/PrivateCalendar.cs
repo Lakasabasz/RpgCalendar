@@ -17,7 +17,8 @@ public record PrivateCalendarPatchEvent(
     [MaxLength(1024), MinLength(3)] string? Description,
     DateOnly? StartingDay, TimeOnly? StartingHour,
     DateOnly? EndingDay, TimeOnly? EndingHour,
-    bool? IsOnline, [MaxLength(128)] string? Location)
+    bool? IsOnline, [MaxLength(128)] string? Location,
+    bool? OverwriteApprovals)
 {
     public bool HasChange => Title is not null
                              || Description is not null
@@ -27,4 +28,9 @@ public record PrivateCalendarPatchEvent(
                              || EndingHour.HasValue
                              || IsOnline.HasValue
                              || Location is not null;
+    
+    public bool HasTimeChanges => StartingHour.HasValue 
+                            || EndingHour.HasValue
+                            || StartingDay.HasValue
+                            || EndingDay.HasValue;
 }

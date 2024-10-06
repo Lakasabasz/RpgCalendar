@@ -32,5 +32,6 @@ public enum ErrorCode
     PatchOverlappingEvent = 27,
     CannotAddOverlappingEvent = 28,
     StartDateCannotBePast = 29,
-    CannotEditFinishedEvents = 30
+    CannotEditFinishedEvents = 30,
+    OverwriteApprovalRequiredForTimeChanging = 31
 }

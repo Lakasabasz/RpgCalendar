@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-
-namespace RpgCalendar.Tools;
+﻿namespace RpgCalendar.Tools;
 
 public static partial class Consts
 {
@@ -50,6 +48,8 @@ public static partial class Consts
             [ErrorCode.CannotAddOverlappingEvent] = new ErrorApiModel(ErrorCode.CannotAddOverlappingEvent, "Event overlaps with existing events"),
             [ErrorCode.StartDateCannotBePast] = new ErrorApiModel(ErrorCode.StartDateCannotBePast, "Cannot create event that starts in the past"),
             [ErrorCode.CannotEditFinishedEvents] = new ErrorApiModel(ErrorCode.CannotEditFinishedEvents, "Cannot edit finished events"),
+            [ErrorCode.OverwriteApprovalRequiredForTimeChanging] = new ErrorApiModel(ErrorCode.OverwriteApprovalRequiredForTimeChanging, 
+                "OverwriteApproval field is required for event date and time changes"),
         };
 
         public static ErrorApiModel FallbackErrorMessage(ErrorCode errorCode)
