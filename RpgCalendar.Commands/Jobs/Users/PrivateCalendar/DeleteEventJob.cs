@@ -1,9 +1,8 @@
-﻿using RpgCalendar.Database;
-using RpgCalendar.Tools;
+﻿using RpgCalendar.Tools;
 
 namespace RpgCalendar.Commands.Jobs.Users.PrivateCalendar;
 
-public class DeleteEventJob(RelationalDb db): IJob
+public class DeleteEventJob(PrivateEventService service): IJob
 {
     public record JobData(Guid eventId);
 
@@ -12,8 +11,7 @@ public class DeleteEventJob(RelationalDb db): IJob
 
     public void Execute(JobData data)
     {
-        var @event = db.PrivateEvents.First(x => x.EventId == data.eventId);
-        db.PrivateEvents.Remove(@event);
-        db.SaveChanges();
+        service.SelectEvent(data.eventId);
+        service.Delete();
     }
 }

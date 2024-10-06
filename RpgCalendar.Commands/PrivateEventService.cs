@@ -138,4 +138,25 @@ public class PrivateEventService(RelationalDb db, Lazy<GroupEventService> groupE
         if(save) db.SaveChanges();
         return null;
     }
+
+    public ErrorCode? Delete()
+    {
+        var releasedEvents = _getOverlappingGroupEventsIds(Event.OwnerId, Event.StartTime, Event.EndTime)
+            .Where(x => UserPrivateEvents.WhereOverlapsTimeRange(Event.StartTime, Event.EndTime).Count() == 1);
+        
+        foreach (var releasedEvent in releasedEvents)
+        {
+            var groupEventService = groupEventServiceLazy.Value;
+            groupEventService.SelectEvent(releasedEvent.GroupEventId);
+            var relation = groupEventService.UserRelations.First(x => x.UserId == Event.OwnerId);
+            if(relation.RelationTowardsEvent is RelationTowardsEventEnum.SoftReject)
+                db.UserGroupEventApprovals.Remove(relation);
+            else if(relation.RelationTowardsEvent is RelationTowardsEventEnum.SoftRejectedAccept) 
+                relation.RelationTowardsEvent = RelationTowardsEventEnum.HardAccept;
+        }
+        
+        db.PrivateEvents.Remove(Event);
+        db.SaveChanges();
+        return null;
+    }
 }
