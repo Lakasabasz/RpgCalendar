@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace RpgCalendar.Tools;
 
@@ -27,7 +26,7 @@ public static class EnvironmentData
     public static string KeycloakMetadataUrl => $"{KeycloakRealmUrl}/.well-known/openid-configuration";
     
     private const string KeycloakAudienceEnv = "KEYCLOAK_AUDIENCE";
-    public static string? KeycloakAudience => Environment.GetEnvironmentVariable(KeycloakAudienceEnv) ?? "account";
+    public static string? KeycloakAudience => Environment.GetEnvironmentVariable(KeycloakAudienceEnv) ?? "rpg-calendar";
 
     private const string FeatureFlagPrefixEnv = "FF_";
 
