@@ -42,6 +42,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
     container.RegisterType<GroupService>();
     container.RegisterType<GroupEventService>();
     container.RegisterType<AccessTester>();
+    container.RegisterType<PrivateEventService>();
 });
 
 builder.Logging.ClearProviders();

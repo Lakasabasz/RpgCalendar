@@ -44,7 +44,7 @@ public class PatchEventJob(RelationalDb db): IJob
 
         db.SaveChanges();
         var saved = db.PrivateEvents.First(x => x.EventId == data.EventId);
-        ApiResponse = FullPrivateEvent.FromDateTime(saved.EventId, saved.OwnerId,
+        ApiResponse = FullPrivateEventModel.FromDateTime(saved.EventId, saved.OwnerId,
             saved.Title, saved.Description, saved.StartTime, saved.EndTime, saved.IsOnline, saved.Location);
     }
 

@@ -44,8 +44,7 @@ public class GroupEventService(RelationalDb db)
         var groupEvent = GroupEvent.Prepare(creatorId, groupId, title, description, start, end, location, isOnline);
         var otherUsersAbsences = db.PrivateEvents
             .Where(x => x.OwnerId != creatorId)
-            .Where(x => (x.StartTime < start && start == x.EndTime) || (x.StartTime < end && end < x.EndTime)
-                                || (start < x.StartTime && x.StartTime < end) || (start < x.EndTime && x.EndTime < end));
+            .WhereOverlapsTimeRange(start, end);
         db.GroupEvents.Add(groupEvent);
         db.UserGroupEventApprovals.AddRange(otherUsersAbsences.Select(x =>
             UserGroupEventApproval.Prepare(groupEvent.GroupEventId, x.OwnerId, RelationTowardsEventEnum.SoftReject)

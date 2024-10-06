@@ -33,14 +33,14 @@ public record PrivateEvent(Guid EventId, string Title, string Description,
             isOnline, location);
 }
 
-public record FullPrivateEvent(Guid EventId, Guid OwnerId, string? Title, string? Description,
+public record FullPrivateEventModel(Guid EventId, Guid OwnerId, string? Title, string? Description,
     DateOnly StartingDay, TimeOnly StartingHour, DateOnly EndingDay, TimeOnly EndingOnly,
     bool IsOnline, string? Location)
     : IApiResponse
 {
-    public static FullPrivateEvent FromDateTime(Guid eventId, Guid ownerId, string? title, string? description,
+    public static FullPrivateEventModel FromDateTime(Guid eventId, Guid ownerId, string? title, string? description,
         DateTime start, DateTime end, bool isOnline, string? location)
-        => new FullPrivateEvent(eventId, ownerId, title, description,
+        => new FullPrivateEventModel(eventId, ownerId, title, description,
             DateOnly.FromDateTime(start), TimeOnly.FromDateTime(start),
             DateOnly.FromDateTime(end), TimeOnly.FromDateTime(end),
             isOnline, location);
