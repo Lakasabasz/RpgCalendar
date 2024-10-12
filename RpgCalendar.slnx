@@ -1,0 +1,29 @@
+﻿<Solution>
+  <Folder Name="/App Local setup/">
+    <File Path="applocal_setup/docker-compose.yml" />
+    <File Path="applocal_setup/.env.example" />
+  </Folder>
+  <Folder Name="/Dev setup/">
+    <File Path="dev_setup/docker-compose.yml" />
+    <File Path="dev_setup/.env.example" />
+  </Folder>
+  <Folder Name="/Graylog seeder/">
+    <File Path="graylog_seeder/Dockerfile" />
+    <File Path="graylog_seeder/graylog_seeder.py" />
+  </Folder>
+  <Folder Name="/Keycloak/">
+    <File Path="keycloak/rpgcalendar.json" />
+  </Folder>
+  <Folder Name="/Local setup/">
+    <File Path="docker-compose.yml" />
+    <File Path=".env.example" />
+  </Folder>
+  <Folder Name="/Nginx/">
+    <File Path="nginx/Dockerfile" />
+    <File Path="nginx/nginx.conf" />
+  </Folder>
+  <Project Path="RpgCalendar.API\RpgCalendar.API.csproj" Type="Classic C#" />
+  <Project Path="RpgCalendar.Commands\RpgCalendar.Commands.csproj" Type="Classic C#" />
+  <Project Path="RpgCalendar.Database\RpgCalendar.Database.csproj" Type="Classic C#" />
+  <Project Path="RpgCalendar.Tools\RpgCalendar.Tools.csproj" Type="Classic C#" />
+</Solution>
